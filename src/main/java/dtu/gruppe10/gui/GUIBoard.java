@@ -63,7 +63,7 @@ public class GUIBoard extends JFrame implements Runnable {
         // Properties
         int[][] propertyIndexes = {{1, 3}, {6, 8, 9}, {11, 13, 14}, {16, 18, 19}, {21, 23, 24}, {26, 27, 29}, {31, 32, 34}, {37, 39}};
         String[][] propertyNames = {{"Rødovre", "Hvidovre"}, {"Roskilde", "Valby", "Allé"}, {"Frederiksberg", "Bülow", "Gl. Konge"}, {"Bernstoff", "Hellerup", "Strand"}, {"Triangel", "Østerbro", "Grønningen"}, {"Bred", "Kgs. Nytorv", "Øster"}, {"Amager", "Vimmel", "Ny"}, {"Frederiksberg", "Rådhus"}};
-        Color[] propertyColors = {new Color(75, 109, 255), new Color(241, 94, 16), new Color(28, 157, 5), Color.GRAY, new Color(196, 34, 34), Color.WHITE, Color.YELLOW, new Color(41, 9, 182)};
+        Color[] propertyColors = {new Color(75, 109, 255), new Color(241, 94, 16), new Color(28, 157, 5), Color.GRAY, new Color(196, 34, 34), Color.WHITE, new Color(185, 133, 4), new Color(41, 9, 182)};
         for (int i = 0; i < propertyIndexes.length; ++i) {
             Color propertyColor = propertyColors[i];
             for (int j = 0; j < propertyNames[i].length; ++j) {
@@ -127,9 +127,6 @@ public class GUIBoard extends JFrame implements Runnable {
         currentPlayerPathCircle = new GUICircle(center, pathCircleRadius);
 
         currentBoardCircle.draw(g, boardColor, true);
-
-        int[] singleFields = {0, 2, 4, 7, 17, 20, 22, 33, 36, 38};
-        char[] shorthands = {'S', 'B', 'L', 'B', '$', 'M', 'O', 'L', 'O', 'O', 'F', 'G', 'D', 'G', 'G', 'M', 'Å', 'L', 'Å', 'Å', 'T', 'R', 'L', 'R', 'R', 'M', 'H', 'H', 'D', 'H', 'P', 'Y', 'Y', 'L', 'Y', 'M', 'L', 'Z', '$', 'Z'};
 
         Point[] innerPoints = currentInnerCircle.getPoints(fieldCount);
         Point[] outerPoints = currentBoardCircle.getPoints(fieldCount);
