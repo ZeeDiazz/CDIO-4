@@ -17,7 +17,7 @@ public class Property extends Field {
     private int rent3;
     private int rent4;
     private int rent5;
-    private int requiredRent;
+    private int currentRent;
 
     // Contructor for de to 'brewery' felter
     public Property(String name, int price, PropertyColor color, int rent0, int rent1) {
@@ -26,7 +26,7 @@ public class Property extends Field {
         this.color = color;
         this.rent0 = rent0;
         this.rent1 = rent1;
-        this.requiredRent = rent0;
+        this.currentRent = rent0;
     }
 
     // Contructor til de fire 'ferry' felter;
@@ -34,7 +34,7 @@ public class Property extends Field {
         this(name, price, color, rent0, rent1);
         this.rent2 = rent2;
         this.rent3 = rent3;
-        this.requiredRent = rent0;
+        this.currentRent = rent0;
     }
 
 
@@ -43,23 +43,28 @@ public class Property extends Field {
         this(name, price, color, rent0, rent1, rent2, rent3);
         this.rent4 = rent4;
         this.rent5 = rent5;
-        this.requiredRent = rent0;
+        this.currentRent = rent0;
     }
 
+    public int getCurrentRent() {
+        return currentRent;
+    }
 
     public void updateCurrentRent(int numberOfhouses) {
         if (numberOfhouses == 1) {
-            this.requiredRent = this.rent1;
-        } else if (numberOfhouses == 1) {
-            this.requiredRent = this.rent3;
-        } else if (numberOfhouses == 1) {
-            this.requiredRent = this.rent4;
-        } else if (numberOfhouses == 1) {
-            this.requiredRent = this.rent5;
+            this.currentRent = this.rent1;
+        } else if (numberOfhouses == 2) {
+            this.currentRent = this.rent2;
+        } else if (numberOfhouses == 3) {
+            this.currentRent = this.rent3;
+        } else if (numberOfhouses == 4) {
+            this.currentRent = this.rent4;
+        } else if (numberOfhouses == 5) {
+            this.currentRent = this.rent5;
         }
-
-
     }
+
+
 
 
 }
