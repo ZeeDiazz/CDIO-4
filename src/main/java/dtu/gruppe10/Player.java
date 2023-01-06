@@ -12,7 +12,7 @@ public class Player {
         this.ID = ID;
     }
 
-    public Account getBalance() {
-        return balance;
+    public int getBalance() {
+        return this.balance.getBalance();
     }
 }
