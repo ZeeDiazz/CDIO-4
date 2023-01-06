@@ -65,6 +65,15 @@ public class Property extends Field {
     }
 
 
+    public void buyProperty(Player buyer) {
+        if (this.isBought == true) {
+            return;
+        }
+        if(buyer.getBalance() >= this.price) {
+            this.isBought = true;
+            this.owner = buyer;
+        }
+    }
 
 
 }
