@@ -11,4 +11,8 @@ public class Player {
         this.balance = balance;
         this.ID = ID;
     }
+
+    public Account getBalance() {
+        return balance;
+    }
 }
