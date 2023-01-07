@@ -50,6 +50,8 @@ public class Property extends Field {
         return currentRent;
     }
 
+    /* Til når man kan bygge huse
+
     public void updateCurrentRent(int numberHouses) {
         if (numberHouses == 1) {
             this.currentRent = this.rent1;
@@ -63,25 +65,38 @@ public class Property extends Field {
             this.currentRent = this.rent5;
         }
     }
-
+*/
     public void recieveRent(Player payer) {
-        if (!(this.owner.equals(null)) || this.owner == payer) {
-            this.owner.handleRent(payer, currentRent);
+        if (this.landedOn == true) {
+            if (!(this.owner.equals(null)) || this.owner == payer) {
+                this.owner.handleRent(payer, currentRent);
+            }
         }
     }
 
+    public void whenLandedOn(Player player) {
+        this.landedOn = true;
+        if (this.owner == null) {
+            this.buyProperty(player);
+        } else {
+            this.recieveRent(player);
+        }
+
+        this.landedOn = false;
+    }
 
     public void buyProperty(Player buyer) {
-        if (this.isBought == true) {
-            return;
-        }
-        if (buyer.getBalance() >= this.price) {
-            this.isBought = true;
-            this.owner = buyer;
-            this.owner.setBalance(-this.price);
+        if (this.landedOn == true) {
+            if (this.isBought == true) {
+                return;
+            }
+            if (buyer.getBalance() >= this.price) {
+                this.isBought = true;
+                this.owner = buyer;
+                this.owner.setBalance(-this.price);
+            }
         }
     }
-
 
 }
 
