@@ -46,12 +46,27 @@ public class Property extends Field {
         this.currentRent = rent0;
     }
 
+
     public int getCurrentRent() {
         return currentRent;
     }
 
     public Player getOwner() {
         return owner;
+    }
+
+
+
+    // Metode der sørger håndterer opkrævning af leje
+    // Denne metode tager den betalende spiller, og referer til metoden handleRent i
+    // spiller klassen.
+
+    public void receiveRent(Player payer) {
+        if (this.landedOn == true) {
+            if (!(this.owner.equals(null)) || this.owner == payer) {
+                this.owner.handleRent(payer, currentRent);
+            }
+        }
     }
 
     /* Til når man kan bygge huse
@@ -70,27 +85,16 @@ public class Property extends Field {
             }
         }
     */
-    public void recieveRent(Player payer) {
-        if (this.landedOn == true) {
-            if (!(this.owner.equals(null)) || this.owner == payer) {
-                this.owner.handleRent(payer, currentRent);
-            }
-        }
-    }
 
-    public void whenLandedOn(Player player) {
-        this.landedOn = true;
-        if (this.owner == null) {
-            this.buyProperty(player);
-        } else {
-            this.recieveRent(player);
-        }
-        this.landedOn = false;
-    }
+
+    // Metode der gør at en spiller kan købe en ejendom. Man kan kun købe en ejendom når man lander
+    // på ejendommen, dvs. når attributten landedOn er true.
+    // Hvis ejendommen er købt er købt, stoppes metoden.
+    // Man kan også kun købe, hvis man har nok penge til at købe for.
 
     public void buyProperty(Player buyer) {
-        if (this.landedOn == true) {
-            if (this.isBought == true) {
+        if (this.landedOn) {
+            if (this.isBought) {
                 return;
             }
             if (buyer.getBalance() >= this.price) {
@@ -100,6 +104,20 @@ public class Property extends Field {
             }
         }
     }
+
+    //Håndterer det at betale penge og opkrævning af leje
+    //Kan kun købe og opkræve leje via denne metode, da det er den eneste metode, der sætter
+    //attributten landedOn til at være true. Metoden gør derfor også landedOn falsk igen til sidst i metoden.
+    public void whenLandedOn(Player player) {
+        this.landedOn = true;
+        if (this.owner == null) {
+            this.buyProperty(player);
+        } else {
+            this.receiveRent(player);
+        }
+        this.landedOn = false;
+    }
+
 
 }
 
