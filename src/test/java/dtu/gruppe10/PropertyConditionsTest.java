@@ -73,5 +73,19 @@ public class PropertyConditionsTest {
         assertEquals(8800, player.getBalance());
     }
 
+    @Test
+    public void playerPaysRentToOwnerWhenLandingOnFieldThatsAlreadyOwnedByAnotherPlayer() {
+        Player player = new Player("Ziggy", 10000, 1);
+        Player player2 = new Player("Leon", 12000, 2);
+        int rent0ForProperty = 500;
+        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, rent0ForProperty, 250);
+        field.whenLandedOn(player);
+        field.whenLandedOn(player2);
+        assertEquals(10000-1200+500, player.getBalance());
+        assertEquals(11500, player2.getBalance());
+    }
+
+
+
 
 }
