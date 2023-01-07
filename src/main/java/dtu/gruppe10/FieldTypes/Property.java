@@ -8,7 +8,7 @@ public class Property extends Field {
     private int price;
     private PropertyColor color;
     private boolean isBought;           //Om ejendommen er købt. Hvis falsk, så nej, hvis sand, så ja
-    public Player owner;
+    private Player owner;
 
     private int numberOfHouses;
     private int rent0;
@@ -50,22 +50,26 @@ public class Property extends Field {
         return currentRent;
     }
 
+    public Player getOwner() {
+        return owner;
+    }
+
     /* Til når man kan bygge huse
 
-    public void updateCurrentRent(int numberHouses) {
-        if (numberHouses == 1) {
-            this.currentRent = this.rent1;
-        } else if (numberHouses == 2) {
-            this.currentRent = this.rent2;
-        } else if (numberHouses == 3) {
-            this.currentRent = this.rent3;
-        } else if (numberHouses == 4) {
-            this.currentRent = this.rent4;
-        } else if (numberHouses == 5) {
-            this.currentRent = this.rent5;
+        public void updateCurrentRent(int numberHouses) {
+            if (numberHouses == 1) {
+                this.currentRent = this.rent1;
+            } else if (numberHouses == 2) {
+                this.currentRent = this.rent2;
+            } else if (numberHouses == 3) {
+                this.currentRent = this.rent3;
+            } else if (numberHouses == 4) {
+                this.currentRent = this.rent4;
+            } else if (numberHouses == 5) {
+                this.currentRent = this.rent5;
+            }
         }
-    }
-*/
+    */
     public void recieveRent(Player payer) {
         if (this.landedOn == true) {
             if (!(this.owner.equals(null)) || this.owner == payer) {
@@ -81,7 +85,6 @@ public class Property extends Field {
         } else {
             this.recieveRent(player);
         }
-
         this.landedOn = false;
     }
 
