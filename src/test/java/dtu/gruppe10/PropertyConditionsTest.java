@@ -7,6 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class PropertyConditionsTest {
 
     @Before
@@ -17,7 +18,7 @@ public class PropertyConditionsTest {
     @Test
     public void propertyDoesNotHaveOwnerAtFirst() {
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
-        assertEquals(null, field.owner);
+        assertEquals(null, field.getOwner());
     }
 
     @Test
@@ -25,7 +26,7 @@ public class PropertyConditionsTest {
         Player player = new Player("Ziggy", 10000, 1);
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         field.buyProperty(player);
-        assertTrue(field.owner == player);
+        assertTrue(field.getOwner() == player);
     }
 
     @Test
@@ -35,7 +36,7 @@ public class PropertyConditionsTest {
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         field.buyProperty(player);
         field.buyProperty(player2);
-        assertTrue(field.owner == player);
+        assertTrue(field.getOwner() == player);
     }
 
     @Test
@@ -69,7 +70,7 @@ public class PropertyConditionsTest {
         Player player = new Player("Ziggy", 10000, 1);
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         field.whenLandedOn(player);
-        assertEquals(field.owner, player);
+        assertEquals(field.getOwner(), player);
         assertEquals(8800, player.getBalance());
     }
 
@@ -81,11 +82,19 @@ public class PropertyConditionsTest {
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, rent0ForProperty, 250);
         field.whenLandedOn(player);
         field.whenLandedOn(player2);
-        assertEquals(10000-1200+500, player.getBalance());
-        assertEquals(11500, player2.getBalance());
+        assertEquals(10000 - 1200 + 500, player.getBalance());
+        assertEquals(12000 - 500, player2.getBalance());
     }
 
+    @Test
+    public void playerCantBuyIfPlayerHasNotLandedOnField() {
+        Player player = new Player("Ziggy", 10000, 1);
+        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        field.buyProperty(player);
+        assertEquals(field.getOwner(), null);
+        assertEquals(10000, player.getBalance());
 
+    }
 
 
 }
