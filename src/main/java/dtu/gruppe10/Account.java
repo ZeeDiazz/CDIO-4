@@ -17,7 +17,7 @@ public class Account {
     }
 
     public boolean isBankrupt(Player player, int fees) {
-        return player.getBalance() - fees > 0;
+        return player.getBalance() - fees < 0;
     }
 
     public void handleRent(Player reciever, Player payer, int rent) {
