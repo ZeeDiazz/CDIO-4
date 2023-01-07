@@ -8,9 +8,9 @@ public class Property extends Field {
     private int price;
     private PropertyColor color;
     private boolean isBought;           //Om ejendommen er købt. Hvis falsk, så nej, hvis sand, så ja
-    private Player owner;
+    public Player owner;
 
-    private int numberOfhouses;
+    private int numberOfHouses;
     private int rent0;
     private int rent1;
     private int rent2;
@@ -19,7 +19,7 @@ public class Property extends Field {
     private int rent5;
     private int currentRent;
 
-    // Contructor for de to 'brewery' felter
+    // Constructor for de to 'brewery' felter
     public Property(String name, int price, PropertyColor color, int rent0, int rent1) {
         this.name = name;
         this.price = price;
@@ -29,7 +29,7 @@ public class Property extends Field {
         this.currentRent = rent0;
     }
 
-    // Contructor til de fire 'ferry' felter;
+    // Constructor til de fire 'ferry' felter;
     public Property(String name, int price, PropertyColor color, int rent0, int rent1, int rent2, int rent3) {
         this(name, price, color, rent0, rent1);
         this.rent2 = rent2;
@@ -38,7 +38,7 @@ public class Property extends Field {
     }
 
 
-    // Contructor til felter hvor man kan bygge huse og hoteller på;
+    // Constructor til felter hvor man kan bygge huse og hoteller på;
     public Property(String name, int price, PropertyColor color, int rent0, int rent1, int rent2, int rent3, int rent4, int rent5) {
         this(name, price, color, rent0, rent1, rent2, rent3);
         this.rent4 = rent4;
@@ -50,17 +50,23 @@ public class Property extends Field {
         return currentRent;
     }
 
-    public void updateCurrentRent(int numberOfhouses) {
-        if (numberOfhouses == 1) {
+    public void updateCurrentRent(int numberHouses) {
+        if (numberHouses == 1) {
             this.currentRent = this.rent1;
-        } else if (numberOfhouses == 2) {
+        } else if (numberHouses == 2) {
             this.currentRent = this.rent2;
-        } else if (numberOfhouses == 3) {
+        } else if (numberHouses == 3) {
             this.currentRent = this.rent3;
-        } else if (numberOfhouses == 4) {
+        } else if (numberHouses == 4) {
             this.currentRent = this.rent4;
-        } else if (numberOfhouses == 5) {
+        } else if (numberHouses == 5) {
             this.currentRent = this.rent5;
+        }
+    }
+
+    public void recieveRent(Player payer) {
+        if (!(this.owner.equals(null)) || this.owner == payer) {
+            this.owner.handleRent(payer, currentRent);
         }
     }
 
@@ -69,7 +75,7 @@ public class Property extends Field {
         if (this.isBought == true) {
             return;
         }
-        if(buyer.getBalance() >= this.price) {
+        if (buyer.getBalance() >= this.price) {
             this.isBought = true;
             this.owner = buyer;
         }
