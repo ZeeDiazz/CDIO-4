@@ -19,6 +19,7 @@ public class PropertyConditionsTest {
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         assertEquals(null, field.owner);
     }
+
     @Test
     public void playerBecomesOwnerWhenBuyingProperty() {
         Player player = new Player("Ziggy", 10000, 1);
@@ -42,19 +43,18 @@ public class PropertyConditionsTest {
         Player player = new Player("Ziggy", 10000, 1);
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         field.buyProperty(player);
-        assertEquals(10000-1200,player.getBalance());
+        assertEquals(10000 - 1200, player.getBalance());
     }
 
     @Test
-    public void secondPlayerWhoTriesToBuyDoesNotPayWhenPropertyIsOwnedBuyAnotherPlayer () {
+    public void secondPlayerWhoTriesToBuyDoesNotPayWhenPropertyIsOwnedBuyAnotherPlayer() {
         Player player = new Player("Ziggy", 10000, 1);
         Player player2 = new Player("Leon", 12000, 2);
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         field.buyProperty(player);
         field.buyProperty(player2);
-        assertEquals(12000,player2.getBalance());
+        assertEquals(12000, player2.getBalance());
     }
-
 
 
     @Test
@@ -62,6 +62,15 @@ public class PropertyConditionsTest {
         int rent0 = 583;
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, rent0, 250);
         assertEquals(rent0, field.getCurrentRent());
+    }
+
+    @Test
+    public void playerBuysPropertyWhenLandingOnFieldAndNoOneOwnsProperty() {
+        Player player = new Player("Ziggy", 10000, 1);
+        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        field.whenLandedOn(player);
+        assertEquals(field.owner, player);
+        assertEquals(8800, player.getBalance());
     }
 
 
