@@ -28,9 +28,9 @@ public class PropertyConditionsTest {
     }
 
     @Test
-    public void firstBuyerIsOwnerEvenIfNewPlayerTriesToBuy() {
+    public void originalBuyerIsOwnerEvenIfNewPlayerTriesToBuy() {
         Player player = new Player("Ziggy", 10000, 1);
-        Player player2 = new Player("Ziggy", 10000, 1);
+        Player player2 = new Player("Leon", 12000, 2);
         Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         field.buyProperty(player);
         field.buyProperty(player2);
@@ -44,6 +44,18 @@ public class PropertyConditionsTest {
         field.buyProperty(player);
         assertEquals(10000-1200,player.getBalance());
     }
+
+    @Test
+    public void secondPlayerWhoTriesToBuyDoesNotPayWhenPropertyIsOwnedBuyAnotherPlayer () {
+        Player player = new Player("Ziggy", 10000, 1);
+        Player player2 = new Player("Leon", 12000, 2);
+        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        field.buyProperty(player);
+        field.buyProperty(player2);
+        assertEquals(12000,player2.getBalance());
+    }
+
+
 
     @Test
     public void rentIsEqualRent0() {
