@@ -27,6 +27,15 @@ public class PropertyConditionsTest {
         assertTrue(field.owner == player);
     }
 
+    @Test
+    public void player() {
+        Player player = new Player("Ziggy", 10000, 1);
+        Player player2 = new Player("Ziggy", 10000, 1);
+        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        field.buyProperty(player);
+        field.buyProperty(player2);
+        assertTrue(field.owner == player);
+    }
 
     @Test
     public void rentIsEqualRent0() {
