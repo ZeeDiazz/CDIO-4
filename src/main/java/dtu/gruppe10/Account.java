@@ -13,7 +13,7 @@ public class Account {
 
 
     public void setBalance(int amount) {
-        this.balance = this.balance + balance;
+        this.balance = this.balance + amount;
     }
 
     public boolean isBankrupt(Player player, int fees) {
