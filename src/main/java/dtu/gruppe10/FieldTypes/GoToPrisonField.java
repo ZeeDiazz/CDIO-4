@@ -7,9 +7,9 @@ public class GoToPrisonField {
     public void goToPrison(Player player, PrisonField prisonField){
 
         // mangler en setField i player klassen (setLocation)
-        player.setField(prisonField);
+        //player.setField(prisonField);
 
-        player.setInPrison(true);
+        //player.setInPrison(true);
 
     }
 }

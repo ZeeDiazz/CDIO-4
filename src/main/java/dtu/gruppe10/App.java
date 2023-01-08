@@ -7,6 +7,7 @@ import java.util.Scanner;
  *
  */
 public class App {
+    public static Game game;
     private static Scanner scan = new Scanner(System.in);
     public static void main( String[] args ) {
 
@@ -14,14 +15,14 @@ public class App {
 
         Player[] players = createPlayer(playerCount);
 
-        Game game = new Game(players);
+        game = new Game(players);
         //TODO player movement
         while (!game.isGameOver()) {
             Player currentPlayer = game.getCurrentPlayer();
 
             System.out.println(String.format("Starting %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
 
-
+            game.nextTurn();
         }
     }
     private static int getPlayerCount(){
