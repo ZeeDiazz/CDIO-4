@@ -74,5 +74,9 @@ public class Player {
     public void subtractFromBalance(int amount) {
         this.balance.subtract(amount);
     }
+    private boolean eliminated;
 
+    public boolean isEliminated() {
+        return eliminated;
+    }
 }

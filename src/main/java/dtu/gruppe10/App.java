@@ -13,6 +13,7 @@ public class App {
     public static Game game;
     public static Board board;
     private static Scanner scan = new Scanner(System.in);
+  
     public static void main( String[] args ) {
 
         int playerCount = getPlayerCount();
@@ -75,5 +76,6 @@ public class App {
         }
         return players;
     }
+
 
 }
