@@ -18,4 +18,7 @@ public class Game {
     public void nextTurn() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
     }
+    public boolean isGameOver() {
+        return players.length <= 1;
+    }
 }
