@@ -19,6 +19,6 @@ public class Game {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
     }
     public boolean isGameOver() {
-        return players.length <= 1;
+            return players.length <= 1;
     }
 }
