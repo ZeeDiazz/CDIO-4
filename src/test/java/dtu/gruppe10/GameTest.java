@@ -28,9 +28,7 @@ public class GameTest extends TestCase {
 
     public void testNextTurn() {
         Assert.assertEquals(players[0],game.getCurrentPlayer());
-
         game.nextTurn();
-
         Assert.assertEquals(players[1],game.getCurrentPlayer());
     }
 
