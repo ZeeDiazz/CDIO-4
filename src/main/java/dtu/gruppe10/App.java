@@ -15,7 +15,7 @@ public class App {
         Player[] players = createPlayer(playerCount);
 
         Game game = new Game(players);
-
+        //TODO player movement
     }
     private static int getPlayerCount(){
         while (true){
@@ -25,7 +25,7 @@ public class App {
                 if (playerCount >= 2 && playerCount <= 6) {
                     return playerCount;
                 } else {
-                    System.out.println("Enter a number between 2 and 6.");
+                    System.out.println("Enter a number between 2 and 6");
                 }
             } catch (Exception e) {
                 System.out.println("Enter a valid number");
@@ -36,7 +36,7 @@ public class App {
     private static Player[] createPlayer(int playerCount){
         Player[] players = new Player[playerCount];
         for(int i = 0; i < playerCount; i++){
-            players[i] = new Player("Player " + (i + 1), 20, i);
+            players[i] = new Player("Player " + (i + 1), 20, i); //balance for now
         }
         return players;
     }
