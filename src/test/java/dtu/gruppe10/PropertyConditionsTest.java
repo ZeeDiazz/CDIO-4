@@ -4,6 +4,8 @@ import dtu.gruppe10.FieldTypes.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -95,6 +97,21 @@ public class PropertyConditionsTest {
         assertEquals(10000, player.getBalance());
 
     }
+
+    @Test
+    public void breweryFieldHandleRentCorrectlyWhenLandingOnField() {
+        Player player = new Player("Ziggy", 10000, 1);
+        Player player2 = new Player("Felix", 5000, 1);
+        int rent0 = 50;
+        Brewery field = new Brewery("Rødovrevej", 1200, PropertyColor.GREEN, rent0, 100);
+        int diceSum = 10;
+        field.whenLandedOn(player);
+        field.whenLandedOn(player2,diceSum);
+        assertEquals((10000-1200)+rent0*diceSum, player.getBalance());
+        assertEquals(5000-rent0*diceSum, player2.getBalance());
+
+    }
+
 
 
 }
