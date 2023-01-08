@@ -1,5 +1,8 @@
 package dtu.gruppe10;
 
+import dtu.gruppe10.FieldTypes.Field;
+
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -8,6 +11,7 @@ import java.util.Scanner;
  */
 public class App {
     public static Game game;
+    public static Board board;
     private static Scanner scan = new Scanner(System.in);
     public static void main( String[] args ) {
 
@@ -22,8 +26,26 @@ public class App {
 
             System.out.println(String.format("Starting %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
 
+            //ROLDICE FOR NOW
+            int dice1 = rollDice();
+            int dice2 = rollDice();
+
+            // Calculate the total movement
+            int totalMovement = dice1 + dice2;
+
+            // Update the player's position on the board
+            board.movePlayer(currentPlayer, totalMovement);
+
             game.nextTurn();
+
+            if(game.isGameOver()){
+                return;
+            }
         }
+    }
+    private static int rollDice() {
+        Random rand = new Random();
+        return rand.nextInt(6) + 1;
     }
     private static int getPlayerCount(){
         while (true){
