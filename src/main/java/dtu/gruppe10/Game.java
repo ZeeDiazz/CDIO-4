@@ -12,4 +12,7 @@ public class Game {
         this.board = new Board(players.length);
     }
 
+    public Player getCurrentPlayer() {
+        return players[currentPlayerIndex];
+    }
 }
