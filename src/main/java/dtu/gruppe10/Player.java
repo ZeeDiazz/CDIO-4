@@ -9,6 +9,7 @@ public class Player {
     private boolean eliminated;
     private boolean rolledPair;
     private int position;
+    private boolean InPrison;
     private int ID;
     private boolean isBankrupt;
     private PlayerMovement movement;
@@ -89,4 +90,10 @@ public class Player {
         this.rolledPair = rolledPair;
     }
 
+    public boolean InPrison() {
+        return InPrison;
+    }
+    public void setInPrison(boolean inPrison) {
+        InPrison = inPrison;
+    }
 }
