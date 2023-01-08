@@ -32,6 +32,24 @@ public class Account {
             payer.setBalance(-rent);
         }
     }
+    public void add(int amount) {
+        if (amount < 0) {
+            System.out.println("Error: Cannot add negative amount to balance.");
+            return;
+        }
+        this.balance += amount;
+    }
 
+    public void subtract(int amount) {
+        if (amount < 0) {
+            System.out.println("Error: Cannot subtract negative amount from balance.");
+            return;
+        }
+        if (this.balance < amount) {
+            System.out.println("Error: Cannot subtract more than the current balance.");
+            return;
+        }
+        this.balance -= amount;
+    }
 
 }
