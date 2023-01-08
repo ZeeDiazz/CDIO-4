@@ -5,7 +5,7 @@ import dtu.gruppe10.Players.PlayerMovement;
 public class Player {
     private static final int NUM_SPACES = 40;
     protected String name;
-    private Account balance;
+    public Account balance;
     private boolean eliminated;
     private int position;
     private int ID;
