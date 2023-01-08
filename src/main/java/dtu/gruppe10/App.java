@@ -1,5 +1,8 @@
 package dtu.gruppe10;
 
+import dtu.gruppe10.DieLogic.DieCup;
+import dtu.gruppe10.DieLogic.SixSidedDie;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,32 +21,35 @@ public class App {
 
         Player[] players = createPlayer(playerCount);
 
+        DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
+
         game = new Game(players);
-        //TODO player movement
+
         while (!game.isGameOver()) {
+
             Player currentPlayer = game.getCurrentPlayer();
             String playerName = currentPlayer.name;
 
             System.out.println(String.format("Starting %s's turn (money: %d)", playerName, currentPlayer.getBalance()));
 
             String roll = scan.nextLine();
-            int dice1 = rollDice();
-            int dice2 = rollDice();
 
             if(roll.equals("r") || roll.equals("roll")){
+                cup.roll();
                 //ROLDICE FOR NOW
-                currentPlayer.movePlayer(dice1,dice2);
-                System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name, dice1, dice2));
+                currentPlayer.movePlayer(cup.Die1.getFace(), cup.Die2.getFace());
+                System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name,cup.Die1.getFace(), cup.Die2.getFace()));
 
-                // Calculate the total movement
                 game.nextTurn();
             } else if(!roll.equals("r") || !roll.equals("roll")){
                 System.out.println("roll Again");
             }
+            // Calculate the total movement
+
             //ikke færdigt, skal kigges på
-            if(currentPlayer.getBalance() >= 0){
+            /*if(currentPlayer.getBalance() >= 0){
             return;
-            }
+            }*/
 
 
             if(game.isGameOver()){
