@@ -40,6 +40,10 @@ public class App {
             } else if(!roll.equals("r") || !roll.equals("roll")){
                 System.out.println("roll Again");
             }
+            //ikke færdigt, skal kigges på
+            if(currentPlayer.getBalance() >= 0){
+            return;
+            }
 
 
             if(game.isGameOver()){
