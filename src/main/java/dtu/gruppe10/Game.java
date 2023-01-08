@@ -15,4 +15,7 @@ public class Game {
     public Player getCurrentPlayer() {
         return players[currentPlayerIndex];
     }
+    public void nextTurn() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    }
 }

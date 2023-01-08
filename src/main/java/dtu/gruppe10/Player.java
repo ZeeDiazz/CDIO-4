@@ -1,7 +1,7 @@
 package dtu.gruppe10;
 
 public class Player {
-    private String name;
+    protected String name;
     private Account balance;
     private int ID;
     private boolean isBankrupt;
