@@ -6,6 +6,7 @@ public class Player {
     private static final int NUM_SPACES = 40;
     protected String name;
     private Account balance;
+    private boolean eliminated;
     private int position;
     private int ID;
     private boolean isBankrupt;
@@ -74,7 +75,7 @@ public class Player {
     public void subtractFromBalance(int amount) {
         this.balance.subtract(amount);
     }
-    private boolean eliminated;
+
 
     public boolean isEliminated() {
         return eliminated;
