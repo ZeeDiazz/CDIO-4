@@ -1,5 +1,7 @@
 package dtu.gruppe10;
 
+import dtu.gruppe10.Players.PlayerMovement;
+
 public class Player {
     private static final int NUM_SPACES = 40;
     protected String name;
@@ -7,6 +9,7 @@ public class Player {
     private int position;
     private int ID;
     private boolean isBankrupt;
+    private PlayerMovement movement;
 
     public Player(String name, int balance, int ID) {
         this.name = name;
@@ -51,14 +54,25 @@ public class Player {
     public void movePlayer(int dice1, int dice2) {
         int spacesToMove = dice1 + dice2;
         int currentPosition = this.getPosition();
+        int prevPosition = this.position;
         int newPosition = (currentPosition + spacesToMove) % NUM_SPACES;
         this.setPosition(newPosition);
+        this.checkPassedStartField(prevPosition);
     }
 
     public void checkPassedStartField(int prevPosition) {
         if (this.position < prevPosition) {
             this.balance.setBalance(4000);
         }
+    }
+
+    //Not sure
+    public void addToBalance(int amount) {
+        this.balance.add(amount);
+    }
+
+    public void subtractFromBalance(int amount) {
+        this.balance.subtract(amount);
     }
 
 }
