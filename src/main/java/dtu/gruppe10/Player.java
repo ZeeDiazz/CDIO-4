@@ -55,4 +55,10 @@ public class Player {
         this.setPosition(newPosition);
     }
 
+    public void checkPassedStartField(int prevPosition) {
+        if (this.position < prevPosition) {
+            this.balance.setBalance(4000);
+        }
+    }
+
 }
