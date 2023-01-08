@@ -22,15 +22,6 @@ public class Player {
         this.position = position;
     }
 
-    public void move(int dice1, int dice2) {
-        int spacesToMove = dice1 + dice2;
-        // Find the player's current position on the board
-        int currentPosition = this.getPosition();
-        // Calculate the player's new position
-        int newPosition = (currentPosition + spacesToMove) % NUM_SPACES;
-        // Set the player's position to the new position
-        this.setPosition(newPosition);
-    }
     public int getBalance() {
         return this.balance.getBalance();
     }

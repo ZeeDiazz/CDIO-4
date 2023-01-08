@@ -25,15 +25,20 @@ public class App {
             Player currentPlayer = game.getCurrentPlayer();
             String playerName = currentPlayer.name;
 
-            System.out.println(String.format("Starting %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
+            System.out.println(String.format("Starting %s's turn (money: %d)", playerName, currentPlayer.getBalance()));
 
+            String roll = scan.nextLine();
+
+            if(roll == "r" ){
             //ROLDICE FOR NOW
             int dice1 = rollDice();
             int dice2 = rollDice();
 
-            // Calculate the total movement
-            currentPlayer.move(dice1, dice2);
+            currentPlayer.movePlayer(dice1,dice2);
+            System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name, dice1, dice2));
 
+            // Calculate the total movement
+            }
             game.nextTurn();
 
             if(game.isGameOver()){
@@ -50,7 +55,7 @@ public class App {
             System.out.println("Enter the number of players (2-6):");
             try{
                 int playerCount = scan.nextInt();
-                if (playerCount >= 2 && playerCount <= 6) {
+                if (playerCount > 1 && playerCount < 7) {
                     return playerCount;
                 } else {
                     System.out.println("Enter a number between 2 and 6");
