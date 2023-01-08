@@ -22,4 +22,5 @@ public class DieCup {
         public int getSum() {
             return Die1.getFace() + Die2.getFace();
         }
+
 }

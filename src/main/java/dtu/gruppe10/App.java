@@ -1,8 +1,6 @@
 package dtu.gruppe10;
-
 import dtu.gruppe10.DieLogic.DieCup;
 import dtu.gruppe10.DieLogic.SixSidedDie;
-
 import java.util.Random;
 import java.util.Scanner;
 
@@ -12,6 +10,7 @@ import java.util.Scanner;
  */
 public class App {
     public static Game game;
+    SixSidedDie d1 = new SixSidedDie();
     public static Board board;
     private static Scanner scan = new Scanner(System.in);
   
@@ -40,7 +39,17 @@ public class App {
                 currentPlayer.movePlayer(cup.Die1.getFace(), cup.Die2.getFace());
                 System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name,cup.Die1.getFace(), cup.Die2.getFace()));
 
-                game.nextTurn();
+                if (cup.Die1.getFace() == cup.Die2.getFace()) {
+                    currentPlayer.setRolledPair(true);
+                } else {
+                    currentPlayer.setRolledPair(false);
+                }
+
+                if (currentPlayer.hasRolledPair()) {
+                    System.out.println(String.format("%s rolled a pair! You get another turn :) ", currentPlayer.name));
+                } else {
+                    game.nextTurn();
+                }
             } else if(!roll.equals("r") || !roll.equals("roll")){
                 System.out.println("roll Again");
             }
@@ -52,9 +61,11 @@ public class App {
             }*/
 
 
+
             if(game.isGameOver()){
                 return;
             }
+
         }
     }
     private static int rollDice() {

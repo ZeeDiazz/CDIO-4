@@ -7,6 +7,7 @@ public class Player {
     protected String name;
     public Account balance;
     private boolean eliminated;
+    private boolean rolledPair;
     private int position;
     private int ID;
     private boolean isBankrupt;
@@ -80,4 +81,12 @@ public class Player {
     public boolean isEliminated() {
         return eliminated;
     }
+    public boolean hasRolledPair() {
+        return this.rolledPair;
+    }
+
+    public void setRolledPair(boolean rolledPair) {
+        this.rolledPair = rolledPair;
+    }
+
 }
