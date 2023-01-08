@@ -33,9 +33,6 @@ public class App {
             // Calculate the total movement
             int totalMovement = dice1 + dice2;
 
-            // Update the player's position on the board
-            board.movePlayer(currentPlayer, totalMovement);
-
             game.nextTurn();
 
             if(game.isGameOver()){
