@@ -16,7 +16,14 @@ public class PrisonField extends Field {
 
 
      }
-
+    public void sendToPrison(Player player) {
+        player.setPosition(31); //31 because the jail is there
+        player.setInPrison(true);
+    }
+    @Override
+    public void landedOn(Player player) {
+        sendToPrison(player);
+    }
 
 
     //TODO tilføj metode til at betale kaution eller bruge løsladerkort, hvis spilleren er i fængsel
