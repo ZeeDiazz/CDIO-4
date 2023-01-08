@@ -1,7 +1,5 @@
 package dtu.gruppe10;
 
-import dtu.gruppe10.FieldTypes.Field;
-
 import java.util.Random;
 import java.util.Scanner;
 

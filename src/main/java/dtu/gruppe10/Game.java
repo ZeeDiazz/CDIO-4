@@ -19,6 +19,15 @@ public class Game {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
     }
     public boolean isGameOver() {
-        return players.length <= 1;
+        if (players == null || players.length == 0) {
+            return false;
+        }
+        int remainingPlayers = 0;
+        for (Player player : players) {
+            if (player.isEliminated() == false) {
+                remainingPlayers++;
+            }
+        }
+        return remainingPlayers <= 1;
     }
 }
