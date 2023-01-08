@@ -23,6 +23,7 @@ public class App {
         //TODO player movement
         while (!game.isGameOver()) {
             Player currentPlayer = game.getCurrentPlayer();
+            String playerName = currentPlayer.name;
 
             System.out.println(String.format("Starting %s's turn (money: %d)", currentPlayer.name, currentPlayer.getBalance()));
 
@@ -31,7 +32,7 @@ public class App {
             int dice2 = rollDice();
 
             // Calculate the total movement
-            int totalMovement = dice1 + dice2;
+            currentPlayer.move(dice1, dice2);
 
             game.nextTurn();
 
