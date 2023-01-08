@@ -28,18 +28,20 @@ public class App {
             System.out.println(String.format("Starting %s's turn (money: %d)", playerName, currentPlayer.getBalance()));
 
             String roll = scan.nextLine();
-
-            if(roll == "r" ){
-            //ROLDICE FOR NOW
             int dice1 = rollDice();
             int dice2 = rollDice();
 
-            currentPlayer.movePlayer(dice1,dice2);
-            System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name, dice1, dice2));
+            if(roll.equals("r") || roll.equals("roll")){
+                //ROLDICE FOR NOW
+                currentPlayer.movePlayer(dice1,dice2);
+                System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name, dice1, dice2));
 
-            // Calculate the total movement
+                // Calculate the total movement
+                game.nextTurn();
+            } else if(!roll.equals("r") || !roll.equals("roll")){
+                System.out.println("roll Again");
             }
-            game.nextTurn();
+
 
             if(game.isGameOver()){
                 return;
