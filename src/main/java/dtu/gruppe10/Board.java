@@ -3,29 +3,36 @@ package dtu.gruppe10;
 
 import dtu.gruppe10.fields.Field;
 
+import java.util.HashMap;
+
 public class Board {
-    private int numberOfFields;
-    private int[] playerIndexesOnBoard;
-    private Field[] fields;
-    public final int NUMBER_OF_FIELDS;
+    public final int FieldCount;
+    protected Field[] fields;
+    protected HashMap<Integer, Integer> playerPositions;
 
-    Board(Field[] fields, int numberOfPlayers, int startField){
+    public Board(Field[] fields, Player[] players, int startField){
         this.fields = fields;
-        this.numberOfFields = fields.length;
-        this.playerIndexesOnBoard = new int[numberOfPlayers];
+        this.FieldCount = fields.length;
 
-        for (int i = 0; i < numberOfPlayers; i++){
-            this.playerIndexesOnBoard[i] = startField;
+        this.playerPositions = new HashMap<>();
+        for (Player p : players) {
+            setPlayerPosition(p.ID, startField);
         }
-        this.NUMBER_OF_FIELDS = fields.length;
     }
 
-    public static Field[] generateBoardFields() {
-        Field[] fields = new Field[40];
+    public Board(Field[] fields, Player[] players) {
+        this(fields, players, 0);
+    }
 
-        for (int i = 0; i < fields.length; i++){
+    public Field getFieldAt(int index) {
+        return fields[index];
+    }
 
-        }
-        return fields;
+    public void movePlayerForward(int playerId, int amount) {
+
+    }
+
+    public void setPlayerPosition(int playerId, int fieldIndex) {
+        this.playerPositions.put(playerId, fieldIndex);
     }
 }

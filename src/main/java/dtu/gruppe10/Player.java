@@ -1,7 +1,5 @@
 package dtu.gruppe10;
 
-import dtu.gruppe10.players.PlayerMovement;
-
 public class Player {
     private static final int NUM_SPACES = 40;
     protected String name;

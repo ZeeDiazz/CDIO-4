@@ -2,8 +2,6 @@ package dtu.gruppe10;
 
 import dtu.gruppe10.fields.Field;
 
-import static dtu.gruppe10.Board.generateBoardFields;
-
 public class Game {
     private int currentPlayerIndex;
     private Player[] players;
@@ -13,7 +11,7 @@ public class Game {
     public Game(Player[] players) {
         this.currentPlayerIndex = 0;
         this.players = players;
-        this.board = new Board(generateGameFields(),players.length,0);
+        this.board = new Board(new Field[40], players);
     }
 
     public Player getCurrentPlayer() {
@@ -33,8 +31,5 @@ public class Game {
             }
         }
         return remainingPlayers <= 1;
-    }
-    private Field[] generateGameFields() {
-        return generateBoardFields();
     }
 }
