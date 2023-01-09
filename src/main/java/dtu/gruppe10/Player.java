@@ -43,7 +43,10 @@ public class Player {
     public void increaseTurnsInPrison(){
         this.turnsInPrison++;
     }
+    public void getsOutofPrisonByBail(){
+        this.Account.subtract(50);
 
+    }
     public void checkPassedStartField(int prevPosition) {
         if (this.position < prevPosition) {
             this.Account.add(4000);
