@@ -24,6 +24,7 @@ public class Player {
     public int getPosition() {
         return position;
     }
+
     public void setPosition(int position) {
         this.position = position;
     }
@@ -82,6 +83,7 @@ public class Player {
     public boolean isEliminated() {
         return eliminated;
     }
+
     public boolean hasRolledPair() {
         return this.rolledPair;
     }
@@ -93,11 +95,10 @@ public class Player {
     public boolean InPrison() {
         return InPrison;
     }
+
     public void setInPrison(boolean inPrison) {
         InPrison = inPrison;
     }
 
-    public boolean CheckBankrupt() {
-        return this.isBankrupt;
-    }
+    public boolean CheckBankrupt() {return this.isBankrupt;}
 }
