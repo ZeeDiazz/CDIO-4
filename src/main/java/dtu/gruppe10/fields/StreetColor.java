@@ -1,6 +1,6 @@
 package dtu.gruppe10.fields;
 
-public enum PropertyColor {
+public enum StreetColor {
     ORANGE,
     RED,
     GREEN,

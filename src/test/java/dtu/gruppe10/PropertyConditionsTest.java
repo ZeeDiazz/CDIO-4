@@ -12,7 +12,7 @@ public class PropertyConditionsTest {
     Property field;
     @Before
     public void initialize() {
-        field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        field = new Property("Rødovrevej", 1200, StreetColor.GREEN, 50, 250);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class PropertyConditionsTest {
     @Test
     public void playerBecomesOwnerWhenBuyingProperty() {
         Player player = new Player("Ziggy", 10000, 1);
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, 50, 250);
         field.buyProperty(player);
         assertTrue(field.getOwner() == player);
     }
@@ -32,7 +32,7 @@ public class PropertyConditionsTest {
     public void originalBuyerIsOwnerEvenIfNewPlayerTriesToBuy() {
         Player player = new Player("Ziggy", 10000, 1);
         Player player2 = new Player("Leon", 12000, 2);
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, 50, 250);
         field.buyProperty(player);
         field.buyProperty(player2);
         assertTrue(field.getOwner() == player);
@@ -41,7 +41,7 @@ public class PropertyConditionsTest {
     @Test
     public void playerPaysForPropertyWhenBuying() {
         Player player = new Player("Ziggy", 10000, 1);
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, 50, 250);
         field.buyProperty(player);
         assertEquals(10000 - 1200, player.Account.getBalance());
     }
@@ -50,7 +50,7 @@ public class PropertyConditionsTest {
     public void secondPlayerWhoTriesToBuyDoesNotPayWhenPropertyIsOwnedBuyAnotherPlayer() {
         Player player = new Player("Ziggy", 10000, 1);
         Player player2 = new Player("Leon", 12000, 2);
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, 50, 250);
         field.buyProperty(player);
         field.buyProperty(player2);
         assertEquals(12000, player2.Account.getBalance());
@@ -60,14 +60,14 @@ public class PropertyConditionsTest {
     @Test
     public void rentIsEqualRent0() {
         int rent0 = 583;
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, rent0, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, rent0, 250);
         assertEquals(rent0, field.getCurrentRent());
     }
 
     @Test
     public void playerBuysPropertyWhenLandingOnFieldAndNoOneOwnsProperty() {
         Player player = new Player("Ziggy", 10000, 1);
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, 50, 250);
         field.whenLandedOn(player);
         assertEquals(field.getOwner(), player);
         assertEquals(8800, player.Account.getBalance());
@@ -78,7 +78,7 @@ public class PropertyConditionsTest {
         Player player = new Player("Ziggy", 10000, 1);
         Player player2 = new Player("Leon", 12000, 2);
         int rent0ForProperty = 500;
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, rent0ForProperty, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, rent0ForProperty, 250);
         field.whenLandedOn(player);
         field.whenLandedOn(player2);
         assertEquals(10000 - 1200 + 500, player.Account.getBalance());
@@ -88,7 +88,7 @@ public class PropertyConditionsTest {
     @Test
     public void playerCantBuyIfPlayerHasNotLandedOnField() {
         Player player = new Player("Ziggy", 10000, 1);
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        Property field = new Property("Rødovrevej", 1200, StreetColor.GREEN, 50, 250);
         field.buyProperty(player);
         assertEquals(field.getOwner(), null);
         assertEquals(10000, player.Account.getBalance());
@@ -100,7 +100,7 @@ public class PropertyConditionsTest {
         Player player = new Player("Ziggy", 10000, 1);
         Player player2 = new Player("Felix", 5000, 1);
         int rent0 = 50;
-        Brewery field = new Brewery("Rødovrevej", 1200, PropertyColor.GREEN, rent0, 100);
+        Brewery field = new Brewery("Rødovrevej", 1200, StreetColor.GREEN, rent0, 100);
         int diceSum = 10;
         field.whenLandedOn(player);
         field.whenLandedOn(player2,diceSum);
@@ -110,9 +110,9 @@ public class PropertyConditionsTest {
 
     @Test
     public void allPropertyTypesPaysRentCorrectly(){
-        Street street = new Street("Rødovrevej",1200,PropertyColor.RED,100,0,0,0,0,0);
-        Ferry ferry = new Ferry("Helsingør - Helsingborg",4000,PropertyColor.GREEN,500,0,0,0);
-        Brewery brewery = new Brewery("Tuborg Squash",3000,PropertyColor.ORANGE,100,0);
+        Street street = new Street("Rødovrevej",1200, StreetColor.RED,100,0,0,0,0,0);
+        Ferry ferry = new Ferry("Helsingør - Helsingborg",4000, StreetColor.GREEN,500,0,0,0);
+        Brewery brewery = new Brewery("Tuborg Squash",3000, StreetColor.ORANGE,100,0);
         Player player1 = new Player("Ziggy", 10000, 1);
         Player player2 = new Player("Felix", 5000, 1);
         // Spiller 1 køber alle tre typer felter
