@@ -20,7 +20,7 @@ public class PrisonField extends Field {
         player.setPosition(31); //31 because the jail is there
         player.setInPrison(true);
     }
-    @Override
+
     public void landedOn(Player player) {
         sendToPrison(player);
     }
