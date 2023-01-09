@@ -22,7 +22,6 @@ public abstract class PrisonField extends Field {
 
             }else{
                 //do nothing
-                System.out.println(player.getTurnsInPrison());
             }
         }
     }
