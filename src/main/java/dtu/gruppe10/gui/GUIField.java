@@ -1,8 +1,9 @@
 package dtu.gruppe10.gui;
 
+import javax.swing.*;
 import java.awt.*;
 
-public class GUIField extends Component {
+public class GUIField extends JPanel {
     public final Color PrimaryColor;
     public final Color SecondaryColor;
     public final String PrimaryText;

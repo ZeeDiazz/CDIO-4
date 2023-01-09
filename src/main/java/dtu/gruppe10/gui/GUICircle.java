@@ -39,6 +39,10 @@ public class GUICircle {
         return getPointOnCircle(this.Center, this.Radius, totalPointCount, pointIndex);
     }
 
+    public GUICircle getScaledCircle(float scale) {
+        return new GUICircle(this.Center, (int)(this.Radius * scale));
+    }
+
     public static Point[] getPointsOnCircle(Point center, int radius, int pointCount) {
         Point[] points = new Point[pointCount];
         double pointDegree = Math.toRadians(360) / pointCount;
