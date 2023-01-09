@@ -20,13 +20,12 @@ public abstract class PrisonField extends Field {
         return false;
     }
 
-     public void inPrisonEffect (Player player, int turnInPrison){
-        if(turnInPrison<maxTurnsInPrison){
-
+     public void inPrisonEffect (Player player){
+        while (player.InPrison()){
+            player.movePlayer(0,0);
         }
 
-
-     }
+    }
 
     public int getTurnsInPrison() {
         return turnsInPrison;
