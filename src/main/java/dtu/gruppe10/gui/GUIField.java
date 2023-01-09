@@ -15,21 +15,33 @@ public class GUIField {
         this.Image = image;
     }
 
-    public Polygon getPolygonToPaint(GUICircle outerCircle, GUICircle otherCircle, int fieldIndex, int totalFieldCount) {
-        Polygon paintPolygon = new Polygon();
+    public Polygon getFullPolygon(GUICircle outerCircle, GUICircle innerCircle, int fieldIndex, int totalFieldCount) {
+        return makeFieldPolygon(outerCircle, innerCircle, fieldIndex, totalFieldCount);
+    }
+
+    public Polygon getBottomPolygon(GUICircle outerCircle, GUICircle splitCircle, int fieldIndex, int totalFieldCount) {
+        return makeFieldPolygon(outerCircle, splitCircle, fieldIndex, totalFieldCount);
+    }
+
+    public Polygon getTopPolygon(GUICircle splitCircle, GUICircle innerCircle, int fieldIndex, int totalFieldCount) {
+        return makeFieldPolygon(splitCircle, innerCircle, fieldIndex, totalFieldCount);
+    }
+
+    protected Polygon makeFieldPolygon(GUICircle outerCircle, GUICircle innerCircle, int fieldIndex, int totalFieldCount) {
+        Polygon polygon = new Polygon();
         int multiplier = pointsPerArc - 1;
 
         // Do the outer arc
         for (int i = 0; i < pointsPerArc; ++i) {
             Point p = outerCircle.getSinglePoint(fieldIndex * multiplier + i, totalFieldCount * multiplier);
-            paintPolygon.addPoint(p.x, p.y);
+            polygon.addPoint(p.x, p.y);
         }
 
         for (int i = (pointsPerArc - 1); i >= 0; --i) {
-            Point p = otherCircle.getSinglePoint(fieldIndex * multiplier + i, totalFieldCount * multiplier);
-            paintPolygon.addPoint(p.x, p.y);
+            Point p = innerCircle.getSinglePoint(fieldIndex * multiplier + i, totalFieldCount * multiplier);
+            polygon.addPoint(p.x, p.y);
         }
 
-        return paintPolygon;
+        return polygon;
     }
 }

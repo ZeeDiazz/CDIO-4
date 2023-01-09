@@ -1,12 +1,14 @@
 package dtu.gruppe10.gui;
 
 import java.awt.*;
+import java.util.Random;
 
 public class GUIBoard {
     private static final float outerCirclePercentSize = 1f;
     private static final float innerCirclePercentSize = 0.7f;
     private static final float splitCirclePercentSize = 0.9f;
     private static final float playerPathPercentSize = 0.95f;
+    private static final float ownedCirclePercentSize = 0.65f;
 
     protected static Color boardColor = new Color(114, 24, 24);
     protected static Color fieldBaseColor = new Color(108, 159, 159);
@@ -14,13 +16,32 @@ public class GUIBoard {
     protected GUICircle outerCircle;
     protected GUICircle innerCircle;
     protected GUICircle splitCircle;
+    protected GUICircle ownedCircle;
     protected GUICircle playerPathCircle;
     protected int fieldCount;
     protected GUIField[] fields;
+    protected Color[] ownerColor;
+    protected int[] houseCount;
 
-    public GUIBoard() {
+    public GUIBoard(/*GUIField[] fields */) {
+        this.fieldCount = 40;
+
         // Save variables
-        this.fields = new GUIField[40];
+        this.fields = new GUIField[this.fieldCount];
+        this.ownerColor = new Color[this.fieldCount];
+        this.houseCount = new int[this.fieldCount];
+
+        Random rng = new Random();
+        for (int i = 0; i < rng.nextInt(100); ++i) {
+            int index = rng.nextInt(fieldCount);
+
+            int r = rng.nextInt(256);
+            int g = rng.nextInt(256);
+            int b = rng.nextInt(256);
+
+            Color randomColor = new Color(r, g, b);
+            this.ownerColor[index] = randomColor;
+        }
 
         // Start, prison, free parking, go to jail
         this.fields[0] = new GUIField(Color.RED, false, null);
@@ -58,8 +79,6 @@ public class GUIBoard {
                 this.fields[propertyIndex] = new GUIField(propertyColor, true, null);
             }
         }
-
-        this.fieldCount = fields.length;
     }
 
     public void changePositionAndSize(Point center, int diameter) {
@@ -68,44 +87,49 @@ public class GUIBoard {
         this.outerCircle = new GUICircle(center, boardRadius);
         this.innerCircle = outerCircle.getScaledCircle(innerCirclePercentSize);
         this.splitCircle = outerCircle.getScaledCircle(splitCirclePercentSize);
+        this.ownedCircle = outerCircle.getScaledCircle(ownedCirclePercentSize);
         this.playerPathCircle = outerCircle.getScaledCircle(playerPathPercentSize);
     }
 
     public void draw(Graphics g) {
-        drawBoard(g);
-    }
-
-    public void drawBoard(Graphics g) {
-        // Draw the base color of every field
-        outerCircle.draw(g, fieldBaseColor, true);
         // Draw the board color
         innerCircle.draw(g, boardColor, true);
 
-        Point[] innerPoints = innerCircle.getAllPoints(fieldCount);
+        Point[] innerPoints = innerCircle.getAllPoints(fieldCount * 2);
         Point[] outerPoints = outerCircle.getAllPoints(fieldCount);
 
         // Draw all the fields
         for (int i = 0; i < fieldCount; ++i) {
+
+            if (ownerColor[i] != null) {
+                Point ownedCenter = innerPoints[i * 2 + 1];
+
+                GUICircle ownedCircle = new GUICircle(ownedCenter, innerCircle.Radius / 10);
+                ownedCircle.draw(g, ownerColor[i], true);
+            }
+
             // Get the information of the current field
             GUIField field = fields[i];
 
-            // Choose the other circle, based on if the field is fully one color, or two colors
-            GUICircle otherCircle;
+            // Remember the polygon which has to be colored with the fields color
+            Polygon coloredPolygon;
             if (field.IsSplit) {
-                otherCircle = splitCircle;
+                // Paint the polygon at the top
+                Polygon upperPart = field.getTopPolygon(splitCircle, innerCircle, i, fieldCount);
+                paintPolygon(g, upperPart, fieldBaseColor);
+
+                coloredPolygon = field.getBottomPolygon(outerCircle, splitCircle, i, fieldCount);
             }
             else {
-                otherCircle = innerCircle;
+                coloredPolygon = field.getFullPolygon(outerCircle, innerCircle, i, fieldCount);
             }
 
             // Paint the fields' painted part (for some it's all, for others it's only a little part)
-            Polygon toPaint = field.getPolygonToPaint(outerCircle, otherCircle, i, fieldCount);
-            paintPolygon(g, toPaint, field.PrimaryColor);
+            paintPolygon(g, coloredPolygon, field.PrimaryColor);
 
             g.setColor(Color.BLACK);
-
             // Draw the lines separating the fields
-            Point start = innerPoints[i];
+            Point start = innerPoints[i * 2];
             Point end = outerPoints[i];
             g.drawLine(start.x, start.y, end.x, end.y);
         }
@@ -132,5 +156,13 @@ public class GUIBoard {
     protected void paintPolygon(Graphics g, Polygon polygon, Color color) {
         g.setColor(color);
         g.fillPolygon(polygon);
+    }
+
+    public void newOwner(int fieldIndex, GUIPlayer player) {
+        ownerColor[fieldIndex] = player.TokenColor;
+    }
+
+    public void addHouse(int fieldIndex) {
+        houseCount[fieldIndex]++;
     }
 }
