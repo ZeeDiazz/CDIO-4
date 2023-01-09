@@ -15,7 +15,7 @@ public class GUIWindow extends JFrame implements Runnable {
     public GUIWindow(Rectangle bounds, GUIPlayer[] players) {
         super("Matador");
 
-        Board = new GUIBoard();
+        Board = new GUIBoard(10);
         balances = new GUIBalances(players);
         balances.setBuffer(new Point(5, 2));
         balances.playerWentBankrupt(1);
@@ -56,14 +56,20 @@ public class GUIWindow extends JFrame implements Runnable {
         Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
         Board.draw(g);
 
+        Random rng = new Random();
+        for (int playerId : idToPlayer.keySet()) {
+            GUIPlayer player = idToPlayer.get(playerId);
+            if (rng.nextInt(10) == 0) {
+                Board.drawPlayerInPrison(g, player);
+            }
+            else {
+                Board.drawPlayer(g, player, idToPosition.get(playerId));
+            }
+        }
+
         int windowHeight = getHeight();
         balances.setFont(getOptimalFontForBalances());
         balances.draw(g, windowHeight);
-
-        for (int playerId : idToPlayer.keySet()) {
-            Board.drawPlayer(g, idToPlayer.get(playerId), idToPosition.get(playerId));
-            // draw balance
-        }
     }
 
     public void setNewPlayerPosition(int playerId, int positionIndex) {

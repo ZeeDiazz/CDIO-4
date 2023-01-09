@@ -5,9 +5,10 @@ import java.util.Random;
 
 public class GUIBoard {
     private static final float outerCirclePercentSize = 1f;
-    private static final float innerCirclePercentSize = 0.7f;
-    private static final float splitCirclePercentSize = 0.9f;
     private static final float playerPathPercentSize = 0.95f;
+    private static final float splitCirclePercentSize = 0.9f;
+    private static final float prisonCirclePercentSize = 0.8f;
+    private static final float innerCirclePercentSize = 0.7f;
     private static final float ownedCirclePercentSize = 0.65f;
 
     protected static Color boardColor = new Color(114, 24, 24);
@@ -22,14 +23,16 @@ public class GUIBoard {
     protected GUIField[] fields;
     protected Color[] ownerColor;
     protected int[] houseCount;
+    protected int prisonIndex;
+    protected Point prisonPoint;
 
-    public GUIBoard(/*GUIField[] fields */) {
-        this.fieldCount = 40;
-
+    public GUIBoard(/*GUIField[] fields,*/ int prisonIndex) {
         // Save variables
+        this.fieldCount = 40;
         this.fields = new GUIField[this.fieldCount];
         this.ownerColor = new Color[this.fieldCount];
         this.houseCount = new int[this.fieldCount];
+        this.prisonIndex = prisonIndex;
 
         // Start, prison, free parking, go to jail
         this.fields[0] = new GUIField(Color.RED, false, null);
@@ -77,6 +80,9 @@ public class GUIBoard {
         this.splitCircle = outerCircle.getScaledCircle(splitCirclePercentSize);
         this.ownedCircle = outerCircle.getScaledCircle(ownedCirclePercentSize);
         this.playerPathCircle = outerCircle.getScaledCircle(playerPathPercentSize);
+
+        GUICircle prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
+        this.prisonPoint = prisonCircle.getSinglePoint(prisonIndex * 2 + 1, 80);
     }
 
     public void draw(Graphics g) {
@@ -127,12 +133,18 @@ public class GUIBoard {
     }
 
     public void drawPlayer(Graphics g, GUIPlayer player, int positionIndex) {
-        Color playerColor = player.TokenColor;
-
         Point playerPoint = playerPathCircle.getSinglePoint(positionIndex * 2 + 1, fieldCount * 2);
 
-        GUICircle playerCircle = new GUICircle(playerPoint, 5);
-        playerCircle.draw(g, playerColor, true);
+        drawPlayer(g, player, playerPoint);
+    }
+
+    public void drawPlayerInPrison(Graphics g, GUIPlayer player) {
+        drawPlayer(g, player, prisonPoint);
+    }
+
+    protected void drawPlayer(Graphics g, GUIPlayer player, Point playerPosition) {
+        GUICircle playerCircle = new GUICircle(playerPosition, 5);
+        playerCircle.draw(g, player.TokenColor, true);
     }
 
     public void drawPlayers(Graphics g, GUIPlayer[] players, int[] positionIndexes) {
