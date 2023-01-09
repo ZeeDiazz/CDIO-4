@@ -16,6 +16,7 @@ public abstract class PropertyField extends Field {
         this.owner = null;
         this.isMortgaged = false;
         this.propertiesOwnedByOwner = 0;
+        this.rentSteps = rentSteps;
     }
 
     public abstract int getCurrentRent(int propertiesInSetOwned);
