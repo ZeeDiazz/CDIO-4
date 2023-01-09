@@ -8,7 +8,6 @@ public class Brewery extends Property {
         super(name, price, color, rent0, rent1);
     }
 
-
     // Skal opdatere lejen ift. hvad terningekastet for spilleren er
     public void updateCurrentRent(int diceSum) {
         this.currentRent = rent[0] * diceSum;

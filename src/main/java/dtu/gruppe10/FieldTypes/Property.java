@@ -96,9 +96,4 @@ public class Property extends Field {
         }
         this.landedOn = false;
     }
-
-
 }
-
-
-
