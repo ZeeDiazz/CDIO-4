@@ -9,16 +9,26 @@ public class PrisonField extends Field {
     Name prison;
     private boolean isInPrison;
     private int turnInPrison;
+    int maxTurnsInPrison = 3;
+    private int turnsInPrison;
 
-    public void isInPrison (Player player,Boolean isInPrison){
-     }
+    public boolean isInPrison (Player player, Boolean isInPrison) {
+        for (int i = 0; i < maxTurnsInPrison; i++) {
+            turnInPrison++;
+            return true;
+        }
+        return false;
+    }
+
      public void inPrisonEffect (Player player, Boolean isInPrison){
 
 
      }
-    public void sendToPrison(Player player) {
+    public void sendToPrison(Player player, int turnInPrison) {
+        this.turnsInPrison = turnInPrison;
         player.setPosition(31); //31 because the jail is there
         player.setInPrison(true);
+        turnsInPrison = 0;
     }
 
     public void landedOn(Player player) {

@@ -7,29 +7,29 @@ public class PrisonFieldTest extends TestCase {
     public void testIfPlayerIsInPrison() {
         Player player = new Player("Felix", 12345, 2);
 
-        //player.setField("PrisonField");
+        player.setPosition(31);
 
-        //assertEquals("PrisonField", player.getField());
+        assertEquals(31, player.getPosition());
 
-        //assertTrue(player.isInPrison());
+        assertTrue(player.InPrison());
 
     }
     public void testIfPlayerIsNotInPrison(){
         Player player = new Player ("Felix", 12345, 3);
 
-        //player.setField("Rødovrevej");
+        player.setPosition(2);
 
-        //AssertFalse(player.isInPrison());
+        assertFalse(player.InPrison());
     }
 
 
     public void testInPrisonEffect() {
         Player player = new Player("Felix", 123456, 1);
-        //player.setField("Prison");
+        player.setPosition(31);
 
         //field.setEffect("something");
 
-        //assertEquals("something", field.getEffect());
+        //assertEquals(31, field.getEffect());
     }
 
     public void testIfPlayerCanMoveInPrison() {
