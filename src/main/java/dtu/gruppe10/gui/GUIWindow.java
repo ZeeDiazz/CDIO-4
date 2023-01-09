@@ -7,27 +7,32 @@ import java.util.Random;
 
 public class GUIWindow extends JFrame implements Runnable {
     protected final GUIBoard board;
-    protected HashMap<Integer, GUIPlayer> idsToPlayers;
-    protected HashMap<Integer, Integer> idsToPositions;
+    protected final GUIBalances balances;
+
+    protected HashMap<Integer, GUIPlayer> idToPlayer;
+    protected HashMap<Integer, Integer> idToPosition;
 
     public GUIWindow(Rectangle bounds, GUIPlayer[] players) {
         super("Matador");
 
         board = new GUIBoard();
+        balances = new GUIBalances(players);
+        balances.setBuffer(new Point(5, 2));
+        balances.playerWentBankrupt(1);
 
-        idsToPlayers = new HashMap<>();
-        idsToPositions = new HashMap<>();
+        idToPlayer = new HashMap<>();
+        idToPosition = new HashMap<>();
         for (GUIPlayer player : players) {
-            idsToPlayers.put(player.ID, player);
-            idsToPositions.put(player.ID, 0);
+            idToPlayer.put(player.ID, player);
+            idToPosition.put(player.ID, 0);
         }
 
         Random rng = new Random();
-        for (int i = 0; i < rng.nextInt(100); ++i) {
+        for (int i = 0; i < rng.nextInt(40); ++i) {
             int index = rng.nextInt(board.fieldCount);
 
             int id = rng.nextInt(4) + 1;
-            board.newOwner(index, idsToPlayers.get(id));
+            board.newOwner(index, idToPlayer.get(id));
         }
 
         // Set the size of the window
@@ -51,13 +56,16 @@ public class GUIWindow extends JFrame implements Runnable {
         board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
         board.draw(g);
 
-        for (int playerId : idsToPlayers.keySet()) {
-            board.drawPlayer(g, idsToPlayers.get(playerId), idsToPositions.get(playerId));
+        balances.draw(g, getHeight());
+
+        for (int playerId : idToPlayer.keySet()) {
+            board.drawPlayer(g, idToPlayer.get(playerId), idToPosition.get(playerId));
+            // draw balance
         }
     }
 
     public void setNewPlayerPosition(int playerId, int positionIndex) {
-        idsToPositions.put(playerId, positionIndex);
+        idToPosition.put(playerId, positionIndex);
     }
 
     protected Point getCenterOfWindow() {
@@ -72,6 +80,17 @@ public class GUIWindow extends JFrame implements Runnable {
         int maxRadius = Math.min(window.width, window.height) - buffer;
 
         return Math.max(maxRadius, 0);
+    }
+
+    protected Point getStartPointForBalances(int fontHeight, int playerCount) {
+        int xBuffer = 10;
+        int yBottomBuffer = 20;
+        int yBetweenBuffer = 5;
+
+        int windowHeight = getHeight();
+        int textHeight = (fontHeight + yBetweenBuffer) * playerCount;
+
+        return new Point(xBuffer, windowHeight - textHeight - yBottomBuffer);
     }
 
     @Override

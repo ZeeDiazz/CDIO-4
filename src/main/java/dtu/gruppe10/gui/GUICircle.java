@@ -18,6 +18,7 @@ public class GUICircle {
         int radius = this.Diameter / 2;
         Point drawPoint = new Point(this.Center.x - radius, this.Center.y - radius);
 
+        Color prevColor = g.getColor();
         g.setColor(color);
         if (filled) {
             g.fillOval(drawPoint.x, drawPoint.y, this.Diameter, this.Diameter);
@@ -25,6 +26,7 @@ public class GUICircle {
         else {
             g.drawOval(drawPoint.x, drawPoint.y, this.Diameter, this.Diameter);
         }
+        g.setColor(prevColor);
     }
 
     public void draw(Graphics g, boolean filled) {

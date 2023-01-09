@@ -6,10 +6,10 @@ import java.util.Random;
 public class GUITest {
     public static void main(String[] args) {
         GUIPlayer[] players = new GUIPlayer[4];
-        players[0] = new GUIPlayer(1, Color.green);
-        players[1] = new GUIPlayer(2, Color.blue);
-        players[2] = new GUIPlayer(3, Color.magenta);
-        players[3] = new GUIPlayer(4, Color.red);
+        players[0] = new GUIPlayer(1, "Zaid", Color.green);
+        players[1] = new GUIPlayer(2, "Zach", Color.blue);
+        players[2] = new GUIPlayer(3, "Felix", Color.magenta);
+        players[3] = new GUIPlayer(4, "Zahedullah", Color.red);
 
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 300, 300), players);
         window.setNewPlayerPosition(1, 2);
