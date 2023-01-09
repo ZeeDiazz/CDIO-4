@@ -12,7 +12,7 @@ public class PlayerTest extends TestCase {
         assertEquals(7, player.getPosition());
 
         player.movePlayer(6, 6);
-        assertEquals(19, player.getPosition()); // wrapped around to start
+        assertEquals(19, player.getPosition());
     }
     @Test
     public void testSetPosition() {
@@ -25,7 +25,7 @@ public class PlayerTest extends TestCase {
         assertEquals(39, player.getPosition());
 
         player.setPosition(-1);
-        assertEquals(-1, player.getPosition()); // invalid position
+        assertEquals(-1, player.getPosition());
     }
     @Test
     public void testCanPay() {
