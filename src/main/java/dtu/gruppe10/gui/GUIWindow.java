@@ -3,6 +3,7 @@ package dtu.gruppe10.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Random;
 
 public class GUIWindow extends JFrame implements Runnable {
     protected final GUIBoard board;
@@ -19,6 +20,14 @@ public class GUIWindow extends JFrame implements Runnable {
         for (GUIPlayer player : players) {
             idsToPlayers.put(player.ID, player);
             idsToPositions.put(player.ID, 0);
+        }
+
+        Random rng = new Random();
+        for (int i = 0; i < rng.nextInt(100); ++i) {
+            int index = rng.nextInt(board.fieldCount);
+
+            int id = rng.nextInt(4) + 1;
+            board.newOwner(index, idsToPlayers.get(id));
         }
 
         // Set the size of the window

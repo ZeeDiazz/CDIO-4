@@ -31,18 +31,6 @@ public class GUIBoard {
         this.ownerColor = new Color[this.fieldCount];
         this.houseCount = new int[this.fieldCount];
 
-        Random rng = new Random();
-        for (int i = 0; i < rng.nextInt(100); ++i) {
-            int index = rng.nextInt(fieldCount);
-
-            int r = rng.nextInt(256);
-            int g = rng.nextInt(256);
-            int b = rng.nextInt(256);
-
-            Color randomColor = new Color(r, g, b);
-            this.ownerColor[index] = randomColor;
-        }
-
         // Start, prison, free parking, go to jail
         this.fields[0] = new GUIField(Color.RED, false, null);
         this.fields[10] = new GUIField(Color.BLACK, true, null);
@@ -104,7 +92,7 @@ public class GUIBoard {
             if (ownerColor[i] != null) {
                 Point ownedCenter = innerPoints[i * 2 + 1];
 
-                GUICircle ownedCircle = new GUICircle(ownedCenter, innerCircle.Radius / 10);
+                GUICircle ownedCircle = new GUICircle(ownedCenter, innerCircle.Radius / 20);
                 ownedCircle.draw(g, ownerColor[i], true);
             }
 
