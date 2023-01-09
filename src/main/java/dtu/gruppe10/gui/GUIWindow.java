@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class GUIWindow extends JFrame implements Runnable {
-    protected final GUIBoard board;
+    public final GUIBoard Board;
     protected final GUIBalances balances;
 
     protected HashMap<Integer, GUIPlayer> idToPlayer;
@@ -15,7 +15,7 @@ public class GUIWindow extends JFrame implements Runnable {
     public GUIWindow(Rectangle bounds, GUIPlayer[] players) {
         super("Matador");
 
-        board = new GUIBoard();
+        Board = new GUIBoard();
         balances = new GUIBalances(players);
         balances.setBuffer(new Point(5, 2));
         balances.playerWentBankrupt(1);
@@ -29,10 +29,10 @@ public class GUIWindow extends JFrame implements Runnable {
 
         Random rng = new Random();
         for (int i = 0; i < rng.nextInt(40); ++i) {
-            int index = rng.nextInt(board.fieldCount);
+            int index = rng.nextInt(Board.fieldCount);
 
             int id = rng.nextInt(4) + 1;
-            board.newOwner(index, idToPlayer.get(id));
+            Board.newOwner(index, idToPlayer.get(id));
         }
 
         // Set the size of the window
@@ -53,13 +53,15 @@ public class GUIWindow extends JFrame implements Runnable {
     public void paint(Graphics g) {
         super.paint(g);
 
-        board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
-        board.draw(g);
+        Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
+        Board.draw(g);
 
-        balances.draw(g, getHeight());
+        int windowHeight = getHeight();
+        balances.setFont(getOptimalFontForBalances());
+        balances.draw(g, windowHeight);
 
         for (int playerId : idToPlayer.keySet()) {
-            board.drawPlayer(g, idToPlayer.get(playerId), idToPosition.get(playerId));
+            Board.drawPlayer(g, idToPlayer.get(playerId), idToPosition.get(playerId));
             // draw balance
         }
     }
@@ -82,15 +84,12 @@ public class GUIWindow extends JFrame implements Runnable {
         return Math.max(maxRadius, 0);
     }
 
-    protected Point getStartPointForBalances(int fontHeight, int playerCount) {
-        int xBuffer = 10;
-        int yBottomBuffer = 20;
-        int yBetweenBuffer = 5;
-
+    protected Font getOptimalFontForBalances() {
         int windowHeight = getHeight();
-        int textHeight = (fontHeight + yBetweenBuffer) * playerCount;
+        int targetPixelHeight = windowHeight / 20;
 
-        return new Point(xBuffer, windowHeight - textHeight - yBottomBuffer);
+        double fontSize = 72.0 * targetPixelHeight / Toolkit.getDefaultToolkit().getScreenResolution();
+        return getFont().deriveFont((float)fontSize);
     }
 
     @Override
