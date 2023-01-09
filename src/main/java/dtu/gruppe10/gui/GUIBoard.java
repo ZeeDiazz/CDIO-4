@@ -84,12 +84,12 @@ public class GUIBoard {
         Point[] innerPoints = innerCircle.getAllPoints(fieldCount);
         Point[] outerPoints = outerCircle.getAllPoints(fieldCount);
 
+        // Draw all the fields
         for (int i = 0; i < fieldCount; ++i) {
-            Point start = innerPoints[i];
-            Point end = outerPoints[i];
-
+            // Get the information of the current field
             GUIField field = fields[i];
 
+            // Choose the other circle, based on if the field is fully one color, or two colors
             GUICircle otherCircle;
             if (field.IsSplit) {
                 otherCircle = splitCircle;
@@ -98,13 +98,16 @@ public class GUIBoard {
                 otherCircle = innerCircle;
             }
 
+            // Paint the fields' painted part (for some it's all, for others it's only a little part)
             Polygon toPaint = field.getPolygonToPaint(outerCircle, otherCircle, i, fieldCount);
             paintPolygon(g, toPaint, field.PrimaryColor);
 
             g.setColor(Color.BLACK);
 
+            // Draw the lines separating the fields
+            Point start = innerPoints[i];
+            Point end = outerPoints[i];
             g.drawLine(start.x, start.y, end.x, end.y);
-            g.setColor(Color.BLACK);
         }
 
         outerCircle.draw(g, false);
