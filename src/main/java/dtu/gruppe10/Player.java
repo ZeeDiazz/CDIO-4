@@ -6,7 +6,6 @@ public class Player {
     private static final int NUM_SPACES = 40;
     protected String name;
     public Account balance;
-    private boolean eliminated;
     private boolean rolledPair;
     private int position;
     private boolean InPrison;
@@ -79,10 +78,6 @@ public class Player {
         this.balance.subtract(amount);
     }
 
-
-    public boolean isEliminated() {
-        return eliminated;
-    }
 
     public boolean hasRolledPair() {
         return this.rolledPair;
