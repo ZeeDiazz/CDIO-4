@@ -10,6 +10,7 @@ public class Player {
     private boolean rolledPair;
     private int position;
     private boolean InPrison;
+    private int turnsInPrison;
     private PlayerMovement movement;
 
     public Player(String name, int startingBalance, int ID) {
@@ -38,6 +39,9 @@ public class Player {
         int newPosition = (currentPosition + spacesToMove) % NUM_SPACES;
         this.setPosition(newPosition);
         this.checkPassedStartField(prevPosition);
+    }
+    public void increaseTurnsInPrison(){
+        this.turnsInPrison++;
     }
 
     public void checkPassedStartField(int prevPosition) {
