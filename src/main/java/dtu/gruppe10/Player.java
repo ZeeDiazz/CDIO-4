@@ -96,4 +96,8 @@ public class Player {
     public void setInPrison(boolean inPrison) {
         InPrison = inPrison;
     }
+
+    public boolean CheckBankrupt() {
+        return this.isBankrupt;
+    }
 }

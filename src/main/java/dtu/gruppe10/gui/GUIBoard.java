@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GUIBoard extends JFrame implements Runnable {
+public class GUIBoard {
     private static final float outerCirclePercentSize = 1f;
     private static final float innerCirclePercentSize = 0.7f;
     private static final float splitCirclePercentSize = 0.9f;
@@ -14,24 +14,15 @@ public class GUIBoard extends JFrame implements Runnable {
     protected static Color boardColor = new Color(114, 24, 24);
     protected static Color fieldBaseColor = new Color(108, 159, 159);
 
-    protected GUICircle currentBoardCircle;
-    protected GUICircle currentInnerCircle;
-    protected GUICircle currentSplitCircle;
-    protected GUICircle currentPlayerPathCircle;
+    protected GUICircle outerCircle;
+    protected GUICircle innerCircle;
+    protected GUICircle splitCircle;
+    protected GUICircle playerPathCircle;
     protected int fieldCount;
     protected GUIField[] fields;
-    protected ArrayList<Integer> playerIds;
-    protected HashMap<Integer, Color> idsToColors;
-    protected HashMap<Integer, Integer> idsToPositions;
 
-    public GUIBoard(Rectangle bounds, GUIPlayer[] players) {
-        super("Matador");
-
+    public GUIBoard() {
         // Save variables
-        this.playerIds = new ArrayList<>();
-        this.idsToColors = new HashMap<>();
-        this.idsToPositions = new HashMap<>();
-
         this.fields = new GUIField[40];
 
         // Start, prison, free parking, go to jail
@@ -74,62 +65,31 @@ public class GUIBoard extends JFrame implements Runnable {
         }
 
         this.fieldCount = fields.length;
-
-        for (GUIPlayer player : players) {
-            playerIds.add(player.ID);
-            idsToColors.put(player.ID, player.TokenColor);
-            idsToPositions.put(player.ID, 0);
-        }
-
-        // Set the size of the window
-        setBounds(bounds);
-
-        // Set default values to various things
-        setResizable(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setType(Type.NORMAL);
     }
 
-    @Override
-    public void setVisible(boolean b) {
-        super.setVisible(b);
-        paint(getGraphics()); // Make sure it's painted
+    public void changePositionAndSize(Point center, int diameter) {
+        int boardRadius = diameter / 2;
+
+        this.outerCircle = new GUICircle(center, boardRadius);
+        this.innerCircle = outerCircle.getScaledCircle(innerCirclePercentSize);
+        this.splitCircle = outerCircle.getScaledCircle(splitCirclePercentSize);
+        this.playerPathCircle = outerCircle.getScaledCircle(playerPathPercentSize);
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        drawBoard(g, getCenterOfWindow(), getMaxBoardSize());
-
-        for (int playerId : playerIds) {
-            drawPlayer(g, playerId);
-        }
+    public void draw(Graphics g) {
+        drawBoard(g);
     }
 
-    public void setNewPlayerPosition(int playerId, int newPos) {
-        idsToPositions.put(playerId, newPos);
+    public void drawBoard(Graphics g) {
+        Point center = outerCircle.Center;
 
-        Graphics g = getGraphics();
-        if (g != null) {
-            paint(g);
-        }
-    }
+        // Draw the base color of every field
+        outerCircle.draw(g, fieldBaseColor, true);
+        // Draw the board color
+        innerCircle.draw(g, boardColor, true);
 
-    public void drawBoard(Graphics g, Point center, int diameter) {
-        int currentBoardRadius = (int)(diameter * outerCirclePercentSize) / 2;
-        int innerCircleRadius = (int)(currentBoardRadius * innerCirclePercentSize);
-        int splitCircleRadius = (int)(currentBoardRadius * splitCirclePercentSize);
-        int pathCircleRadius = (int)(currentBoardRadius * playerPathPercentSize);
-
-        currentBoardCircle = new GUICircle(center, currentBoardRadius);
-        currentInnerCircle = new GUICircle(center, innerCircleRadius);
-        currentSplitCircle = new GUICircle(center, splitCircleRadius);
-        currentPlayerPathCircle = new GUICircle(center, pathCircleRadius);
-
-        currentBoardCircle.draw(g, boardColor, true);
-
-        Point[] innerPoints = currentInnerCircle.getPoints(fieldCount);
-        Point[] outerPoints = currentBoardCircle.getPoints(fieldCount);
+        Point[] innerPoints = innerCircle.getPoints(fieldCount);
+        Point[] outerPoints = outerCircle.getPoints(fieldCount);
 
         for (int i = 0; i < fieldCount; ++i) {
             Point start = innerPoints[i];
@@ -142,7 +102,6 @@ public class GUIBoard extends JFrame implements Runnable {
                 Polygon bottomPolygon = makePolygonFromOrderedPoints(pointsOfField[0], pointsOfField[2]);
                 Polygon topPolygon = makePolygonFromOrderedPoints(pointsOfField[1], pointsOfField[2]);
 
-                paintPolygon(g, topPolygon, field.SecondaryColor);
                 paintPolygon(g, bottomPolygon, field.PrimaryColor);
             }
             else {
@@ -153,16 +112,26 @@ public class GUIBoard extends JFrame implements Runnable {
             g.setColor(Color.BLACK);
 
             g.drawLine(start.x, start.y, end.x, end.y);
-
-            Point splitMid = currentSplitCircle.getSinglePoint(i * 2 + 1, fieldCount * 2);
-
-            g.setColor(field.PrimaryTextColor);
-            g.drawString(field.PrimaryText, splitMid.x, splitMid.y);
             g.setColor(Color.BLACK);
         }
 
-        currentBoardCircle.draw(g, false);
-        currentInnerCircle.draw(g, false);
+        outerCircle.draw(g, false);
+        innerCircle.draw(g, false);
+    }
+
+    public void drawPlayer(Graphics g, GUIPlayer player, int positionIndex) {
+        Color playerColor = player.TokenColor;
+
+        Point playerPoint = playerPathCircle.getSinglePoint(positionIndex * 2 + 1, fieldCount * 2);
+
+        GUICircle playerCircle = new GUICircle(playerPoint, 5);
+        playerCircle.draw(g, playerColor, true);
+    }
+
+    public void drawPlayers(Graphics g, GUIPlayer[] players, int[] positionIndexes) {
+        for (int i = 0; i < players.length; ++i) {
+            drawPlayer(g, players[i], positionIndexes[i]);
+        }
     }
 
     protected void paintPolygon(Graphics g, Polygon polygon, Color color) {
@@ -184,31 +153,14 @@ public class GUIBoard extends JFrame implements Runnable {
         return polygon;
     }
 
-    protected void drawPlayer(Graphics g, int playerId) {
-        int playerPosition = idsToPositions.get(playerId);
-        Color playerColor = idsToColors.get(playerId);
-
-        Point playerPoint = currentPlayerPathCircle.getSinglePoint(playerPosition * 2 + 1, fieldCount * 2);
-
-        GUICircle playerCircle = new GUICircle(playerPoint, 5);
-        playerCircle.draw(g, playerColor, true);
-    }
-
-    protected Point getPointOnCircle(Point center, int radius, int totalPointCount, int pointIndex) {
-        double pointDegree = Math.toRadians(360) / totalPointCount * pointIndex;
-        int x = -(int)(radius * Math.sin(pointDegree)) + center.x;
-        int y = (int)(radius * Math.cos(pointDegree)) + center.y;
-        return new Point(x, y);
-    }
-
     protected Point[][] getPointsOfField(Point boardCenter, int fieldIndex) {
         Point[][] points = new Point[3][];
-        int[] radiuses = {currentBoardCircle.Radius, currentInnerCircle.Radius};
+        int[] radiuses = {outerCircle.Radius, innerCircle.Radius};
 
         // Generate the straight line, at the start
         points[2] = new Point[2];
-        points[2][0] = currentSplitCircle.getSinglePoint(fieldIndex, fieldCount);
-        points[2][1] = currentSplitCircle.getSinglePoint(fieldIndex + 1, fieldCount);
+        points[2][0] = splitCircle.getSinglePoint(fieldIndex, fieldCount);
+        points[2][1] = splitCircle.getSinglePoint(fieldIndex + 1, fieldCount);
 
         int pointsForArc = 10;
         for (int i = 0; i < 2; ++i) {
@@ -222,25 +174,5 @@ public class GUIBoard extends JFrame implements Runnable {
         }
 
         return points;
-    }
-
-    protected Point getCenterOfWindow() {
-        Rectangle window = getBounds();
-        return new Point(window.width / 2, window.height / 2);
-    }
-
-    protected int getMaxBoardSize() {
-        int buffer = 100;
-
-        Rectangle window = getBounds();
-        int maxRadius = Math.min(window.width, window.height) - buffer;
-
-        return Math.max(maxRadius, 0);
-    }
-
-    @Override
-    public void run() {
-        setVisible(true);
-        paint(getGraphics());
     }
 }
