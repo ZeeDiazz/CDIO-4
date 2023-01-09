@@ -10,7 +10,6 @@ public class GoToPrisonField extends Field {
             player.setInPrison(true);
             turnsInPrison = 0;
         }
-        @Override
         public void landedOn(Player player) {
             goToPrisonField(player);
         }
