@@ -7,7 +7,6 @@ public abstract class PropertyField extends Field {
     protected Player owner;
     protected boolean isMortgaged;
     protected int[] rentSteps;
-    protected int propertiesOwnedByOwner;
 
     public PropertyField(int id, FieldType type, int price, int[] rentSteps) {
         super(id, type);
@@ -15,7 +14,6 @@ public abstract class PropertyField extends Field {
         this.Price = price;
         this.owner = null;
         this.isMortgaged = false;
-        this.propertiesOwnedByOwner = 0;
         this.rentSteps = rentSteps;
     }
 

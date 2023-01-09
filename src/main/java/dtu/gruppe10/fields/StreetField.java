@@ -15,6 +15,10 @@ public class StreetField extends PropertyField {
 
     @Override
     public int getCurrentRent(int propertiesInSetOwned) {
+        if (isMortgaged) {
+            return 0;
+        }
+
         int rent = rentSteps[houseCount];
 
         boolean doubleRent = (houseCount == 0) && (propertiesInSetOwned == PropertiesInSet);

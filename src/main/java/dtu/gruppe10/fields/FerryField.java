@@ -7,6 +7,10 @@ public class FerryField extends PropertyField {
 
     @Override
     public int getCurrentRent(int propertiesInSetOwned) {
+        if (isMortgaged) {
+            return 0;
+        }
+
         return rentSteps[propertiesInSetOwned - 1];
     }
 }
