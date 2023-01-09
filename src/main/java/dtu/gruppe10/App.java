@@ -1,4 +1,5 @@
 package dtu.gruppe10;
+import dtu.gruppe10.dice.DiceRoll;
 import dtu.gruppe10.dice.DieCup;
 import dtu.gruppe10.dice.SixSidedDie;
 import dtu.gruppe10.fields.Field;
@@ -37,11 +38,12 @@ public class App {
 
             if(roll.equals("r") || roll.equals("roll")){
                 cup.roll();
+                DiceRoll rollResult = cup.getResult();
                 //ROLDICE FOR NOW
-                currentPlayer.movePlayer(cup.Die1.getFace(), cup.Die2.getFace());
-                System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name,cup.Die1.getFace(), cup.Die2.getFace()));
+                currentPlayer.movePlayer(rollResult.getValue(0), rollResult.getValue(1));
+                System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name, rollResult.getValue(0), rollResult.getValue(1)));
 
-                if (cup.Die1.getFace() == cup.Die2.getFace()) {
+                if (rollResult.AreSame) {
                     currentPlayer.setRolledPair(true);
                 } else {
                     currentPlayer.setRolledPair(false);
@@ -97,42 +99,5 @@ public class App {
             players[i] = new Player("Player " + (i + 1), 20, i); //balance for now
         }
         return players;
-    }
-
-
-    public abstract static class Prison extends Field {
-        private boolean[] playersInPrison;
-        private int maxTurnsInPrison = 3;
-
-        public Prison (int playerAmount){
-
-            this.playersInPrison = new boolean[playerAmount];
-
-        }
-        public void addPlayerToPrison(int inmate){
-            this.playersInPrison[inmate] = true;
-        }
-        public void releasePlayerFromPrison(int inmate){
-            this.playersInPrison[inmate] = false;
-        }
-
-        public boolean isPlayersInPrison(int inmate) {
-            return this.playersInPrison[inmate];
-        }
-
-        public void inPrisonEffect (Player player){
-            if(player.inPrison()){
-
-                player.increaseTurnsInPrison();
-
-                if (player.getTurnsInPrison()>maxTurnsInPrison){
-                    //betal kaution
-                    player.getsOutofPrisonByBail();
-
-                }else{
-                    //do nothing
-                }
-            }
-        }
     }
 }
