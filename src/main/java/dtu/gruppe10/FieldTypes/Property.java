@@ -78,7 +78,8 @@ public class Property extends Field {
             if (buyer.getBalance() >= this.price) {
                 this.isBought = true;
                 this.owner = buyer;
-                this.owner.setBalance(-this.price);
+                this.owner.subtractFromBalance(this.price);
+
             }
         }
     }

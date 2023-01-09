@@ -33,11 +33,6 @@ public class Player {
         return this.balance.getBalance();
     }
 
-    //Setter for balancen. Bruger metoden setBalance fra Account-klassen
-    public void setBalance(int balance) {
-        this.balance.setBalance(balance);
-    }
-
     // Metode der afgør om en spiller er bankerot/kan betale sin afgift
     // Bruger metode isBankrupt fra Account-klassen
     public boolean isBankrupt(int fees) {
@@ -47,7 +42,6 @@ public class Player {
         }
         return false;
     }
-
 
     // Metode der håndterer opkrævning af leje
     // Bruger metoden handleRent fra Account-klassen
@@ -70,7 +64,6 @@ public class Player {
         }
     }
 
-    //Not sure
     public void addToBalance(int amount) {
         this.balance.add(amount);
     }
