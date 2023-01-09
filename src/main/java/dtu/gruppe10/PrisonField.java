@@ -5,7 +5,7 @@ import dtu.gruppe10.FieldTypes.Field;
 
 import javax.naming.Name;
 
-public class PrisonField extends Field {
+public abstract class PrisonField extends Field {
     Name prison;
     private boolean isInPrison;
     private int turnInPrison;
@@ -20,21 +20,12 @@ public class PrisonField extends Field {
         return false;
     }
 
-     public void inPrisonEffect (Player player, Boolean isInPrison){
+     public void inPrisonEffect (Player player, int turnInPrison){
+        this.turnsInPrison = turnInPrison;
+
 
 
      }
-    public void sendToPrison(Player player, int turnInPrison) {
-        this.turnsInPrison = turnInPrison;
-        player.setPosition(31); //31 because the jail is there
-        player.setInPrison(true);
-        turnsInPrison = 0;
-    }
-    @Override
-    public void landedOn(Player player) {
-        sendToPrison(player);
-    }
-
 
     //TODO tilføj metode til at betale kaution eller bruge løsladerkort, hvis spilleren er i fængsel
     //TODO tilføj metode til at betale kaution, efter en spiller har været i fængsel 3 runder (tvunget til at betale)
