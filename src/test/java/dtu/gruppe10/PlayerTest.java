@@ -22,9 +22,25 @@ public class PlayerTest extends TestCase {
     }
     @Test
     public void testSetBalance() {
+        // Create a new Player object with a balance of 20
+        Player player = new Player("Player 1", 20, 0);
+
+        // Set the player's balance to 100
+        player.addToBalance(100);
+
+        // Check that the player's balance is now 120 (100+20)
+        assertEquals(120, player.getBalance());
     }
     @Test
     public void testIsBankrupt() {
+        // Create a new Player object with a balance of 1000
+        Player player = new Player("Player 1", 1000, 0);
+
+        // Check that the player is not bankrupt (has sufficient funds to pay a fee of 500)
+        assertFalse(player.isBankrupt(500));
+
+        // Check that the player is bankrupt (does not have sufficient funds to pay a fee of 1000)
+        assertTrue(player.isBankrupt(1000));
     }
     @Test
     public void testHandleRent() {
