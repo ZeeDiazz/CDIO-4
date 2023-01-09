@@ -2,12 +2,12 @@ package dtu.gruppe10.fields;
 
 import dtu.gruppe10.Player;
 
-public abstract class Property extends Field {
+public abstract class PropertyField extends Field {
     public final int Price;
     protected Player owner;
     protected boolean isMortgaged;
 
-    public Property(int id, FieldType type, int price) {
+    public PropertyField(int id, FieldType type, int price) {
         super(id, type);
 
         this.Price = price;

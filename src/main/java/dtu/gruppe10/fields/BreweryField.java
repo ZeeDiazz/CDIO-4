@@ -2,9 +2,9 @@ package dtu.gruppe10.fields;
 
 import dtu.gruppe10.Player;
 
-public class Brewery extends Property {
+public class BreweryField extends PropertyField {
 
-    public Brewery(String name, int price, StreetColor color, int rent0, int rent1) {
+    public BreweryField(String name, int price, StreetColor color, int rent0, int rent1) {
         super(name, price, color, rent0, rent1);
     }
 
