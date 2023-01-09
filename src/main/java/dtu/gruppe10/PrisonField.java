@@ -8,16 +8,9 @@ import javax.naming.Name;
 public abstract class PrisonField extends Field {
     Name prison;
     private boolean isInPrison;
-    private int turnsInPrison = 0;
+    private int turnsInPrison;
     private int maxTurnsInPrison = 3;
 
-
-    public boolean isInPrison (Player player, boolean isInPrison) {
-        if (player.inPrison() == true) {
-return true;
-        }
-        else return false;
-    }
      public void inPrisonEffect (Player player){
         if(player.inPrison()){
 
@@ -26,28 +19,14 @@ return true;
             if (player.getTurnsInPrison()>maxTurnsInPrison){
                 //betal kaution
                 player.getsOutofPrisonByBail();
+
             }else{
                 //do nothing
-                System.out.println(getTurnsInPrison());
+                System.out.println(player.getTurnsInPrison());
             }
         }
     }
-
-    public int getTurnsInPrison() {
-        return turnsInPrison;
-    }
-
-    public void setTurnsInPrison(int turnsInPrison) {
-        this.turnsInPrison = turnsInPrison;
-    }
-
-    public boolean isInPrison() {
-        return isInPrison;
-    }
-
-    public void setInPrison(boolean inPrison) {
-        isInPrison = inPrison;
-    }
+    //TODO hvem er i fængsel, hvor lang tid, hvem skal ud og hvornår i en ny prison class
 
     //TODO tilføj metode til at betale kaution eller bruge løsladerkort, hvis spilleren er i fængsel
     //TODO tilføj metode til at betale kaution, efter en spiller har været i fængsel 3 runder (tvunget til at betale)

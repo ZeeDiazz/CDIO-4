@@ -43,6 +43,9 @@ public class Player {
     public void increaseTurnsInPrison(){
         this.turnsInPrison++;
     }
+    public void setTurnsInPrison(int turnsInPrison) {
+        this.turnsInPrison = turnsInPrison;
+    }
     public int getTurnsInPrison() {
         return turnsInPrison;
     }
