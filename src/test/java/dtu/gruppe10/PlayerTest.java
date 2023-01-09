@@ -14,6 +14,16 @@ public class PlayerTest extends TestCase {
     }
 
     public void testSetPosition() {
+        Player player = new Player("Player 1", 10000, 1);
+
+        player.setPosition(5);
+        assertEquals(5, player.getPosition());
+
+        player.setPosition(39);
+        assertEquals(39, player.getPosition());
+
+        player.setPosition(-1);
+        assertEquals(-1, player.getPosition()); // invalid position
     }
 
     public void testCanPay() {
