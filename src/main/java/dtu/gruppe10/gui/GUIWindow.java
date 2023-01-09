@@ -86,7 +86,7 @@ public class GUIWindow extends JFrame implements Runnable {
 
     protected Font getOptimalFontForBalances() {
         int windowHeight = getHeight();
-        int targetPixelHeight = windowHeight / 20;
+        int targetPixelHeight = windowHeight / 30;
 
         double fontSize = 72.0 * targetPixelHeight / Toolkit.getDefaultToolkit().getScreenResolution();
         return getFont().deriveFont((float)fontSize);
