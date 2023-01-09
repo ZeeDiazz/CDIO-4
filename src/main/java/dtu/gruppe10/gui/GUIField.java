@@ -1,41 +1,35 @@
 package dtu.gruppe10.gui;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class GUIField extends JPanel {
+public class GUIField {
+    protected final static int pointsPerArc = 5;
+
     public final Color PrimaryColor;
-    public final Color SecondaryColor;
-    public final String PrimaryText;
-    public final Color PrimaryTextColor;
-    public final String SecondaryText;
-    public final Color SecondaryTextColor;
+    public final boolean IsSplit;
     public final Image Image;
-    public final boolean HasSplit;
 
-    public GUIField(Color primaryColor, Color secondaryColor, String primaryText, Color primaryTextColor, String secondaryText, Color secondaryTextColor, Image image) {
+    public GUIField(Color primaryColor, boolean isSplit, Image image) {
         this.PrimaryColor = primaryColor;
-        this.SecondaryColor = secondaryColor;
-
-        this.HasSplit = (primaryColor != secondaryColor);
-
-        this.PrimaryText = primaryText;
-        this.PrimaryTextColor = primaryTextColor;
-        this.SecondaryText = secondaryText;
-        this.SecondaryTextColor = secondaryTextColor;
-
+        this.IsSplit = isSplit;
         this.Image = image;
     }
 
-    public GUIField(Color primaryColor, Color secondaryColor, String primaryText, Color primaryTextColor, String secondaryText, Color secondaryTextColor) {
-        this(primaryColor, secondaryColor, primaryText, primaryTextColor, secondaryText, secondaryTextColor, null);
-    }
+    public Polygon getPolygonToPaint(GUICircle outerCircle, GUICircle otherCircle, int fieldIndex, int totalFieldCount) {
+        Polygon paintPolygon = new Polygon();
+        int multiplier = pointsPerArc - 1;
 
-    public GUIField(Color color, String primaryText, String secondaryText, Color textColor, Image image) {
-        this(color, color, primaryText, textColor, secondaryText, textColor, image);
-    }
+        // Do the outer arc
+        for (int i = 0; i < pointsPerArc; ++i) {
+            Point p = outerCircle.getSinglePoint(fieldIndex * multiplier + i, totalFieldCount * multiplier);
+            paintPolygon.addPoint(p.x, p.y);
+        }
 
-    public GUIField(Color color, String primaryText, String secondaryText, Color textColor) {
-        this(color, color, primaryText, textColor, secondaryText, textColor, null);
+        for (int i = (pointsPerArc - 1); i >= 0; --i) {
+            Point p = otherCircle.getSinglePoint(fieldIndex * multiplier + i, totalFieldCount * multiplier);
+            paintPolygon.addPoint(p.x, p.y);
+        }
+
+        return paintPolygon;
     }
 }

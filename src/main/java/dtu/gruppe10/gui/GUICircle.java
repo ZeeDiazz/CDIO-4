@@ -31,7 +31,7 @@ public class GUICircle {
         draw(g, Color.BLACK, filled);
     }
 
-    public Point[] getPoints(int pointCount) {
+    public Point[] getAllPoints(int pointCount) {
         return GUICircle.getPointsOnCircle(this.Center, this.Radius, pointCount);
     }
 
