@@ -37,6 +37,18 @@ public class PlayerTest extends TestCase {
     }
 
     public void testMovePlayer() {
+        Player player1 = new Player("Player 1", 10000, 1);
+        Player player2 = new Player("Player 2", 10000, 1);
+
+        player1.movePlayer(3, 2);
+        assertEquals(5, player1.getPosition());
+
+        player2.movePlayer(1, 6);
+        assertEquals(7, player2.getPosition());
+
+        player1.movePlayer(1, 2);
+        //fordi (1+2)+ 5 = 8
+        assertEquals(8, player1.getPosition());
     }
 
     public void testCheckPassedStartField() {
