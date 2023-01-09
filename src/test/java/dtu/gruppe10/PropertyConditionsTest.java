@@ -11,15 +11,14 @@ import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class PropertyConditionsTest {
-
+    Property field;
     @Before
     public void initialize() {
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
+        field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
     }
 
     @Test
     public void propertyDoesNotHaveOwnerAtFirst() {
-        Property field = new Property("Rødovrevej", 1200, PropertyColor.GREEN, 50, 250);
         assertEquals(null, field.getOwner());
     }
 
