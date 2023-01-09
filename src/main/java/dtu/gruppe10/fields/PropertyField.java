@@ -9,7 +9,7 @@ public abstract class PropertyField extends Field {
     protected int[] rentSteps;
     protected int propertiesOwnedByOwner;
 
-    public PropertyField(int id, FieldType type, int price) {
+    public PropertyField(int id, FieldType type, int price, int[] rentSteps) {
         super(id, type);
 
         this.Price = price;

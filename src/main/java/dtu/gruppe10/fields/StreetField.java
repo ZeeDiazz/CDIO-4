@@ -1,13 +1,28 @@
 package dtu.gruppe10.fields;
 
 public class StreetField extends PropertyField {
-    public StreetField(String name, int price, StreetColor color, int rent0, int rent1, int rent2, int rent3, int rent4, int rent5) {
-        super(name, price, color, rent0, rent1);
-        this.rent = new int[6];
-        this.rent[2] = rent2;
-        this.rent[3] = rent3;
-        this.rent[4] = rent4;
-        this.rent[5] = rent5;
+    public final StreetColor Color;
+    public final int PropertiesInSet;
+    protected int houseCount;
+
+    public StreetField(int id, int price, int[] rentSteps, StreetColor color, int propertiesInSet) {
+        super(id, FieldType.STREET, price, rentSteps);
+
+        this.Color = color;
+        this.houseCount = 0;
+        this.PropertiesInSet = propertiesInSet;
+    }
+
+    @Override
+    public int getCurrentRent(int propertiesInSetOwned) {
+        int rent = rentSteps[houseCount];
+
+        boolean doubleRent = (houseCount == 0) && (propertiesInSetOwned == PropertiesInSet);
+        if (doubleRent) {
+            rent *= 2;
+        }
+
+        return rent;
     }
 }
 

@@ -1,15 +1,11 @@
 package dtu.gruppe10.fields;
 
-import dtu.gruppe10.Player;
-
 public class BreweryField extends PropertyField {
     public BreweryField(int id, int price, int[] rentSteps) {
-        super(id, FieldType.BREWERY, price);
-
-        this.rentSteps = rentSteps;
+        super(id, FieldType.BREWERY, price, rentSteps);
     }
 
-    public int payUtility(int diceSum, int propertiesInSetOwned) {
+    public int utilityPrice(int diceSum, int propertiesInSetOwned) {
         return getCurrentRent(propertiesInSetOwned) * diceSum;
     }
 
