@@ -11,7 +11,7 @@ public class DieCupTest extends TestCase {
         Die die2 = new SixSidedDie();
         DieCup cup = new DieCup(die1,die2);
         cup.roll();
-        boolean isHasPair = cup.hasPair();
+        boolean isHasPair = cup.getResult().AreSame;
         assertTrue(isHasPair == (die1.getFace() == die2.getFace()));
 
     }
@@ -21,7 +21,7 @@ public class DieCupTest extends TestCase {
         Die die2 = new SixSidedDie();
         DieCup cup = new DieCup(die1,die2);
         cup.roll();
-        int DiceSum = cup.getSum();
+        int DiceSum = cup.getResult().Sum;
         assertEquals(DiceSum,(die1.getFace() +die2.getFace()));
     }
 }

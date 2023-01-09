@@ -1,25 +1,22 @@
 package dtu.gruppe10.DieLogic;
 
-//Taget fra CDIO 3
 public class DieCup {
-    public final Die Die1;
-    public final Die Die2;
+    protected Die[] dice;
+    protected DiceRoll lastRoll;
 
-    public DieCup(Die die1, Die die2) {
-        this.Die1 = die1;
-        this.Die2 = die2;
+    public DieCup(Die... dice) {
+        this.dice = dice;
     }
 
     public void roll() {
-        Die1.roll();
-        Die2.roll();
+        for (Die d : dice) {
+            d.roll();
+        }
+
+        lastRoll = new DiceRoll(dice);
     }
 
-    public boolean hasPair() {
-        return Die1.getFace() == Die2.getFace();
-    }
-
-    public int getSum() {
-        return Die1.getFace() + Die2.getFace();
+    public DiceRoll getResult() {
+        return lastRoll;
     }
 }
