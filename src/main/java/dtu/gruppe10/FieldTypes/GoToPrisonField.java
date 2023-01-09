@@ -1,15 +1,18 @@
 package dtu.gruppe10.FieldTypes;
 
 import dtu.gruppe10.Player;
-import dtu.gruppe10.PrisonField;
 
-public class GoToPrisonField {
-    public void goToPrison(Player player, PrisonField prisonField){
+public class GoToPrisonField extends Field {
+    int turnsInPrison;
 
-        // mangler en setField i player klassen (setLocation)
-        //player.setField(prisonField);
+        public void goToPrisonField(Player player) {
+            player.setPosition(31); //31 because the jail is there
+            player.setInPrison(true);
+            turnsInPrison = 0;
+        }
+        @Override
+        public void landedOn(Player player) {
+            goToPrisonField(player);
+        }
 
-        //player.setInPrison(true);
-
-    }
 }
