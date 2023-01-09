@@ -6,18 +6,25 @@ import dtu.gruppe10.fields.Field;
 public class PlayerMovement {
     public final int StartIndex;
     public final int EndIndex;
+    public final MovementType Type;
     public final boolean PassedStart;
-    public final Field EndField;
 
-    public PlayerMovement(int startIndex, int endIndex, Field endField) {
+    private PlayerMovement(int startIndex, int endIndex, MovementType type, boolean passedStart) {
         this.StartIndex = startIndex;
         this.EndIndex = endIndex;
-        this.PassedStart = endIndex < startIndex;
-        this.EndField = endField;
+        this.Type = type;
+        this.PassedStart = passedStart;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Moving from %d to %d (%s). Passed start: %b", StartIndex, EndIndex, EndField.toString(), PassedStart);
+    public static PlayerMovement ForwardMove(int startIndex, int endIndex) {
+        return new PlayerMovement(startIndex, endIndex, MovementType.FORWARD, endIndex < startIndex);
+    }
+
+    public static PlayerMovement BackwardMove(int startIndex, int endIndex) {
+        return new PlayerMovement(startIndex, endIndex, MovementType.BACKWARD, endIndex > startIndex);
+    }
+
+    public static PlayerMovement DirectMove(int startIndex, int endIndex) {
+        return new PlayerMovement(startIndex, endIndex, MovementType.DIRECT, false);
     }
 }
