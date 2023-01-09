@@ -11,7 +11,7 @@ public class Brewery extends Property {
 
     // Skal opdatere lejen ift. hvad terningekastet for spilleren er
     public void updateCurrentRent(int diceSum) {
-        this.currentRent = this.rent0 * diceSum;
+        this.currentRent = rent[0] * diceSum;
     }
 
     // Skal opdatere lejen ift. antallet af øjne på terningekastet

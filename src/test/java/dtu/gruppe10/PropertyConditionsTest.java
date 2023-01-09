@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@SuppressWarnings("SpellCheckingInspection")
+
 public class PropertyConditionsTest {
     Property field;
     @Before
@@ -106,7 +106,39 @@ public class PropertyConditionsTest {
         field.whenLandedOn(player2,diceSum);
         assertEquals((10000-1200)+rent0*diceSum, player.Account.getBalance());
         assertEquals(5000-rent0*diceSum, player2.Account.getBalance());
+    }
 
+    @Test
+    public void allPropertyTypesPaysRentCorrectly(){
+        Street street = new Street("Rødovrevej",1200,PropertyColor.RED,100,0,0,0,0,0);
+        Ferry ferry = new Ferry("Helsingør - Helsingborg",4000,PropertyColor.GREEN,500,0,0,0);
+        Brewery brewery = new Brewery("Tuborg Squash",3000,PropertyColor.ORANGE,100,0);
+        Player player1 = new Player("Ziggy", 10000, 1);
+        Player player2 = new Player("Felix", 5000, 1);
+        // Spiller 1 køber alle tre typer felter
+        street.whenLandedOn(player1);
+        ferry.whenLandedOn(player1);
+        brewery.whenLandedOn(player1);
+
+        // Spiller 2 lander på alle typer felter
+        // Tester samtidigt om lejen er håndteret korrekt ved efter hver type felt, spiller 2 lander på
+
+        // Street
+        street.whenLandedOn(player2);
+        int balanceAfterBuyingFields = 10000-1200-4000-3000;
+        assertEquals(balanceAfterBuyingFields+100,player1.Account.getBalance());
+        assertEquals(5000-100,player2.Account.getBalance());
+
+        // Ferry
+        ferry.whenLandedOn(player2);
+        assertEquals(balanceAfterBuyingFields+100+500,player1.Account.getBalance());
+        assertEquals(5000-100-500,player2.Account.getBalance());
+
+        // Brewery
+        int diceSum = 10;
+        brewery.whenLandedOn(player2,diceSum);
+        assertEquals(balanceAfterBuyingFields+100+500+(100*10),player1.Account.getBalance());
+        assertEquals(5000-100-500-(100*10),player2.Account.getBalance());
     }
 
 

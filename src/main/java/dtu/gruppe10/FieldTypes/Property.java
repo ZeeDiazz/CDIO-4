@@ -11,8 +11,9 @@ public class Property extends Field {
     protected Player owner;
 
     protected int numberOfHouses;
-    protected final int rent0;
-    protected final int rent1;
+
+    protected int[] rent;
+
     protected int currentRent;
 
 
@@ -20,8 +21,9 @@ public class Property extends Field {
         this.name = name;
         this.price = price;
         this.color = color;
-        this.rent0 = rent0;
-        this.rent1 = rent1;
+        this.rent = new int[2];
+        this.rent[0] = rent0;
+        this.rent[1] = rent1;
         this.currentRent = rent0;
     }
 
