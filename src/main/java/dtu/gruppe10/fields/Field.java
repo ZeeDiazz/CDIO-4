@@ -3,8 +3,11 @@ package dtu.gruppe10.fields;
 import dtu.gruppe10.Player;
 
 public abstract class Field {
-    protected String name;
-    protected boolean landedOn;
+    public final int ID;
+    public final FieldType Type;
 
-    public abstract void whenLandedOn(Player player);
+    public Field(int id, FieldType type) {
+        this.ID = id;
+        this.Type = type;
+    }
 }
