@@ -12,21 +12,25 @@ public abstract class PrisonField extends Field {
     private int maxTurnsInPrison = 3;
 
     public boolean isInPrison (Player player, boolean isInPrison) {
+        // her tæller jeg antal ture i fængsel og så længe
         for (int i = 0; i < maxTurnsInPrison; i++) {
             turnsInPrison++;
 
             setInPrison(true);
         }
+        // her vil jeg gerne tvinge player til at betale kaution
+        //current.playerSubtract(xxx)
+        // efter at spilleren har betalt kaution skal deres inPrison status = false
+        setInPrison(false);
         return false;
     }
 
-     public void inPrisonEffect (Player player, int turnInPrison){
-        if(turnInPrison<maxTurnsInPrison){
-
+     public void inPrisonEffect (Player player){
+        while (player.InPrison()){
+            player.movePlayer(0,0);
         }
 
-
-     }
+    }
 
     public int getTurnsInPrison() {
         return turnsInPrison;
