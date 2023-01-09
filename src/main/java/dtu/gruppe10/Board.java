@@ -23,6 +23,9 @@ public class Board {
     public static Field[] generateBoardFields() {
         Field[] fields = new Field[40];
 
+        for (int i = 0; i < fields.length; i++){
+
+        }
         return fields;
     }
 }
