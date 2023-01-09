@@ -5,7 +5,7 @@ import dtu.gruppe10.FieldTypes.Field;
 
 import javax.naming.Name;
 
-public class PrisonField extends Field {
+public abstract class PrisonField extends Field {
     Name prison;
     private boolean isInPrison;
     private int turnsInPrison = 0;

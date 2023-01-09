@@ -10,7 +10,7 @@ public class GoToPrisonField extends Field {
             player.setInPrison(true);
             turnsInPrison = 0;
         }
-        public void landedOn(Player player) {
+        public void whenLandedOn(Player player) {
             goToPrisonField(player);
         }
 
