@@ -119,14 +119,22 @@ public class PropertyConditionsTest {
         street.whenLandedOn(player1);
         ferry.whenLandedOn(player1);
         brewery.whenLandedOn(player1);
+
         // Spiller 2 lander på alle typer felter
+        // Tester samtidigt om lejen er håndteret korrekt ved efter hver type felt, spiller 2 lander på
+
+        // Street
         street.whenLandedOn(player2);
         int balanceAfterBuyingFields = 10000-1200-4000-3000;
         assertEquals(balanceAfterBuyingFields+100,player1.Account.getBalance());
         assertEquals(5000-100,player2.Account.getBalance());
+
+        // Ferry
         ferry.whenLandedOn(player2);
         assertEquals(balanceAfterBuyingFields+100+500,player1.Account.getBalance());
         assertEquals(5000-100-500,player2.Account.getBalance());
+
+        // Brewery
         int diceSum = 10;
         brewery.whenLandedOn(player2,diceSum);
         assertEquals(balanceAfterBuyingFields+100+500+(100*10),player1.Account.getBalance());
