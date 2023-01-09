@@ -26,7 +26,7 @@ public abstract class PrisonField extends Field {
     }
 
      public void inPrisonEffect (Player player){
-        while (player.InPrison()){
+        while (player.inPrison()){
             player.movePlayer(0,0);
         }
 

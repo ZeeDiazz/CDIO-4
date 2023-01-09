@@ -40,10 +40,8 @@ public class Property extends Field {
     // spiller klassen.
 
     public void receiveRent(Player payer) {
-        if (this.landedOn == true) {
-            if (!(this.owner.equals(null)) || this.owner == payer) {
-                this.owner.handleRent(payer, currentRent);
-            }
+        if (this.landedOn && owner != null && this.owner != payer) {
+            Player.payRent(this.owner, payer, currentRent);
         }
     }
 
@@ -75,11 +73,10 @@ public class Property extends Field {
             if (this.isBought) {
                 return;
             }
-            if (buyer.getBalance() >= this.price) {
+            if (buyer.canPay(this.price)) {
                 this.isBought = true;
+                buyer.Account.subtract(this.price);
                 this.owner = buyer;
-                this.owner.subtractFromBalance(this.price);
-
             }
         }
     }

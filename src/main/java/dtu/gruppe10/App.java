@@ -29,7 +29,7 @@ public class App {
             Player currentPlayer = game.getCurrentPlayer();
             String playerName = currentPlayer.name;
 
-            System.out.println(String.format("Starting %s's turn (money: %d)", playerName, currentPlayer.getBalance()));
+            System.out.println(String.format("Starting %s's turn (money: %d)", playerName, currentPlayer.Account.getBalance()));
 
             String roll = scan.nextLine();
 

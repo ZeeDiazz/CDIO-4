@@ -64,13 +64,13 @@ public class GameTest extends TestCase {
         assertFalse(game.isGameOver());
 
         // Set player 1's balance to 0 (Bankrupt)
-        player1.addToBalance(0);
+        player1.Account.subtract(21);
 
         // Checks if the game is over
         assertFalse(game.isGameOver());
 
         // Set player 2's balance to 0 (Bankrupt)
-        player2.addToBalance(0);
+        player2.Account.subtract(21);
 
 
         // Check that the game is over and end game

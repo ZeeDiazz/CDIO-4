@@ -18,7 +18,7 @@ public class PlayerTest extends TestCase {
         Player player = new Player("Player 1", 20, 0);
 
         // Check that the player's balance is 20
-        assertEquals(20, player.getBalance());
+        assertEquals(20, player.Account.getBalance());
     }
     @Test
     public void testSetBalance() {

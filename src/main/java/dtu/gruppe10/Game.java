@@ -24,7 +24,7 @@ public class Game {
         }
         int remainingPlayers = 0;
         for (Player player : players) {
-            if (!player.CheckBankrupt()) { //if the player is bankrupt
+            if (!player.Account.isBankrupt()) {
                 remainingPlayers++;
             }
         }

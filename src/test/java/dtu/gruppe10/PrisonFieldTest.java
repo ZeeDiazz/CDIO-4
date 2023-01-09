@@ -11,7 +11,7 @@ public class PrisonFieldTest extends TestCase {
 
         assertEquals(31, player.getPosition());
 
-        assertTrue(player.InPrison());
+        assertTrue(player.inPrison());
 
     }
     public void testIfPlayerIsNotInPrison(){
@@ -19,7 +19,7 @@ public class PrisonFieldTest extends TestCase {
 
         player.setPosition(2);
 
-        assertFalse(player.InPrison());
+        assertFalse(player.inPrison());
     }
 
 
