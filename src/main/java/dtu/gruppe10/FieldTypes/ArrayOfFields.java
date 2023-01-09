@@ -21,8 +21,8 @@ public class ArrayOfFields {
     }
 
 
-    public void addToArray() {
-        this.fields = deckOfFields.toArray(new Field[0]);
+    public Field[] addToArray() {
+        return deckOfFields.toArray(new Field[0]);
     }
 
 }

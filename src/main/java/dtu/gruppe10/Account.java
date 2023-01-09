@@ -28,8 +28,8 @@ public class Account {
     // køres koden. Spillernes balance bliver også opdateret i metoden
     public void handleRent(Player reciever, Player payer, int rent) {
         if (!(payer.isBankrupt(rent))) {
-            reciever.setBalance(rent);
-            payer.setBalance(-rent);
+            reciever.addToBalance(rent);
+            payer.subtractFromBalance(rent);
         }
     }
     public void add(int amount) {
