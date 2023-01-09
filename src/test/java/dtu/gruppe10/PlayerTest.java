@@ -1,9 +1,11 @@
 package dtu.gruppe10;
 
 import junit.framework.TestCase;
+import org.junit.Test;
 
 public class PlayerTest extends TestCase {
 
+    @Test
     public void testGetPosition() {
         Player player = new Player("Player 1", 30000, 1);
         player.movePlayer(3, 4);
@@ -12,7 +14,7 @@ public class PlayerTest extends TestCase {
         player.movePlayer(6, 6);
         assertEquals(19, player.getPosition()); // wrapped around to start
     }
-
+    @Test
     public void testSetPosition() {
         Player player = new Player("Player 1", 30000, 1);
 
@@ -25,7 +27,7 @@ public class PlayerTest extends TestCase {
         player.setPosition(-1);
         assertEquals(-1, player.getPosition()); // invalid position
     }
-
+    @Test
     public void testCanPay() {
         Player player = new Player("Player 1", 15000, 1);
 
@@ -35,7 +37,7 @@ public class PlayerTest extends TestCase {
         player.Account.add(5000);
         assertTrue(player.canPay(20000));
     }
-
+    @Test
     public void testMovePlayer() {
         Player player1 = new Player("Player 1", 30000, 1);
         Player player2 = new Player("Player 2", 30000, 1);
@@ -50,7 +52,7 @@ public class PlayerTest extends TestCase {
         //fordi (1+2)+ 5 = 8
         assertEquals(8, player1.getPosition());
     }
-
+    @Test
     public void testCheckPassedStartField() {
         Player player = new Player("Player 1", 30000, 1);
 
@@ -66,7 +68,7 @@ public class PlayerTest extends TestCase {
         int currentBalance = player.Account.getBalance();
         assertTrue(currentBalance == prevBalance + 4000);
     }
-
+    @Test
     public void testHasRolledPair() {
         Player player = new Player("Player 1",30000, 1);
 
@@ -76,16 +78,19 @@ public class PlayerTest extends TestCase {
         player.setRolledPair(true);
         assertTrue(player.hasRolledPair());
     }
-
-    public void testSetRolledPair() {
-    }
-
+    @Test
     public void testInPrison() {
-    }
+        Player player = new Player("Player 1",30000,1);
+        player.setInPrison(false);
+        assertFalse(player.inPrison());
+        player.setInPrison(true);
+        assertTrue(player.inPrison());
 
+    }
+    @Test
     public void testSetInPrison() {
     }
-
+    @Test
     public void testPayRent() {
         Player receiver = new Player("Player 1", 35000, 1);
         Player payer = new Player("Player 2", 37000, 2);
