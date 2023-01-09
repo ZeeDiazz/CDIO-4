@@ -8,7 +8,7 @@ public class GoToPrisonField extends Field {
         public void goToPrisonField(Player player) {
             player.setPosition(31); //31 because the jail is there
             player.setInPrison(true);
-            turnsInPrison = 0;
+            player.setTurnsInPrison(0);
         }
         public void whenLandedOn(Player player) {
             goToPrisonField(player);

@@ -10,6 +10,7 @@ public class Player {
     private boolean rolledPair;
     private int position;
     private boolean InPrison;
+    private int turnsInPrison;
     private PlayerMovement movement;
 
     public Player(String name, int startingBalance, int ID) {
@@ -39,7 +40,19 @@ public class Player {
         this.setPosition(newPosition);
         this.checkPassedStartField(prevPosition);
     }
+    public void increaseTurnsInPrison(){
+        this.turnsInPrison++;
+    }
+    public void setTurnsInPrison(int turnsInPrison) {
+        this.turnsInPrison = turnsInPrison;
+    }
+    public int getTurnsInPrison() {
+        return turnsInPrison;
+    }
+    public void getsOutofPrisonByBail(){
+        this.Account.subtract(50);
 
+    }
     public void checkPassedStartField(int prevPosition) {
         if (this.position < prevPosition) {
             this.Account.add(4000);
