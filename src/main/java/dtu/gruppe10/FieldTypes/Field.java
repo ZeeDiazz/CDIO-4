@@ -6,5 +6,5 @@ public abstract class Field {
     protected String name;
     protected boolean landedOn;
 
-    public abstract void landedOn(Player player);
+
 }
