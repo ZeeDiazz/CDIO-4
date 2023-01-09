@@ -27,6 +27,13 @@ public class PlayerTest extends TestCase {
     }
 
     public void testCanPay() {
+        Player player = new Player("Player 1", 15000, 1);
+
+        assertTrue(player.canPay(5000));
+        assertFalse(player.canPay(20000));
+
+        player.Account.add(5000);
+        assertTrue(player.canPay(20000));
     }
 
     public void testMovePlayer() {
