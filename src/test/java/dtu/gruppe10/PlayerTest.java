@@ -88,9 +88,6 @@ public class PlayerTest extends TestCase {
 
     }
     @Test
-    public void testSetInPrison() {
-    }
-    @Test
     public void testPayRent() {
         Player receiver = new Player("Player 1", 35000, 1);
         Player payer = new Player("Player 2", 37000, 2);
