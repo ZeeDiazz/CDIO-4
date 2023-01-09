@@ -78,6 +78,7 @@ public class App {
             try{
                 int playerCount = scan.nextInt();
                 if (playerCount > 1 && playerCount < 7) {
+                    scan.nextLine();
                     return playerCount;
                 } else {
                     System.out.println("Enter a number between 2 and 6");
