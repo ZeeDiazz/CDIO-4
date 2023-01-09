@@ -18,8 +18,24 @@ public class AccountTest extends TestCase {
     }
     @Test
     public void testAdd() {
+        Account balance = new Account(30000);
+        balance.add(5000);
+        assertEquals(35000,balance.getBalance());
+
+        //negative test
+        balance = new Account(30000);
+        balance.add(-20);
+        assertEquals(30000,balance.getBalance());
     }
     @Test
     public void testSubtract() {
+        Account balance = new Account(30000);
+        balance.subtract(5000);
+        assertEquals(25000,balance.getBalance());
+
+        //negative test
+        balance = new Account(30000);
+        balance.subtract(-20);
+        assertEquals(30000,balance.getBalance());
     }
 }
