@@ -22,10 +22,7 @@ public class ArrayOfFields {
 
 
     public void addToArray() {
-        this.fields = new Field[this.deckOfFields.size()];
-        for (int i = 0; i < this.deckOfFields.size(); i++) {
-            this.fields[i] = this.deckOfFields.get(i);
-        }
+        this.fields = deckOfFields.toArray(new Field[0]);
     }
 
 }
