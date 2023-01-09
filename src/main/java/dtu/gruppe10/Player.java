@@ -43,6 +43,9 @@ public class Player {
     public void increaseTurnsInPrison(){
         this.turnsInPrison++;
     }
+    public int getTurnsInPrison() {
+        return turnsInPrison;
+    }
     public void getsOutofPrisonByBail(){
         this.Account.subtract(50);
 
