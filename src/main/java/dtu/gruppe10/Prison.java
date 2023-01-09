@@ -1,9 +1,6 @@
 package dtu.gruppe10;
 
 
-import dtu.gruppe10.FieldTypes.Field;
-
-import javax.naming.Name;
 import java.util.HashMap;
 
 public class Prison {

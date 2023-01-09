@@ -1,6 +1,6 @@
 package dtu.gruppe10;
 
-import dtu.gruppe10.FieldTypes.*;
+import dtu.gruppe10.fields.*;
 import org.junit.Before;
 import org.junit.Test;
 

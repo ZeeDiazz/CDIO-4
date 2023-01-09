@@ -1,4 +1,4 @@
-package dtu.gruppe10.DieLogic;
+package dtu.gruppe10.dice;
 
 public class DieCup {
     protected Die[] dice;

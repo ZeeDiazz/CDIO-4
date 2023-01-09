@@ -1,4 +1,4 @@
-package dtu.gruppe10.DieLogic;
+package dtu.gruppe10.dice;
 
 import junit.framework.TestCase;
 import org.junit.Test;

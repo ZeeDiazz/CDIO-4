@@ -1,6 +1,6 @@
 package dtu.gruppe10;
 
-import dtu.gruppe10.FieldTypes.Field;
+import dtu.gruppe10.fields.Field;
 
 import static dtu.gruppe10.Board.generateBoardFields;
 

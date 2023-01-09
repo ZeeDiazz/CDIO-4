@@ -1,7 +1,7 @@
-package dtu.gruppe10.Players;
+package dtu.gruppe10.players;
 
 
-import dtu.gruppe10.FieldTypes.Field;
+import dtu.gruppe10.fields.Field;
 
 public class PlayerMovement {
     public final int StartIndex;

@@ -1,7 +1,6 @@
-package dtu.gruppe10.DieLogic;
+package dtu.gruppe10.dice;
 
 import junit.framework.TestCase;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class DieCupTest extends TestCase {

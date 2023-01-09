@@ -1,4 +1,4 @@
-package dtu.gruppe10.FieldTypes;
+package dtu.gruppe10.fields;
 
 public class Ferry extends Property {
     public Ferry(String name, int price, PropertyColor color, int rent0, int rent1, int rent2, int rent3) {

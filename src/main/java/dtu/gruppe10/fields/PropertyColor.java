@@ -1,4 +1,4 @@
-package dtu.gruppe10.FieldTypes;
+package dtu.gruppe10.fields;
 
 public enum PropertyColor {
     ORANGE,

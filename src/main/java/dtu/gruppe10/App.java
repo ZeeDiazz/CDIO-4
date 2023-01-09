@@ -1,7 +1,7 @@
 package dtu.gruppe10;
-import dtu.gruppe10.DieLogic.DieCup;
-import dtu.gruppe10.DieLogic.SixSidedDie;
-import dtu.gruppe10.FieldTypes.Field;
+import dtu.gruppe10.dice.DieCup;
+import dtu.gruppe10.dice.SixSidedDie;
+import dtu.gruppe10.fields.Field;
 
 import java.util.Random;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package dtu.gruppe10.DieLogic;
+package dtu.gruppe10.dice;
 
 public class DiceRoll {
     public final int Sum;

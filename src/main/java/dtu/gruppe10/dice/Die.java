@@ -1,4 +1,4 @@
-package dtu.gruppe10.DieLogic;
+package dtu.gruppe10.dice;
 
 //Taget fra CDIO 3
 public abstract class Die {

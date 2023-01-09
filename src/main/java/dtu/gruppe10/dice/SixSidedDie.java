@@ -1,4 +1,4 @@
-package dtu.gruppe10.DieLogic;
+package dtu.gruppe10.dice;
 import java.util.Random;
 //Taget fra CDIO 3
 

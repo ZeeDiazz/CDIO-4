@@ -1,7 +1,7 @@
 package dtu.gruppe10;
 
 
-import dtu.gruppe10.FieldTypes.Field;
+import dtu.gruppe10.fields.Field;
 
 public class Board {
     private int numberOfFields;
