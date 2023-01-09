@@ -7,4 +7,8 @@ public abstract class Field {
     protected boolean landedOn;
 
 
+
+    public abstract void whenLandedOn(Player player);
+
+
 }

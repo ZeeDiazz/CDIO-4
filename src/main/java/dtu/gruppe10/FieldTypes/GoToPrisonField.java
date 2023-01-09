@@ -5,13 +5,18 @@ import dtu.gruppe10.Player;
 public class GoToPrisonField extends Field {
     int turnsInPrison;
 
-        public void goToPrisonField(Player player) {
-            player.setPosition(31); //31 because the jail is there
-            player.setInPrison(true);
-            turnsInPrison = 0;
-        }
-        public void landedOn(Player player) {
-            goToPrisonField(player);
-        }
+    public void goToPrisonField(Player player) {
+        player.setPosition(31); //31 because the jail is there
+        player.setInPrison(true);
+        turnsInPrison = 0;
+    }
+
+    @Override
+    public void whenLandedOn(Player player) {
+        goToPrisonField(player);
+    }
+
+
+
 
 }

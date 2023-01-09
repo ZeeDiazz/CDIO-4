@@ -86,6 +86,7 @@ public class Property extends Field {
     //Håndterer det at betale penge og opkrævning af leje
     //Kan kun købe og opkræve leje via denne metode, da det er den eneste metode, der sætter
     //attributten landedOn til at være true. Metoden gør derfor også landedOn falsk igen til sidst i metoden.
+    @Override
     public void whenLandedOn(Player player) {
         this.landedOn = true;
         if (this.owner == null) {
@@ -95,6 +96,7 @@ public class Property extends Field {
         }
         this.landedOn = false;
     }
+
 
 }
 
