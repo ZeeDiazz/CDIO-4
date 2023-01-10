@@ -16,7 +16,7 @@ public class Board {
 
         this.playerPositions = new HashMap<>();
         for (Player p : players) {
-            setPlayerPosition(p.ID, startField);
+            playerPositions.put(p.ID, startField);
         }
     }
 
@@ -28,11 +28,30 @@ public class Board {
         return fields[index];
     }
 
-    public void movePlayerForward(int playerId, int amount) {
-
+    public int getPlayerPosition(int playerId) {
+        return playerPositions.get(playerId);
     }
 
-    public void setPlayerPosition(int playerId, int fieldIndex) {
-        this.playerPositions.put(playerId, fieldIndex);
+    public PlayerMovement generateForwardMove(int playerId, int amount) {
+        int startPos = getPlayerPosition(playerId);
+        return PlayerMovement.ForwardMove(startPos, (startPos + amount) % FieldCount);
+    }
+
+    public PlayerMovement generateBackwardMove(int playerId, int amount) {
+        int startPos = getPlayerPosition(playerId);
+        return PlayerMovement.ForwardMove(startPos, (startPos - amount + FieldCount) % FieldCount);
+    }
+
+    public PlayerMovement generateDirectMove(int playerId, int newPos) {
+        int startPos = getPlayerPosition(playerId);
+        return PlayerMovement.DirectMove(startPos, newPos);
+    }
+
+    public int[] getFields(PlayerMovement move, boolean includeStart, boolean includeEnd) {
+        return move.getFieldIndexes(FieldCount, includeStart, includeEnd);
+    }
+
+    public void performMove(int playerId, PlayerMovement move) {
+        playerPositions.put(playerId, move.End);
     }
 }
