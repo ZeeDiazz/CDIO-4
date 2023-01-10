@@ -4,10 +4,12 @@ package dtu.gruppe10;
 import java.util.HashMap;
 
 public class Jail {
+    public final int BailPrice;
     protected HashMap<Player, Integer> inmates;
     protected int maxTurnsInPrison;
 
-    public Jail(int maxTurnsInPrison) {
+    public Jail(int bailPrice, int maxTurnsInPrison) {
+        this.BailPrice = bailPrice;
         this.maxTurnsInPrison = maxTurnsInPrison;
         this.inmates = new HashMap<>();
     }

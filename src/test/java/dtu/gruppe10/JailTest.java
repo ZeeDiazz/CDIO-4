@@ -8,7 +8,7 @@ import org.junit.Test;
 public class JailTest extends TestCase {
     @Test
     public void testAddPlayer() {
-        Jail jail = new Jail(3);
+        Jail jail = new Jail(0,3);
         Player player1 = new Player(1,30000);
         Player player2 = new Player(1,30000);
 
