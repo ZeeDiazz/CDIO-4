@@ -55,19 +55,19 @@ public class GameTest extends TestCase {
         game = new Game(players);
 
         // Check that the game is not over yet
-        assertFalse(game.isGameOver());
+        assertFalse(game.gameIsOver());
 
         // Set player 1's balance to 0 (Bankrupt)
         players[0].Account.subtract(21);
 
         // Checks if the game is over
-        assertFalse(game.isGameOver());
+        assertFalse(game.gameIsOver());
 
         // Set player 2's balance to 0 (Bankrupt)
         players[1].Account.subtract(21);
 
 
         // Check that the game is over and end game
-        assertTrue(game.isGameOver());
+        assertTrue(game.gameIsOver());
     }
 }

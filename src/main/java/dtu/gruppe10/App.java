@@ -28,7 +28,7 @@ public class App {
 
         game = new Game(players);
 
-        while (!game.isGameOver()) {
+        while (!game.gameIsOver()) {
 
             Player currentPlayer = game.getCurrentPlayer();
             String playerName = currentPlayer.name;
@@ -63,7 +63,7 @@ public class App {
 
 
 
-            if(game.isGameOver()){
+            if(game.gameIsOver()){
                 return;
             }
 
