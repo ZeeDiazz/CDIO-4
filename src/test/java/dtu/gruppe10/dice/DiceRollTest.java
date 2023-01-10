@@ -42,6 +42,6 @@ public class DiceRollTest extends TestCase {
         Die die1 = new TestDie(6);
 
         DiceRoll roll = new DiceRoll(die1);
-        assert(roll.getValue(6));
+        assertEquals(6, roll.getValue(0));
     }
 }
