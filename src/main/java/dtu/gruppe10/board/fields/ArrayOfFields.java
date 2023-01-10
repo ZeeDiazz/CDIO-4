@@ -41,7 +41,7 @@ public class ArrayOfFields {
                 this.add(new ChanceField(counter));
                 counter++;
             } else if (texts[2].equals("ferry")) {
-                this.add(new StreetField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}, StreetColor.RED, 0));
+                this.add(new FerryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}, StreetColor.RED, 0));
                 counter++;
             }
 
