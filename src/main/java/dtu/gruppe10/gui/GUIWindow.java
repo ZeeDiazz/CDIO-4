@@ -121,15 +121,9 @@ public class GUIWindow extends JFrame implements Runnable {
                 Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
                 Board.draw(g);
 
-                Random rng = new Random();
                 for (int playerId : idToPlayer.keySet()) {
                     GUIPlayer player = idToPlayer.get(playerId);
-                    if (rng.nextInt(10) == 0) {
-                        Board.drawPlayerInPrison(g, player);
-                    }
-                    else {
-                        Board.drawPlayer(g, player, idToPosition.get(playerId));
-                    }
+                    Board.drawPlayer(g, player, idToPosition.get(playerId));
                 }
 
                 int windowHeight = getHeight();

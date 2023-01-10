@@ -43,9 +43,9 @@ public class App {
 
         int playerCount = playerCountAnswer.getAnswer();
         Player[] players = new Player[playerCount];
-        GUIPlayer[] guiPlayers = new GUIPlayer[playerCount];
 
-        Color[] playerColors = {new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)};
+        Color t = new Color(255, 0, 0);
+        Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)};
 
         for (int i = 0; i < playerCount; ++i) {
             GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
@@ -60,7 +60,6 @@ public class App {
 
             String playerName = playerNameAnswer.getAnswer();
             players[i] = new Player(i+1, 30000);
-            guiPlayers[i] = new GUIPlayer(i+1, playerName, playerColors[i]);
 
             window.addPlayer(new GUIPlayer(i+1, playerName, playerColors[i]));
         }
@@ -94,7 +93,7 @@ public class App {
                 game.nextTurn();
             }
 
-            for (int x = 0; x < 1_000_000; ++x) {
+            for (int x = 0; x < 300_000; ++x) {
                 System.out.println();
             }
         }
