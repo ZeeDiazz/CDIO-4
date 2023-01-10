@@ -21,7 +21,7 @@ public class ArrayOfFields {
 
     public void readFieldData() throws IOException {
         // Load the fields.CSV
-        BufferedReader reader = new BufferedReader(new FileReader("fields.CSV"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/fields.CSV"));
         String textLine;
         int counter = 0;
         int jailCounter = 0;
@@ -53,6 +53,12 @@ public class ArrayOfFields {
                     } else {
                         this.add(new GoToJailField(counter));
                     }
+                    break;
+                case "brewery":
+                    this.add(new BreweryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6])}));
+                    break;
+                case "refugee":
+                    this.add(new FreeParkingField(counter));
                     break;
             }
             counter++;
