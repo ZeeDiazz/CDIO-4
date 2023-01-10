@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
-import java.util.Random;
 
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
@@ -16,6 +15,7 @@ public class GUIWindow extends JFrame implements Runnable {
     protected GUIState currentState;
     protected HashMap<Integer, GUIPlayer> idToPlayer;
     protected HashMap<Integer, Integer> idToPosition;
+    protected HashMap<Integer, Boolean> idToJailedStatus;
 
     protected GUIPrompt<?> currentPrompt;
     protected GUIAnswer<?> currentAnswer;
@@ -31,6 +31,7 @@ public class GUIWindow extends JFrame implements Runnable {
 
         idToPlayer = new HashMap<>();
         idToPosition = new HashMap<>();
+        idToJailedStatus = new HashMap<>();
 
         promptKeyListener = new KeyListener() {
             @Override
@@ -123,7 +124,13 @@ public class GUIWindow extends JFrame implements Runnable {
 
                 for (int playerId : idToPlayer.keySet()) {
                     GUIPlayer player = idToPlayer.get(playerId);
-                    Board.drawPlayer(g, player, idToPosition.get(playerId));
+
+                    if (idToJailedStatus.get(playerId)) {
+                        Board.drawPlayerInPrison(g, player);
+                    }
+                    else {
+                        Board.drawPlayer(g, player, idToPosition.get(playerId));
+                    }
                 }
 
                 int windowHeight = getHeight();
@@ -278,6 +285,14 @@ public class GUIWindow extends JFrame implements Runnable {
 
     public void updatePlayerBalance(int playerId, int changeAmount) {
         this.balances.playerChangeInMoney(playerId, changeAmount);
+    }
+
+    public void setPlayerInJail(int playerId) {
+        idToJailedStatus.put(playerId, true);
+    }
+
+    public void setPlayerFreeFromJail(int playerId) {
+        idToJailedStatus.put(playerId, false);
     }
 
     protected Point getCenterOfWindow() {
