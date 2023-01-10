@@ -1,5 +1,6 @@
 package dtu.gruppe10.fields;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 public class ArrayOfFields {
