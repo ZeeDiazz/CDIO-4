@@ -3,11 +3,11 @@ package dtu.gruppe10;
 
 import java.util.HashMap;
 
-public class Prison {
+public class Jail {
     protected HashMap<Player, Integer> inmates;
     protected int maxTurnsInPrison;
 
-    public Prison(int maxTurnsInPrison) {
+    public Jail(int maxTurnsInPrison) {
         this.maxTurnsInPrison = maxTurnsInPrison;
         this.inmates = new HashMap<>();
     }
