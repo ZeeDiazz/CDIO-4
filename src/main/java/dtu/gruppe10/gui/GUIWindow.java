@@ -13,10 +13,10 @@ public class GUIWindow extends JFrame implements Runnable {
     protected HashMap<Integer, GUIPlayer> idToPlayer;
     protected HashMap<Integer, Integer> idToPosition;
 
-    public GUIWindow(Rectangle bounds, GUIPlayer[] players) {
+    public GUIWindow(Rectangle bounds, GUIPlayer[] players, GUIField[] guiFields) {
         super("Matador");
 
-        Board = new GUIBoard(10);
+        Board = new GUIBoard(guiFields, 10);
         Balances = new GUIBalances(players);
         Balances.setBuffer(new Point(5, 2));
         Balances.playerWentBankrupt(1);
@@ -62,7 +62,14 @@ public class GUIWindow extends JFrame implements Runnable {
     public void paint(Graphics g) {
         super.paint(g);
 
+        if (this.currentState == null) {
+            return;
+        }
+
         switch (currentState) {
+            case START_GAME -> {
+
+            }
             case PLAYING -> {
                 Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
                 Board.draw(g);

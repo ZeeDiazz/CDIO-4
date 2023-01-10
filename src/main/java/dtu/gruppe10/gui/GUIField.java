@@ -5,11 +5,13 @@ import java.awt.*;
 public class GUIField {
     protected final static int pointsPerArc = 5;
 
+    public final int ID;
     public final Color PrimaryColor;
     public final boolean IsSplit;
     public final Image Image;
 
-    public GUIField(Color primaryColor, boolean isSplit, Image image) {
+    public GUIField(int id, Color primaryColor, boolean isSplit, Image image) {
+        this.ID = id;
         this.PrimaryColor = primaryColor;
         this.IsSplit = isSplit;
         this.Image = image;

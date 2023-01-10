@@ -25,50 +25,13 @@ public class GUIBoard {
     protected int prisonIndex;
     protected Point prisonPoint;
 
-    public GUIBoard(/*GUIField[] fields,*/ int prisonIndex) {
+    public GUIBoard(GUIField[] fields, int prisonIndex) {
         // Save variables
-        this.fieldCount = 40;
-        this.fields = new GUIField[this.fieldCount];
+        this.fields = fields;
+        this.fieldCount = fields.length;
         this.ownerColor = new Color[this.fieldCount];
         this.houseCount = new int[this.fieldCount];
         this.prisonIndex = prisonIndex;
-
-        // Start, prison, free parking, go to jail
-        this.fields[0] = new GUIField(Color.RED, false, null);
-        this.fields[10] = new GUIField(Color.BLACK, true, null);
-        this.fields[20] = new GUIField(fieldBaseColor, false, null);
-        this.fields[30] = new GUIField(Color.BLACK, true, null);
-
-        // Tax fields
-        this.fields[4] = new GUIField(fieldBaseColor, false, null);
-        this.fields[38] = new GUIField(fieldBaseColor, false, null);
-
-        // Draw card fields
-        for (int luckyIndex : new int[]{2, 7, 17, 22, 33, 36}) {
-            this.fields[luckyIndex] = new GUIField(Color.BLACK, false, null);
-        }
-
-        // Ships
-        Color shipColor = new Color(220, 34, 224);
-        for (int shipIndex : new int[]{5, 15, 25, 35}) {
-            this.fields[shipIndex] = new GUIField(shipColor, true, null);
-        }
-
-        // Drinks
-        Color drinkColor = new Color(14, 182, 170);
-        this.fields[12] = new GUIField(drinkColor, true, null);
-        this.fields[28] = new GUIField(drinkColor, true, null);
-
-        // Properties
-        int[][] propertyIndexes = {{1, 3}, {6, 8, 9}, {11, 13, 14}, {16, 18, 19}, {21, 23, 24}, {26, 27, 29}, {31, 32, 34}, {37, 39}};
-        Color[] propertyColors = {new Color(75, 109, 255), new Color(241, 94, 16), new Color(28, 157, 5), Color.GRAY, new Color(196, 34, 34), Color.WHITE, new Color(185, 133, 4), new Color(41, 9, 182)};
-        for (int i = 0; i < propertyIndexes.length; ++i) {
-            Color propertyColor = propertyColors[i];
-            for (int j = 0; j < propertyIndexes[i].length; ++j) {
-                int propertyIndex = propertyIndexes[i][j];
-                this.fields[propertyIndex] = new GUIField(propertyColor, true, null);
-            }
-        }
     }
 
     public void changePositionAndSize(Point center, int diameter) {
@@ -118,6 +81,7 @@ public class GUIBoard {
             }
 
             // Paint the fields' painted part (for some it's all, for others it's only a little part)
+            Color fieldColor = field.PrimaryColor == null ? fieldBaseColor : field.PrimaryColor;
             paintPolygon(g, coloredPolygon, field.PrimaryColor);
 
             g.setColor(Color.BLACK);

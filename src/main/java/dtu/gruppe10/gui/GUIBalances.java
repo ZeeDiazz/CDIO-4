@@ -83,7 +83,6 @@ public class GUIBalances {
             drawPosition.translate(0, -(circleRadius / 2));
             GUICircle playerCircle = new GUICircle(drawPosition, circleRadius);
             playerCircle.draw(g, colors[i], true);
-            System.out.println("Draw pos: " + drawPosition);
 
             drawPosition.translate(xTextOffset, circleRadius / 2);
             g.setColor(Color.BLACK);
