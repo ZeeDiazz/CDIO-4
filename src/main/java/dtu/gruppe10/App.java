@@ -27,6 +27,7 @@ public class App {
     protected static boolean wantsToPayBail;
     protected static boolean moveHacks;
     protected static int moveHackAmount;
+    protected static boolean moveHackDouble;
 
     public static void main( String[] args ) {
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
@@ -83,10 +84,16 @@ public class App {
                     else {
                         System.out.println("Move hacks disabled");
                         moveHackAmount = 0;
+                        moveHackDouble = false;
                     }
                 }
-                if (moveHacks && Character.isDigit(e.getKeyChar())) {
-                    moveHackAmount = Character.getNumericValue(e.getKeyChar());
+                if (moveHacks) {
+                    if (Character.isDigit(e.getKeyChar())) {
+                        moveHackAmount = Character.getNumericValue(e.getKeyChar());
+                    }
+                    else if (e.getKeyChar() == 'd') {
+                        moveHackDouble = true;
+                    }
                 }
             }
 
@@ -141,7 +148,7 @@ public class App {
             if (jail.playerIsJailed(currentPlayer)) {
                 boolean release = false;
 
-                if (roll.AreSame) {
+                if (roll.AreSame || moveHacks && moveHackDouble) {
                     System.out.println("Player rolled out of prison");
                     System.out.println(roll.getValue(0) + " " + roll.getValue(1));
                     release = true;

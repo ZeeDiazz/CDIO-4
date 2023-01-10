@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUIWindow extends JFrame implements Runnable {
@@ -18,6 +19,8 @@ public class GUIWindow extends JFrame implements Runnable {
     protected HashMap<Integer, GUIPlayer> idToPlayer;
     protected HashMap<Integer, Integer> idToPosition;
     protected HashMap<Integer, Boolean> idToJailedStatus;
+
+    protected ArrayList<Integer> bankruptIds;
 
     protected GUIPrompt<?> currentPrompt;
     protected GUIAnswer<?> currentAnswer;
@@ -37,6 +40,8 @@ public class GUIWindow extends JFrame implements Runnable {
         idToPlayer = new HashMap<>();
         idToPosition = new HashMap<>();
         idToJailedStatus = new HashMap<>();
+
+        bankruptIds  = new ArrayList<>();
 
         promptKeyListener = new KeyListener() {
             @Override
@@ -222,6 +227,16 @@ public class GUIWindow extends JFrame implements Runnable {
                 g.drawString(winnerString, drawPoint.x, drawPoint.y);
             }
         }
+
+        if (bankruptIds.size() > 0) {
+            for (int playerId : bankruptIds) {
+                this.idToPlayer.remove(playerId);
+                this.idToPosition.remove(playerId);
+
+                this.balances.playerWentBankrupt(playerId);
+            }
+            bankruptIds.clear();
+        }
     }
 
     public void enterPressedInPromptMode() {
@@ -346,10 +361,7 @@ public class GUIWindow extends JFrame implements Runnable {
     }
 
     public void playerWentBankrupt(int playerId) {
-        this.idToPlayer.remove(playerId);
-        this.idToPosition.remove(playerId);
-
-        this.balances.playerWentBankrupt(playerId);
+        this.bankruptIds.add(playerId);
     }
 
     public void updatePlayerBalance(int playerId, int changeAmount) {
