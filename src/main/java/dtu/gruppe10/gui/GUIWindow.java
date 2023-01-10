@@ -144,6 +144,10 @@ public class GUIWindow extends JFrame implements Runnable {
         errorInPrompt = reason;
     }
 
+    public void propertyBought(int playerId, int fieldIndex) {
+        Board.newOwner(fieldIndex, idToPlayer.get(playerId));
+    }
+
     public boolean hasPromptCurrently() {
         return this.currentPrompt != null;
     }
@@ -240,6 +244,13 @@ public class GUIWindow extends JFrame implements Runnable {
 
     public void setNewPlayerPosition(int playerId, int positionIndex) {
         idToPosition.put(playerId, positionIndex);
+    }
+
+    public void playerWentBankrupt(int playerId) {
+        this.idToPlayer.remove(playerId);
+        this.idToPosition.remove(playerId);
+
+        this.balances.playerWentBankrupt(playerId);
     }
 
     public void updatePlayerBalance(int playerId, int changeAmount) {
