@@ -1,7 +1,8 @@
-package dtu.gruppe10;
+package dtu.gruppe10.board;
 
 
-import dtu.gruppe10.fields.Field;
+import dtu.gruppe10.Player;
+import dtu.gruppe10.board.fields.Field;
 
 import java.util.HashMap;
 

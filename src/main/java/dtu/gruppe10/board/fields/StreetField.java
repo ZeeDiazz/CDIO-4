@@ -1,4 +1,4 @@
-package dtu.gruppe10.fields;
+package dtu.gruppe10.board.fields;
 
 public class StreetField extends PropertyField {
     public final StreetColor Color;

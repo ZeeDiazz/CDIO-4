@@ -1,4 +1,4 @@
-package dtu.gruppe10.fields;
+package dtu.gruppe10.board.fields;
 
 public class FerryField extends PropertyField {
     public FerryField(int id, int price, int[] rentSteps) {

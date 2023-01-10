@@ -1,6 +1,4 @@
-package dtu.gruppe10;
-
-import java.util.Arrays;
+package dtu.gruppe10.board;
 
 public class PlayerMovement {
     public final int Start;

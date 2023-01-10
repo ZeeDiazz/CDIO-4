@@ -1,6 +1,6 @@
 package dtu.gruppe10;
 
-import dtu.gruppe10.fields.Field;
+import dtu.gruppe10.board.fields.Field;
 
 public interface UI {
 

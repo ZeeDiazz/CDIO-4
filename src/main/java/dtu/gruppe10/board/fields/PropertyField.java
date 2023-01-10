@@ -1,4 +1,4 @@
-package dtu.gruppe10.fields;
+package dtu.gruppe10.board.fields;
 
 import dtu.gruppe10.Player;
 

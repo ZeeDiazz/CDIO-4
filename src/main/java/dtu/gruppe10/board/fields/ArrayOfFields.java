@@ -1,4 +1,4 @@
-package dtu.gruppe10.fields;
+package dtu.gruppe10.board.fields;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

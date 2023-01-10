@@ -1,4 +1,4 @@
-package dtu.gruppe10.fields;
+package dtu.gruppe10.board.fields;
 
 public class BreweryField extends PropertyField {
     public BreweryField(int id, int price, int[] rentSteps) {

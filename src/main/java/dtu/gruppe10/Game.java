@@ -1,6 +1,7 @@
 package dtu.gruppe10;
 
-import dtu.gruppe10.fields.Field;
+import dtu.gruppe10.board.Board;
+import dtu.gruppe10.board.fields.Field;
 
 public class Game {
     private int currentPlayerIndex;

@@ -1,4 +1,4 @@
-package dtu.gruppe10.fields;
+package dtu.gruppe10.board.fields;
 
 public class FreeParkingField extends Field {
     public FreeParkingField(int id) {

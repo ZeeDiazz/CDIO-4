@@ -1,4 +1,4 @@
-package dtu.gruppe10;
+package dtu.gruppe10.board;
 
 public enum MovementType {
     FORWARD,
