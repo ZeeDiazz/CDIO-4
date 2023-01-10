@@ -48,7 +48,7 @@ public class App {
         Color t = new Color(255, 0, 0);
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)};
 
-        int startBalance = 10000;
+        int startBalance = 300000;
         for (int i = 0; i < playerCount; ++i) {
             GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
             window.repaint();
@@ -72,10 +72,10 @@ public class App {
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
+        Jail jail = new Jail(1000,3);
 
         ArrayOfFields fieldReader = new ArrayOfFields();
         try {
-
             fieldReader.readFieldData();
         }
         catch (IOException e) {
@@ -89,13 +89,41 @@ public class App {
             cup.roll();
             DiceRoll roll = cup.getResult();
 
+            if (jail.playerIsJailed(currentPlayer)) {
+                boolean release = false;
+
+                if (roll.AreSame) {
+                    release = true;
+                }
+                else if (jail.playerHasToGetOut(currentPlayer)) {
+                    currentPlayer.Account.subtract(jail.BailPrice);
+                    release = true;
+                }
+
+                if (!release) {
+                    game.nextTurn();
+                    continue;
+                }
+                jail.releasePlayer(currentPlayer);
+                window.setPlayerFreeFromJail(currentPlayer.ID);
+            }
+
             PlayerMovement move = game.Board.generateForwardMove(currentPlayer.ID, roll.Sum);
+
+            Field endField = game.Board.getFieldAt(move.End);
+            if (endField instanceof GoToJailField) {
+                jail.addPlayer(currentPlayer);
+                move = game.Board.generateDirectMove(currentPlayer.ID, board.getPrisonIndex());
+                endField = game.Board.getFieldAt(move.End);
+
+                window.setPlayerInJail(currentPlayer.ID);
+            }
+
             game.Board.performMove(currentPlayer.ID, move);
 
             window.setNewPlayerPosition(currentPlayer.ID, move.End);
             window.repaint();
 
-            Field endField = game.Board.getFieldAt(move.End);
             if (endField instanceof PropertyField propertyField) {
                 if (propertyField.isOwned()) {
                     // Pay rent
@@ -128,9 +156,6 @@ public class App {
                     window.propertyBought(currentPlayer.ID, move.End);
                     System.out.println(currentPlayer.ID + " has bought a property");
                 }
-            }
-            else if (endField instanceof GoToJailField) {
-                // Send to jail
             }
 
             if (move.PassedStart) {

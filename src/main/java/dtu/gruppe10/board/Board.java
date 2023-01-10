@@ -3,6 +3,7 @@ package dtu.gruppe10.board;
 
 import dtu.gruppe10.Player;
 import dtu.gruppe10.board.fields.Field;
+import dtu.gruppe10.board.fields.JailField;
 
 import java.util.HashMap;
 
@@ -27,6 +28,16 @@ public class Board {
 
     public Field getFieldAt(int index) {
         return fields[index];
+    }
+
+    public int getPrisonIndex() {
+        for (int i = 0; i < FieldCount; ++i) {
+            Field currentField = getFieldAt(i);
+            if (currentField instanceof JailField) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public int getPlayerPosition(int playerId) {
