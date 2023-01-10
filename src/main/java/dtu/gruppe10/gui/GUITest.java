@@ -13,7 +13,9 @@ public class GUITest {
         players[2] = new GUIPlayer(3, "Felix", Color.magenta);
         players[3] = new GUIPlayer(4, "Zahedullah", Color.red);
 
-        GUIWindow window = new GUIWindow(new Rectangle(100, 100, 300, 300), players, generateFields());
+        GUIWindow window = new GUIWindow(new Rectangle(100, 100, 300, 300), generateFields());
+        window.addPlayers(players);
+
         window.setNewPlayerPosition(1, 2);
         window.setNewPlayerPosition(2, 4);
 
@@ -64,7 +66,7 @@ public class GUITest {
     }
 
     // TODO make it a method reading from a file, elsewhere
-    protected static GUIField[] generateFields() {
+    public static GUIField[] generateFields() {
         GUIField[] fields = new GUIField[40];
 
         // Start, prison, free parking, go to jail
