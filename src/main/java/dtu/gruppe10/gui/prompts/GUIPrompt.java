@@ -1,5 +1,6 @@
 package dtu.gruppe10.gui.prompts;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
@@ -27,9 +28,15 @@ public abstract class GUIPrompt<T> {
         this.errorHandlers.add(errorHandler);
     }
 
-    protected void lastInputNotAccepted() {
+    protected void lastInputNotAccepted(String reason) {
         for (PromptErrorHandler handler : errorHandlers) {
-            handler.lastInputNotAccepted();
+            handler.lastInputNotAccepted(reason);
+        }
+    }
+
+    protected void lastAnswerNotAccepted(String reason) {
+        for (PromptErrorHandler handler : errorHandlers) {
+            handler.lastAnswerNotAccepted(reason);
         }
     }
 

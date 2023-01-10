@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class StringPrompt extends GUIPrompt<String> {
-    protected int inclusiveMinLength;
-    protected int inclusiveMaxLength;
+    public final int InclusiveMinLength;
+    public final int InclusiveMaxLength;
     protected char[] disallowedChars;
 
     public StringPrompt(String prompt, int inclusiveMinLength, int inclusiveMaxLength, char[] disallowedLetters) {
@@ -25,11 +25,13 @@ public class StringPrompt extends GUIPrompt<String> {
                     return;
                 }
                 if (!Character.isLetter(pressedKey)) {
+                    lastInputNotAccepted("Input is not a letter");
                     return;
                 }
 
                 for (char disallowed : disallowedLetters) {
                     if (pressedKey == disallowed) {
+                        lastInputNotAccepted("Letter is not allowed");
                         return;
                     }
                 }
@@ -47,8 +49,8 @@ public class StringPrompt extends GUIPrompt<String> {
             }
         };
 
-        this.inclusiveMinLength = inclusiveMinLength;
-        this.inclusiveMaxLength = inclusiveMaxLength;
+        this.InclusiveMinLength = inclusiveMinLength;
+        this.InclusiveMaxLength = inclusiveMaxLength;
         this.disallowedChars = disallowedLetters;
     }
 
@@ -56,6 +58,17 @@ public class StringPrompt extends GUIPrompt<String> {
     public boolean answerAcceptable() {
         int currentAnswerLength = CurrentAnswer.length();
 
-        return currentAnswerLength >= inclusiveMinLength && currentAnswerLength <= inclusiveMaxLength;
+        boolean accepted = true;
+
+        if (currentAnswerLength < InclusiveMinLength) {
+            accepted = false;
+            lastAnswerNotAccepted("Answer too short");
+        }
+        else if (currentAnswerLength > InclusiveMaxLength) {
+            accepted = false;
+            lastAnswerNotAccepted("Answer too long");
+        }
+
+        return accepted;
     }
 }

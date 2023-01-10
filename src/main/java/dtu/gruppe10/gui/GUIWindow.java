@@ -1,5 +1,10 @@
 package dtu.gruppe10.gui;
 
+import dtu.gruppe10.gui.prompts.GUIAnswer;
+import dtu.gruppe10.gui.prompts.GUIPrompt;
+import dtu.gruppe10.gui.prompts.IntegerPrompt;
+import dtu.gruppe10.gui.prompts.PromptErrorHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,6 +23,8 @@ public class GUIWindow extends JFrame implements Runnable {
     protected GUIPrompt<?> currentPrompt;
     protected GUIAnswer<?> currentAnswer;
     protected KeyListener promptKeyListener;
+    protected PromptErrorHandler promptErrorHandler;
+    protected boolean errorInPrompt;
     protected int currentGUIPromptId = 0;
 
     public GUIWindow(Rectangle bounds, GUIPlayer[] players, GUIField[] guiFields) {
@@ -60,6 +67,13 @@ public class GUIWindow extends JFrame implements Runnable {
             @Override
             public void keyReleased(KeyEvent e) {
 
+            }
+        };
+
+        promptErrorHandler = new PromptErrorHandler() {
+            @Override
+            public void lastInputNotAccepted(String reason) {
+                errorInPrompt(reason);
             }
         };
 
@@ -127,6 +141,13 @@ public class GUIWindow extends JFrame implements Runnable {
             currentAnswer.setAnswer(currentPrompt.CurrentAnswer);
             removeCurrentPrompt();
         }
+        else {
+            errorInPrompt("Input not accepted");
+        }
+    }
+
+    public void errorInPrompt(String reason) {
+        errorInPrompt = true;
     }
 
     public boolean hasPromptCurrently() {
@@ -141,14 +162,16 @@ public class GUIWindow extends JFrame implements Runnable {
         currentPrompt = prompt;
         currentAnswer = answer;
 
-        addKeyListener(currentPrompt.keyListener);
+        currentPrompt.addErrorHandler(promptErrorHandler);
+
+        addKeyListener(currentPrompt.getKeyListener());
         addKeyListener(promptKeyListener);
 
         currentGUIPromptId++;
     }
 
     public void removeCurrentPrompt() {
-        removeKeyListener(this.currentPrompt.keyListener);
+        removeKeyListener(this.currentPrompt.getKeyListener());
         removeKeyListener(promptKeyListener);
 
         this.currentPrompt = null;
@@ -156,8 +179,15 @@ public class GUIWindow extends JFrame implements Runnable {
     }
 
     public void handlePrompt(Graphics g) {
+        Color prevColor = g.getColor();
         Font prevFont = g.getFont();
         Font queryFont = getOptimalFontForQuery();
+
+        if (errorInPrompt) {
+            g.setColor(Color.RED);
+            errorInPrompt = false;
+        }
+
         g.setFont(queryFont);
 
         FontMetrics metrics = g.getFontMetrics();
@@ -174,6 +204,7 @@ public class GUIWindow extends JFrame implements Runnable {
         }
 
         g.setFont(prevFont);
+        g.setColor(prevColor);
     }
 
     public GUIAnswer<Integer> getUserInt(int inclusiveMinimum, int inclusiveMaximum) throws IllegalStateException {

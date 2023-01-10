@@ -24,6 +24,7 @@ public class IntegerPrompt extends GUIPrompt<Integer> {
                     return;
                 }
                 if (!Character.isDigit(pressedKey)) {
+                    lastInputNotAccepted("Input is not a number");
                     return;
                 }
 
@@ -55,6 +56,17 @@ public class IntegerPrompt extends GUIPrompt<Integer> {
 
     @Override
     public boolean answerAcceptable() {
-        return CurrentAnswer >= InclusiveMinimum && CurrentAnswer <= InclusiveMaximum;
+        boolean accepted = true;
+
+        if (CurrentAnswer < InclusiveMinimum) {
+            accepted = false;
+            lastAnswerNotAccepted("Number too small");
+        }
+        else if (CurrentAnswer > InclusiveMaximum) {
+            accepted = false;
+            lastAnswerNotAccepted("Number too big");
+        }
+
+        return accepted;
     }
 }

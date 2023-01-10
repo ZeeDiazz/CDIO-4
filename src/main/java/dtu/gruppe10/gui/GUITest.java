@@ -1,5 +1,7 @@
 package dtu.gruppe10.gui;
 
+import dtu.gruppe10.gui.prompts.GUIAnswer;
+
 import java.awt.*;
 import java.util.Random;
 
