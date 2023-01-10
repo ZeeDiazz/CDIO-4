@@ -39,6 +39,28 @@ public abstract class PropertyField extends Field {
         isMortgaged = false;
     }
 
+    public abstract boolean inSameSet(PropertyField propertyField);
+    public boolean inSameSet(Field field) {
+        if (field instanceof PropertyField propertyField) {
+            return inSameSet(propertyField);
+        }
+        return false;
+    }
+
+    public boolean inSetWith(PropertyField propertyField) {
+        if (propertyField.equals(this)) {
+            return false;
+        }
+        return inSameSet(propertyField);
+    }
+
+    public boolean inSetWith(Field field) {
+        if (field instanceof PropertyField propertyField) {
+            return inSetWith(propertyField);
+        }
+        return false;
+    }
+
     /* Til når man kan bygge huse
 
         public void updateCurrentRent(int numberHouses) {
