@@ -24,7 +24,10 @@ public class StringPrompt extends GUIPrompt<String> {
                     }
                     return;
                 }
-                if (!Character.isLetter(pressedKey)) {
+                else if (pressedKey == '\n') {
+                    return; // Ignore 'Enter'
+                }
+                else if (!Character.isLetter(pressedKey)) {
                     lastInputNotAccepted("Input is not a letter");
                     return;
                 }

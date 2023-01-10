@@ -24,7 +24,7 @@ public class GUIWindow extends JFrame implements Runnable {
     protected GUIAnswer<?> currentAnswer;
     protected KeyListener promptKeyListener;
     protected PromptErrorHandler promptErrorHandler;
-    protected boolean errorInPrompt;
+    protected String errorInPrompt;
     protected int currentGUIPromptId = 0;
 
     public GUIWindow(Rectangle bounds, GUIPlayer[] players, GUIField[] guiFields) {
@@ -73,6 +73,11 @@ public class GUIWindow extends JFrame implements Runnable {
         promptErrorHandler = new PromptErrorHandler() {
             @Override
             public void lastInputNotAccepted(String reason) {
+                errorInPrompt(reason);
+            }
+
+            @Override
+            public void lastAnswerNotAccepted(String reason) {
                 errorInPrompt(reason);
             }
         };
@@ -141,13 +146,10 @@ public class GUIWindow extends JFrame implements Runnable {
             currentAnswer.setAnswer(currentPrompt.CurrentAnswer);
             removeCurrentPrompt();
         }
-        else {
-            errorInPrompt("Input not accepted");
-        }
     }
 
     public void errorInPrompt(String reason) {
-        errorInPrompt = true;
+        errorInPrompt = reason;
     }
 
     public boolean hasPromptCurrently() {
@@ -183,9 +185,10 @@ public class GUIWindow extends JFrame implements Runnable {
         Font prevFont = g.getFont();
         Font queryFont = getOptimalFontForQuery();
 
-        if (errorInPrompt) {
+        boolean error = errorInPrompt != null;
+
+        if (error) {
             g.setColor(Color.RED);
-            errorInPrompt = false;
         }
 
         g.setFont(queryFont);
@@ -195,12 +198,28 @@ public class GUIWindow extends JFrame implements Runnable {
         Point drawPoint = getCenterOfWindow();
         drawPoint.translate(-(promptWidth / 2), -(metrics.getHeight() / 2));
         g.drawString(currentPrompt.Prompt, drawPoint.x, drawPoint.y);
+        drawPoint.translate(promptWidth / 2, 5 + metrics.getHeight());
 
         if (currentPrompt.CurrentAnswer != null) {
-            drawPoint.translate(promptWidth / 2, 5);
             int answerWidth = metrics.stringWidth(currentPrompt.CurrentAnswer.toString());
-            drawPoint.translate(-(answerWidth / 2), metrics.getHeight());
+            drawPoint.translate(-(answerWidth / 2), 0);
             g.drawString(currentPrompt.CurrentAnswer.toString(), drawPoint.x, drawPoint.y);
+            drawPoint.translate(answerWidth / 2, 0);
+        }
+
+        drawPoint.translate(0, metrics.getHeight() * 2);
+        if (error) {
+            Font errorFont = queryFont.deriveFont(queryFont.getSize() * 0.7f);
+            g.setFont(errorFont);
+
+            metrics = getFontMetrics(errorFont);
+
+            int errorWidth = metrics.stringWidth(errorInPrompt);
+            drawPoint.translate(-(errorWidth / 2), 0);
+            g.drawString(errorInPrompt, drawPoint.x, drawPoint.y);
+            drawPoint.translate(errorWidth / 2, 0);
+
+            errorInPrompt = null;
         }
 
         g.setFont(prevFont);

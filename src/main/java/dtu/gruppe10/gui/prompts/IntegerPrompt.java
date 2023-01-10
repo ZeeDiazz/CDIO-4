@@ -23,7 +23,10 @@ public class IntegerPrompt extends GUIPrompt<Integer> {
                     }
                     return;
                 }
-                if (!Character.isDigit(pressedKey)) {
+                else if (pressedKey == '\n') {
+                    return; // Ignore 'Enter'
+                }
+                else if (!Character.isDigit(pressedKey)) {
                     lastInputNotAccepted("Input is not a number");
                     return;
                 }
@@ -47,8 +50,6 @@ public class IntegerPrompt extends GUIPrompt<Integer> {
 
             }
         };
-
-
 
         this.InclusiveMinimum = inclusiveMinimum;
         this.InclusiveMaximum = inclusiveMaximum;
