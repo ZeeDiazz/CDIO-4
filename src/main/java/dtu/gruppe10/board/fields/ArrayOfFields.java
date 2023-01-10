@@ -30,7 +30,7 @@ public class ArrayOfFields {
 
         //While there is text line in CSV
         while ((textLine = reader.readLine()) != null) {
-            String[] texts = textLine.split(";"); //Spilts the text if ";"
+            String[] texts = textLine.split(","); //Splits the text if ","
 
             if (texts[2].equals("start")) {
                 this.add(new StartField(counter));
