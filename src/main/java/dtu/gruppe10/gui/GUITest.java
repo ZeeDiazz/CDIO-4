@@ -18,13 +18,22 @@ public class GUITest {
         Thread uiThread = new Thread(window, "uiThread");
         uiThread.start();
 
+        window.setState(GUIState.START_GAME);
+        GUIAnswer<Integer> playerCountAnswer = window.getUserInt(2, 6);
+
+        while (!playerCountAnswer.hasAnswer()) {
+            System.out.println("No answer yet");
+        }
+
+        System.out.println("There are " + playerCountAnswer.getAnswer() + " players playing");
         window.setState(GUIState.PLAYING);
+
         Random rng = new Random();
         int[] positions = new int[4];
         while (true) {
             window.setNewPlayerPosition(1, positions[0]);
             positions[0] = (positions[0] + rng.nextInt(11) + 2) % 40;
-            for (int j = 0; j < Integer.MAX_VALUE; ++j) {
+            for (int i = 0; i < Integer.MAX_VALUE; ++i) {
                 continue;
             }
             window.repaint();
