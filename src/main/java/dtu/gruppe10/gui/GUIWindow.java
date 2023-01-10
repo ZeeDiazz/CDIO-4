@@ -139,8 +139,19 @@ public class GUIWindow extends JFrame implements Runnable {
 
                 Point drawPoint = getCenterOfWindow();
                 drawPoint.translate(-leftShift, 0);
-
                 g.drawString("Game over", drawPoint.x, drawPoint.y);
+                drawPoint.translate(leftShift, 0);
+
+                Font winnerFont = gameOverFont.deriveFont(gameOverFont.getSize() * 0.6f);
+                g.setFont(winnerFont);
+                metrics = g.getFontMetrics();
+
+                GUIPlayer winner = idToPlayer.values().toArray(new GUIPlayer[0])[0];
+                String winnerString = winner.Name + " has won!";
+                leftShift = metrics.stringWidth(winnerString) / 2;
+
+                drawPoint.translate(-leftShift, getFontMetrics(gameOverFont).getHeight() * 2);
+                g.drawString(winnerString, drawPoint.x, drawPoint.y);
             }
         }
     }

@@ -59,7 +59,11 @@ public class IntegerPrompt extends GUIPrompt<Integer> {
     public boolean answerAcceptable() {
         boolean accepted = true;
 
-        if (CurrentAnswer < InclusiveMinimum) {
+        if (CurrentAnswer == null) {
+            accepted = false;
+            lastAnswerNotAccepted("No answer given");
+        }
+        else if (CurrentAnswer < InclusiveMinimum) {
             accepted = false;
             lastAnswerNotAccepted("Number too small");
         }
