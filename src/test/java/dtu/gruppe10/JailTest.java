@@ -7,42 +7,54 @@ import org.junit.Test;
 
 public class JailTest extends TestCase {
     @Test
-    public void testAddPlayer() {
+    public void testIfPlayerCanGetPutInJail() {
         Jail jail = new Jail(3);
-        Player player1 = new Player(1,30000);
-        Player player2 = new Player(1,30000);
+        Player player1 = new Player(1, 30000);
+        Player player2 = new Player(1, 30000);
 
         jail.addPlayer(player1);
         assertTrue(jail.playerIsJailed(player1)); //Is player 1 in jail
         assertFalse(jail.playerIsJailed(player2)); //Is player 2 in jail
-        assertEquals(0, jail.turnsServed(player1));
 
 
     }
 
     @Test
-    public void testReleasePlayer() {
-
-
-    }
-
-    @Test
-    public void testPlayerIsJailed() {
-
-
-
-    }
-
-    @Test
-    public void testTurnsServed() {
+    public void testIfPlayerCanGetReleasedFromJail() {
+        Jail jail = new Jail(3);
+        Player player1 = new Player(1, 30000);
+        Player player2 = new Player(1, 30000);
+        jail.addPlayer(player1);
+        jail.addPlayer(player2);
+        jail.releasePlayer(player2);
+        assertTrue(jail.playerIsJailed(player1)); //Is player 1 in jail?
+        assertFalse(jail.playerIsJailed(player2));//Is player 2 not in jail?
 
     }
 
     @Test
-    public void testPlayerHasToGetOut() {
+    public void testIfPlayerCanSurveTurnsInJail() {
+        Jail jail = new Jail(3);
+        Player player1 = new Player(1, 30000);
+        Player player2 = new Player(2, 30000);
+        jail.addPlayer(player1);
+        jail.addPlayer(player2);
+        jail.playerServedTurn(player1); //Player1 serves one turn in jail
+        assertEquals(jail.turnsServed(player1), 1); // Player1 has had 1 turn in jail?
+        assertEquals(jail.turnsServed(player2), 0); // Player2 has had 0 turns?
+
     }
 
     @Test
-    public void testPlayerServedTurn() {
+    public void testIfPlayerCanGetOutOfJail() {
+        Jail jail = new Jail(3);
+        Player player1 = new Player(1, 30000);
+        Player player2 = new Player(2, 30000);
+        jail.addPlayer(player1);
+        jail.addPlayer(player2);
+        jail.releasePlayer(player2);
+        assertTrue(jail.playerIsJailed(player1)); //Is player 1 in jail
+        assertFalse(jail.playerIsJailed(player2)); //Is player 2 in jail
+
     }
 }
