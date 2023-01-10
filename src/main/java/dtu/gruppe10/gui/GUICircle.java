@@ -45,6 +45,10 @@ public class GUICircle {
         return new GUICircle(this.Center, (int)(this.Radius * scale));
     }
 
+    public boolean contains(Point point) {
+        return this.Center.distance(point) <= this.Radius;
+    }
+
     public static Point[] getPointsOnCircle(Point center, int radius, int pointCount) {
         Point[] points = new Point[pointCount];
         double pointDegree = Math.toRadians(360) / pointCount;

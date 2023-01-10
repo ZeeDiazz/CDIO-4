@@ -82,6 +82,12 @@ public class App {
         while (!game.gameIsOver()) {
             Player currentPlayer = game.getCurrentPlayer();
 
+            window.hasToRoll();
+            window.repaint();
+            while (!window.hasPressedRoll()) {
+                trySleep(10);
+            }
+
             cup.roll();
             DiceRoll roll = cup.getResult();
 
@@ -177,8 +183,6 @@ public class App {
             if (!roll.AreSame) {
                 game.nextTurn();
             }
-
-            trySleep(1000);
         }
 
         window.setState(GUIState.GAME_OVER);

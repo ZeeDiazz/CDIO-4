@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 
 public class GUIWindow extends JFrame implements Runnable {
@@ -23,6 +25,9 @@ public class GUIWindow extends JFrame implements Runnable {
     protected PromptErrorHandler promptErrorHandler;
     protected String errorInPrompt;
     protected int currentGUIPromptId = 0;
+
+    protected boolean needToRoll;
+    protected Rectangle rollButton;
 
     public GUIWindow(Rectangle bounds, GUIField[] guiFields) {
         super("Matador");
@@ -64,6 +69,36 @@ public class GUIWindow extends JFrame implements Runnable {
                 errorInPrompt(reason);
             }
         };
+
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (isVisible() && currentState == GUIState.PLAYING && Board.innerCircle.contains(e.getPoint())) {
+                    needToRoll = false;
+                    repaint();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         // Set the size of the window
         setBounds(bounds);
@@ -113,6 +148,9 @@ public class GUIWindow extends JFrame implements Runnable {
             return;
         }
 
+        Point windowCenter = getCenterOfWindow();
+        Point drawPoint;
+
         switch (currentState) {
             case START_GAME -> {
                 if (hasPromptCurrently()) {
@@ -120,7 +158,7 @@ public class GUIWindow extends JFrame implements Runnable {
                 }
             }
             case PLAYING -> {
-                Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
+                Board.changePositionAndSize(windowCenter, getMaxBoardSize());
                 Board.draw(g);
 
                 for (int playerId : idToPlayer.keySet()) {
@@ -137,6 +175,28 @@ public class GUIWindow extends JFrame implements Runnable {
                 int windowHeight = getHeight();
                 balances.setFont(getOptimalFontForBalances());
                 balances.draw(g, windowHeight);
+
+                if (needToRoll) {
+                    // Draw text saying player has to click on the board to roll
+                    GUICircle boardCircle = Board.outerCircle;
+                    drawPoint = boardCircle.Center.getLocation();
+
+                    drawPoint.translate(0, (int)(boardCircle.Radius * 1.1f));
+                    String rollPrompt = "Press middle of board to roll";
+
+                    Font prevFont = g.getFont();
+                    Font rollFont = getFontByWindowHeight(30);
+                    g.setFont(rollFont);
+
+                    FontMetrics metrics = g.getFontMetrics();
+                    int leftShift = -(metrics.stringWidth(rollPrompt) / 2);
+                    drawPoint.translate(leftShift, -(metrics.getHeight() / 2));
+
+                    g.setColor(Color.BLACK);
+                    g.drawString(rollPrompt, drawPoint.x, drawPoint.y);
+
+                    g.setFont(prevFont);
+                }
             }
             case GAME_OVER -> {
                 Font gameOverFont = getFontByWindowHeight(4);
@@ -145,9 +205,9 @@ public class GUIWindow extends JFrame implements Runnable {
                 FontMetrics metrics = g.getFontMetrics();
                 int leftShift = metrics.stringWidth("Game Over") / 2;
 
-                Point drawPoint = getCenterOfWindow();
+                drawPoint = windowCenter.getLocation();
                 drawPoint.translate(-leftShift, 0);
-                g.drawString("Game over", drawPoint.x, drawPoint.y);
+                g.drawString("Game Over", drawPoint.x, drawPoint.y);
                 drawPoint.translate(leftShift, 0);
 
                 Font winnerFont = gameOverFont.deriveFont(gameOverFont.getSize() * 0.6f);
@@ -271,6 +331,14 @@ public class GUIWindow extends JFrame implements Runnable {
         addPrompt(promptObj, answer);
 
         return answer;
+    }
+
+    public boolean hasPressedRoll() {
+        return !needToRoll;
+    }
+
+    public void hasToRoll() {
+        needToRoll = true;
     }
 
     public void setNewPlayerPosition(int playerId, int positionIndex) {
