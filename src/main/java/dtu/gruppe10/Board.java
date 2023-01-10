@@ -39,7 +39,7 @@ public class Board {
 
     public PlayerMovement generateBackwardMove(int playerId, int amount) {
         int startPos = getPlayerPosition(playerId);
-        return PlayerMovement.ForwardMove(startPos, (startPos - amount + FieldCount) % FieldCount);
+        return PlayerMovement.BackwardMove(startPos, (startPos - amount + FieldCount) % FieldCount);
     }
 
     public PlayerMovement generateDirectMove(int playerId, int newPos) {
