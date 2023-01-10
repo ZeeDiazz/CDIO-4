@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.Random;
 
 public class GUIBoard {
-    private static final float outerCirclePercentSize = 1f;
     private static final float playerPathPercentSize = 0.95f;
     private static final float splitCirclePercentSize = 0.9f;
     private static final float prisonCirclePercentSize = 0.8f;

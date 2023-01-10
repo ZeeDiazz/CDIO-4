@@ -1,6 +1,7 @@
 package dtu.gruppe10;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
+import dtu.gruppe10.board.fields.Field;
 import dtu.gruppe10.dice.DiceRoll;
 import dtu.gruppe10.dice.DieCup;
 import dtu.gruppe10.dice.SixSidedDie;
@@ -26,9 +27,9 @@ public class App {
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
 
-        game = new Game(players);
+        game = new Game(players, new Field[40]);
 
-        while (!game.isGameOver()) {
+        while (!game.gameIsOver()) {
 
             Player currentPlayer = game.getCurrentPlayer();
             String playerName = currentPlayer.name;
@@ -63,7 +64,7 @@ public class App {
 
 
 
-            if(game.isGameOver()){
+            if(game.gameIsOver()){
                 return;
             }
 
