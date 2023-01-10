@@ -236,6 +236,8 @@ public class App {
             if (currentPlayer.Account.isBankrupt()) {
                 game.removePlayer(currentPlayer.ID);
                 window.playerWentBankrupt(currentPlayer.ID);
+                game.nextTurn();
+                continue;
             }
 
             if (!moveHacks && !roll.AreSame) {
