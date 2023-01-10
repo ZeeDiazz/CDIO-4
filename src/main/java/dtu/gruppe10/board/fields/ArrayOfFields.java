@@ -2,6 +2,7 @@ package dtu.gruppe10.board.fields;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ArrayOfFields {
@@ -19,10 +20,15 @@ public class ArrayOfFields {
 
     }
 
-    public void addAllFields() throws FileNotFoundException {
-        // Indlæs fra Field.csv
-        BufferedReader br = new BufferedReader(new FileReader("fields.CSV"));
+    public void addAllFields() throws IOException {
+        // Load the fields.CSV
+        BufferedReader reader = new BufferedReader(new FileReader("fields.CSV"));
+        String textLine;
 
+        //While there is text line in CSV
+        while ((textLine = reader.readLine()) != null) {
+            String[] texts = textLine.split(";"); //Spilts the text if ";"
+        }
 
     }
 
