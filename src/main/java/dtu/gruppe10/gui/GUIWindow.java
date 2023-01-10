@@ -7,8 +7,9 @@ import java.util.Random;
 
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
-    protected final GUIBalances balances;
+    public final GUIBalances Balances;
 
+    protected GUIState currentState;
     protected HashMap<Integer, GUIPlayer> idToPlayer;
     protected HashMap<Integer, Integer> idToPosition;
 
@@ -16,9 +17,9 @@ public class GUIWindow extends JFrame implements Runnable {
         super("Matador");
 
         Board = new GUIBoard(10);
-        balances = new GUIBalances(players);
-        balances.setBuffer(new Point(5, 2));
-        balances.playerWentBankrupt(1);
+        Balances = new GUIBalances(players);
+        Balances.setBuffer(new Point(5, 2));
+        Balances.playerWentBankrupt(1);
 
         idToPlayer = new HashMap<>();
         idToPosition = new HashMap<>();
@@ -43,6 +44,10 @@ public class GUIWindow extends JFrame implements Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void setState(GUIState currentState) {
+        this.currentState = currentState;
+    }
+
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
@@ -53,23 +58,27 @@ public class GUIWindow extends JFrame implements Runnable {
     public void paint(Graphics g) {
         super.paint(g);
 
-        Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
-        Board.draw(g);
+        switch (currentState) {
+            case PLAYING -> {
+                Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
+                Board.draw(g);
 
-        Random rng = new Random();
-        for (int playerId : idToPlayer.keySet()) {
-            GUIPlayer player = idToPlayer.get(playerId);
-            if (rng.nextInt(10) == 0) {
-                Board.drawPlayerInPrison(g, player);
-            }
-            else {
-                Board.drawPlayer(g, player, idToPosition.get(playerId));
+                Random rng = new Random();
+                for (int playerId : idToPlayer.keySet()) {
+                    GUIPlayer player = idToPlayer.get(playerId);
+                    if (rng.nextInt(10) == 0) {
+                        Board.drawPlayerInPrison(g, player);
+                    }
+                    else {
+                        Board.drawPlayer(g, player, idToPosition.get(playerId));
+                    }
+                }
+
+                int windowHeight = getHeight();
+                Balances.setFont(getOptimalFontForBalances());
+                Balances.draw(g, windowHeight);
             }
         }
-
-        int windowHeight = getHeight();
-        balances.setFont(getOptimalFontForBalances());
-        balances.draw(g, windowHeight);
     }
 
     public void setNewPlayerPosition(int playerId, int positionIndex) {
