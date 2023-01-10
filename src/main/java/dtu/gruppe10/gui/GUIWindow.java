@@ -130,6 +130,29 @@ public class GUIWindow extends JFrame implements Runnable {
                 balances.setFont(getOptimalFontForBalances());
                 balances.draw(g, windowHeight);
             }
+            case GAME_OVER -> {
+                Font gameOverFont = getFontByWindowHeight(4);
+                g.setFont(gameOverFont);
+
+                FontMetrics metrics = g.getFontMetrics();
+                int leftShift = metrics.stringWidth("Game Over") / 2;
+
+                Point drawPoint = getCenterOfWindow();
+                drawPoint.translate(-leftShift, 0);
+                g.drawString("Game over", drawPoint.x, drawPoint.y);
+                drawPoint.translate(leftShift, 0);
+
+                Font winnerFont = gameOverFont.deriveFont(gameOverFont.getSize() * 0.6f);
+                g.setFont(winnerFont);
+                metrics = g.getFontMetrics();
+
+                GUIPlayer winner = idToPlayer.values().toArray(new GUIPlayer[0])[0];
+                String winnerString = winner.Name + " has won!";
+                leftShift = metrics.stringWidth(winnerString) / 2;
+
+                drawPoint.translate(-leftShift, getFontMetrics(gameOverFont).getHeight() * 2);
+                g.drawString(winnerString, drawPoint.x, drawPoint.y);
+            }
         }
     }
 
@@ -142,6 +165,10 @@ public class GUIWindow extends JFrame implements Runnable {
 
     public void errorInPrompt(String reason) {
         errorInPrompt = reason;
+    }
+
+    public void propertyBought(int playerId, int fieldIndex) {
+        Board.newOwner(fieldIndex, idToPlayer.get(playerId));
     }
 
     public boolean hasPromptCurrently() {
@@ -240,6 +267,13 @@ public class GUIWindow extends JFrame implements Runnable {
 
     public void setNewPlayerPosition(int playerId, int positionIndex) {
         idToPosition.put(playerId, positionIndex);
+    }
+
+    public void playerWentBankrupt(int playerId) {
+        this.idToPlayer.remove(playerId);
+        this.idToPosition.remove(playerId);
+
+        this.balances.playerWentBankrupt(playerId);
     }
 
     public void updatePlayerBalance(int playerId, int changeAmount) {

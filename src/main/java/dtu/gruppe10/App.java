@@ -1,8 +1,7 @@
 package dtu.gruppe10;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
-import dtu.gruppe10.board.fields.ArrayOfFields;
-import dtu.gruppe10.board.fields.Field;
+import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
 import dtu.gruppe10.dice.DieCup;
 import dtu.gruppe10.dice.SixSidedDie;
@@ -40,7 +39,7 @@ public class App {
             if (playerCountAnswer.hasAnswer()) {
                 break;
             }
-            System.out.println("No answer yet");
+            trySleep(10);
         }
 
         int playerCount = playerCountAnswer.getAnswer();
@@ -49,6 +48,7 @@ public class App {
         Color t = new Color(255, 0, 0);
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)};
 
+        int startBalance = 10000;
         for (int i = 0; i < playerCount; ++i) {
             GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
             window.repaint();
@@ -57,24 +57,25 @@ public class App {
                 if (playerNameAnswer.hasAnswer()) {
                     break;
                 }
-                System.out.println("No answer yet");
+                trySleep(10);
             }
 
             String playerName = playerNameAnswer.getAnswer();
-            players[i] = new Player(i+1, 30000);
+            players[i] = new Player(i+1, startBalance);
 
             window.addPlayer(new GUIPlayer(i+1, playerName, playerColors[i]));
         }
 
         window.setState(GUIState.PLAYING);
         for (int i = 0; i < playerCount; ++i) {
-            window.updatePlayerBalance(i+1, 30000);
+            window.updatePlayerBalance(i+1, startBalance);
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
 
         ArrayOfFields fieldReader = new ArrayOfFields();
         try {
+
             fieldReader.readFieldData();
         }
         catch (IOException e) {
@@ -94,36 +95,68 @@ public class App {
             window.setNewPlayerPosition(currentPlayer.ID, move.End);
             window.repaint();
 
+            Field endField = game.Board.getFieldAt(move.End);
+            if (endField instanceof PropertyField propertyField) {
+                if (propertyField.isOwned()) {
+                    // Pay rent
+                    int propertiesInSetOwned = 1;
+                    for (int i = 0; i < game.Board.FieldCount; ++i) {
+                        Field field = game.Board.getFieldAt(i);
+                        if (propertyField.inSetWith(field) && propertyField.getOwner().equals(((PropertyField)field).getOwner())) {
+                            propertiesInSetOwned++;
+                        }
+                    }
+
+                    int toPay;
+                    if (propertyField instanceof BreweryField breweryField) {
+                        toPay = breweryField.utilityPrice(roll.Sum, propertiesInSetOwned);
+                    }
+                    else {
+                        toPay = propertyField.getCurrentRent(propertiesInSetOwned);
+                    }
+
+                    System.out.println(currentPlayer.ID + " has paid " + toPay + " in rent to " + propertyField.getOwner().ID);
+                    System.out.println("Property: " + propertyField.ID);
+                    Player.payRent(propertyField.getOwner(), currentPlayer, toPay);
+                }
+                else {
+                    // Buy property
+                    currentPlayer.Account.subtract(propertyField.Price);
+                    window.updatePlayerBalance(currentPlayer.ID, -propertyField.Price);
+
+                    propertyField.newOwner(currentPlayer);
+                    window.propertyBought(currentPlayer.ID, move.End);
+                    System.out.println(currentPlayer.ID + " has bought a property");
+                }
+            }
+            else if (endField instanceof GoToJailField) {
+                // Send to jail
+            }
+
             if (move.PassedStart) {
                 currentPlayer.Account.add(4000);
                 window.updatePlayerBalance(currentPlayer.ID, 4000);
+            }
+
+            if (currentPlayer.Account.isBankrupt()) {
+                game.removePlayer(currentPlayer.ID);
+                window.playerWentBankrupt(currentPlayer.ID);
             }
 
             if (!roll.AreSame) {
                 game.nextTurn();
             }
 
-            for (int x = 0; x < 300_000; ++x) {
-                System.out.println();
-            }
+            trySleep(1000);
         }
+
+        window.setState(GUIState.GAME_OVER);
     }
 
-    private static int getPlayerCount(){
-        while (true){
-            System.out.println("Enter the number of players (2-6):");
-            try{
-                int playerCount = scan.nextInt();
-                if (playerCount > 1 && playerCount < 7) {
-                    scan.nextLine();
-                    return playerCount;
-                } else {
-                    System.out.println("Enter a number between 2 and 6");
-                }
-            } catch (Exception e) {
-                System.out.println("Enter a valid number");
-                scan.next();
-            }
+    private static void trySleep(long millis) {
+        try {
+            Thread.sleep(millis);
         }
+        catch (InterruptedException ignored) {}
     }
 }
