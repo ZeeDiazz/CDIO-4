@@ -48,6 +48,10 @@ public class GUIWindow extends JFrame implements Runnable {
         this.currentState = currentState;
     }
 
+    public GUIState getCurrentState() {
+        return currentState;
+    }
+
     @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
