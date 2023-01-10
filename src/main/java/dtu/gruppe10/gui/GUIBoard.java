@@ -9,6 +9,7 @@ public class GUIBoard {
     private static final float prisonCirclePercentSize = 0.8f;
     private static final float innerCirclePercentSize = 0.7f;
     private static final float ownedCirclePercentSize = 0.65f;
+    private static final float playerPercentSize = 0.02f;
 
     protected static Color boardColor = new Color(114, 24, 24);
     protected static Color fieldBaseColor = new Color(108, 159, 159);
@@ -18,6 +19,7 @@ public class GUIBoard {
     protected GUICircle splitCircle;
     protected GUICircle ownedCircle;
     protected GUICircle playerPathCircle;
+    protected int playerRadius;
     protected int fieldCount;
     protected GUIField[] fields;
     protected Color[] ownerColor;
@@ -42,6 +44,8 @@ public class GUIBoard {
         this.splitCircle = outerCircle.getScaledCircle(splitCirclePercentSize);
         this.ownedCircle = outerCircle.getScaledCircle(ownedCirclePercentSize);
         this.playerPathCircle = outerCircle.getScaledCircle(playerPathPercentSize);
+
+        this.playerRadius = (int)(boardRadius * playerPercentSize);
 
         GUICircle prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
         this.prisonPoint = prisonCircle.getSinglePoint(prisonIndex * 2 + 1, 80);
@@ -95,28 +99,24 @@ public class GUIBoard {
         innerCircle.draw(g, false);
     }
 
+    public void drawPlayerInPrison(Graphics g, GUIPlayer player) {
+        drawPlayer(g, player, prisonPoint);
+    }
+
     public void drawPlayer(Graphics g, GUIPlayer player, int positionIndex) {
         Point playerPoint = playerPathCircle.getSinglePoint(positionIndex * 2 + 1, fieldCount * 2);
 
         drawPlayer(g, player, playerPoint);
     }
 
-    public void drawPlayerInPrison(Graphics g, GUIPlayer player) {
-        drawPlayer(g, player, prisonPoint);
-    }
-
     protected void drawPlayer(Graphics g, GUIPlayer player, Point playerPosition) {
-        GUICircle playerOutline = new GUICircle(playerPosition, 6);
+        int outlineRadius = playerRadius + (playerRadius / 10) + 1;
+
+        GUICircle playerOutline = new GUICircle(playerPosition, outlineRadius);
         playerOutline.draw(g, Color.BLACK, true);
 
-        GUICircle playerCircle = new GUICircle(playerPosition, 5);
+        GUICircle playerCircle = new GUICircle(playerPosition, playerRadius);
         playerCircle.draw(g, player.TokenColor, true);
-    }
-
-    public void drawPlayers(Graphics g, GUIPlayer[] players, int[] positionIndexes) {
-        for (int i = 0; i < players.length; ++i) {
-            drawPlayer(g, players[i], positionIndexes[i]);
-        }
     }
 
     protected void paintPolygon(Graphics g, Polygon polygon, Color color) {
