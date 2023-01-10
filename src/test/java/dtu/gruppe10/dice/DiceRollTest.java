@@ -19,7 +19,7 @@ public class DiceRollTest extends TestCase {
         Die die2 = new TestDie(6);
 
         DiceRoll roll = new DiceRoll(die1, die2);
-        assertFalse(false);
+        assertTrue(2 != roll.Sum);
     }
     @Test
     public void testIfTheDiceFacesAreTheSame() {
@@ -38,12 +38,10 @@ public class DiceRollTest extends TestCase {
         assertEquals(false, roll.AreSame);
     }
     @Test
-    public void testTheIndexOfDice() {
+    public void testIndexOfDice() {
         Die die1 = new TestDie(6);
-        Die die2 = new TestDie(2);
 
-        DiceRoll roll = new DiceRoll(die1, die2);
-        assertEquals();
+        DiceRoll roll = new DiceRoll(die1);
+        assert(roll.getValue(6));
     }
-
 }
