@@ -90,6 +90,7 @@ public class GUIWindow extends JFrame implements Runnable {
     public void addPlayer(GUIPlayer player) {
         idToPlayer.put(player.ID, player);
         idToPosition.put(player.ID, 0);
+        idToJailedStatus.put(player.ID, false);
     }
 
     public void addPlayers(GUIPlayer[] players) {

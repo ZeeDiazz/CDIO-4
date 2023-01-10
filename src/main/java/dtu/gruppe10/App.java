@@ -93,17 +93,24 @@ public class App {
                 boolean release = false;
 
                 if (roll.AreSame) {
+                    System.out.println("Player rolled out of prison");
+                    System.out.println(roll.getValue(0) + " " + roll.getValue(1));
                     release = true;
                 }
                 else if (jail.playerHasToGetOut(currentPlayer)) {
+                    System.out.println("Player paid bail");
                     currentPlayer.Account.subtract(jail.BailPrice);
                     release = true;
                 }
 
                 if (!release) {
+                    jail.playerServedTurn(currentPlayer);
+                    System.out.println("Player is spending their turn number " + jail.turnsServed(currentPlayer) + " in jail");
                     game.nextTurn();
                     continue;
                 }
+
+                System.out.println("Player " + currentPlayer.ID + " was released from Jail");
                 jail.releasePlayer(currentPlayer);
                 window.setPlayerFreeFromJail(currentPlayer.ID);
             }
@@ -112,8 +119,11 @@ public class App {
 
             Field endField = game.Board.getFieldAt(move.End);
             if (endField instanceof GoToJailField) {
+                System.out.println("Player landed on 'Go To Jail'");
                 jail.addPlayer(currentPlayer);
-                move = game.Board.generateDirectMove(currentPlayer.ID, board.getPrisonIndex());
+                jail.playerServedTurn(currentPlayer);
+
+                move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
                 endField = game.Board.getFieldAt(move.End);
 
                 window.setPlayerInJail(currentPlayer.ID);
