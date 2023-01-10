@@ -4,13 +4,9 @@ public class TestDie extends Die {
     protected int[] rolls;
     protected int currentRollIndex;
 
-    public TestDie(int currentRollIndex, int... rolls) {
-        this.currentRollIndex = currentRollIndex;
-        this.rolls = rolls;
-    }
-
     public TestDie(int... rolls) {
-        this(0, rolls);
+        this.rolls = rolls;
+        this.currentRollIndex = 0;
     }
 
     @Override
