@@ -26,6 +26,7 @@ public class ArrayOfFields {
         BufferedReader reader = new BufferedReader(new FileReader("fields.CSV"));
         String textLine;
         int counter = 0;
+        int jailCounter = 0;
 
         //While there is text line in CSV
         while ((textLine = reader.readLine()) != null) {
@@ -41,12 +42,20 @@ public class ArrayOfFields {
                 this.add(new ChanceField(counter));
                 counter++;
             } else if (texts[2].equals("ferry")) {
-                this.add(new FerryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}, StreetColor.RED, 0));
+                this.add(new FerryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}));
+                counter++;
+            } else if (texts[2].equals("tax")) {
+                this.add(new TaxField(counter, Integer.valueOf(texts[3])));
+                counter++;
+            } else if (texts[2].equals("jail")) {
+                if (jailCounter == 0) {
+                    this.add(new JailField(counter));
+                    jailCounter++;
+                } else {
+                    this.add(new GoToJailField(counter));
+                }
                 counter++;
             }
-
-
-
         }
     }
 
