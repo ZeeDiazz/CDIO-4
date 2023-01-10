@@ -44,4 +44,11 @@ public class DiceRollTest extends TestCase {
         DiceRoll roll = new DiceRoll(die1);
         assertEquals(6, roll.getValue(0));
     }
+    @Test
+    public void testNotIndexOfDice() {
+        Die die1 = new TestDie(6);
+
+        DiceRoll roll = new DiceRoll(die1);
+        assertTrue(5 != roll.getValue(0));
+    }
 }
