@@ -27,7 +27,7 @@ public class ArrayOfFields {
 
         //While there is text line in CSV
         while ((textLine = reader.readLine()) != null) {
-            String[] texts = textLine.split(";"); //Spilts the text if ";"
+            String[] texts = textLine.split(","); //Spilts the text if ";"
         }
 
     }
