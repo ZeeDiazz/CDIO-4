@@ -52,10 +52,7 @@ public class App {
             GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
             window.repaint();
 
-            while (true) {
-                if (playerNameAnswer.hasAnswer()) {
-                    break;
-                }
+            while (!playerNameAnswer.hasAnswer()) {
                 trySleep(10);
             }
 
