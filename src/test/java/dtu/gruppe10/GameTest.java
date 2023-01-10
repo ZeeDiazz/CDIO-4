@@ -14,9 +14,9 @@ public class GameTest extends TestCase {
     public void initialize() {
         players = new Player[3];
         // Create a new object of 3 players
-        players[0] = new Player(0, "Player 1", 20);
-        players[1] = new Player(1, "Player 2", 20);
-        players[2] = new Player(2, "Player 3", 20);
+        players[0] = new Player(0, 20);
+        players[1] = new Player(1, 20);
+        players[2] = new Player(2, 20);
 
         game = new Game(players, new Field[40]); // TODO
     }

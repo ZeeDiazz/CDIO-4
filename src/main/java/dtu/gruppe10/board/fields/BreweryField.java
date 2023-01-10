@@ -17,4 +17,9 @@ public class BreweryField extends PropertyField {
 
         return rentSteps[propertiesInSetOwned - 1];
     }
+
+    @Override
+    public boolean inSameSet(PropertyField propertyField) {
+        return this.Type == propertyField.Type;
+    }
 }

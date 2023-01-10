@@ -13,4 +13,9 @@ public class FerryField extends PropertyField {
 
         return rentSteps[propertiesInSetOwned - 1];
     }
+
+    @Override
+    public boolean inSameSet(PropertyField propertyField) {
+        return this.Type == propertyField.Type;
+    }
 }

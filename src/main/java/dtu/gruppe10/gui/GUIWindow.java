@@ -1,9 +1,6 @@
 package dtu.gruppe10.gui;
 
-import dtu.gruppe10.gui.prompts.GUIAnswer;
-import dtu.gruppe10.gui.prompts.GUIPrompt;
-import dtu.gruppe10.gui.prompts.IntegerPrompt;
-import dtu.gruppe10.gui.prompts.PromptErrorHandler;
+import dtu.gruppe10.gui.prompts.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +11,7 @@ import java.util.Random;
 
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
-    public final GUIBalances Balances;
+    protected GUIBalances balances;
 
     protected GUIState currentState;
     protected HashMap<Integer, GUIPlayer> idToPlayer;
@@ -27,28 +24,13 @@ public class GUIWindow extends JFrame implements Runnable {
     protected String errorInPrompt;
     protected int currentGUIPromptId = 0;
 
-    public GUIWindow(Rectangle bounds, GUIPlayer[] players, GUIField[] guiFields) {
+    public GUIWindow(Rectangle bounds, GUIField[] guiFields) {
         super("Matador");
 
         Board = new GUIBoard(guiFields, 10);
-        Balances = new GUIBalances(players);
-        Balances.setBuffer(new Point(5, 2));
-        Balances.playerWentBankrupt(1);
 
         idToPlayer = new HashMap<>();
         idToPosition = new HashMap<>();
-        for (GUIPlayer player : players) {
-            idToPlayer.put(player.ID, player);
-            idToPosition.put(player.ID, 0);
-        }
-
-        Random rng = new Random();
-        for (int i = 0; i < rng.nextInt(40); ++i) {
-            int index = rng.nextInt(Board.fieldCount);
-
-            int id = rng.nextInt(4) + 1;
-            Board.newOwner(index, idToPlayer.get(id));
-        }
 
         promptKeyListener = new KeyListener() {
             @Override
@@ -93,10 +75,26 @@ public class GUIWindow extends JFrame implements Runnable {
     public void setState(GUIState currentState) {
         this.currentState = currentState;
         repaint(); // Make sure it's painted
+
+        if (currentState == GUIState.PLAYING) {
+            balances = new GUIBalances(this.idToPlayer.values().toArray(new GUIPlayer[0]));
+            balances.setBuffer(new Point(5, 2));
+        }
     }
 
     public GUIState getCurrentState() {
         return currentState;
+    }
+
+    public void addPlayer(GUIPlayer player) {
+        idToPlayer.put(player.ID, player);
+        idToPosition.put(player.ID, 0);
+    }
+
+    public void addPlayers(GUIPlayer[] players) {
+        for (GUIPlayer player : players) {
+            addPlayer(player);
+        }
     }
 
     @Override
@@ -123,20 +121,14 @@ public class GUIWindow extends JFrame implements Runnable {
                 Board.changePositionAndSize(getCenterOfWindow(), getMaxBoardSize());
                 Board.draw(g);
 
-                Random rng = new Random();
                 for (int playerId : idToPlayer.keySet()) {
                     GUIPlayer player = idToPlayer.get(playerId);
-                    if (rng.nextInt(10) == 0) {
-                        Board.drawPlayerInPrison(g, player);
-                    }
-                    else {
-                        Board.drawPlayer(g, player, idToPosition.get(playerId));
-                    }
+                    Board.drawPlayer(g, player, idToPosition.get(playerId));
                 }
 
                 int windowHeight = getHeight();
-                Balances.setFont(getOptimalFontForBalances());
-                Balances.draw(g, windowHeight);
+                balances.setFont(getOptimalFontForBalances());
+                balances.draw(g, windowHeight);
             }
         }
     }
@@ -226,18 +218,32 @@ public class GUIWindow extends JFrame implements Runnable {
         g.setColor(prevColor);
     }
 
-    public GUIAnswer<Integer> getUserInt(int inclusiveMinimum, int inclusiveMaximum) throws IllegalStateException {
-        String promptStr = "Please enter a number between " + inclusiveMinimum + "-" + inclusiveMaximum;
+    public GUIAnswer<Integer> getUserInt(String prompt, int inclusiveMinimum, int inclusiveMaximum) throws IllegalStateException {
+        prompt = prompt.replace("{0}", inclusiveMinimum + "").replace("{1}", inclusiveMaximum + "");
 
-        IntegerPrompt prompt = new IntegerPrompt(promptStr, inclusiveMinimum, inclusiveMaximum);
+        IntegerPrompt promptObj = new IntegerPrompt(prompt, inclusiveMinimum, inclusiveMaximum);
         GUIAnswer<Integer> answer = new GUIAnswer<>();
-        addPrompt(prompt, answer);
+        addPrompt(promptObj, answer);
+
+        return answer;
+    }
+
+    public GUIAnswer<String> getUserString(String prompt, int inclusiveMinimum, int inclusiveMaximum) throws IllegalStateException {
+        prompt = prompt.replace("{0}", inclusiveMinimum + "").replace("{1}", inclusiveMaximum + "");
+
+        StringPrompt promptObj = new StringPrompt(prompt, inclusiveMinimum, inclusiveMaximum, new char[0]);
+        GUIAnswer<String> answer = new GUIAnswer<>();
+        addPrompt(promptObj, answer);
 
         return answer;
     }
 
     public void setNewPlayerPosition(int playerId, int positionIndex) {
         idToPosition.put(playerId, positionIndex);
+    }
+
+    public void updatePlayerBalance(int playerId, int changeAmount) {
+        this.balances.playerChangeInMoney(playerId, changeAmount);
     }
 
     protected Point getCenterOfWindow() {

@@ -28,5 +28,13 @@ public class StreetField extends PropertyField {
 
         return rent;
     }
+
+    @Override
+    public boolean inSameSet(PropertyField propertyField) {
+        if (propertyField instanceof StreetField streetField) {
+            return this.Color == streetField.Color;
+        }
+        return false;
+    }
 }
 

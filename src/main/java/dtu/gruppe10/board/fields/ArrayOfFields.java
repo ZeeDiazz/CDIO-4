@@ -1,7 +1,6 @@
 package dtu.gruppe10.board.fields;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,12 +17,11 @@ public class ArrayOfFields {
 
     public void add(Field field) {
         this.deckOfFields.add(field);
-
     }
 
-    public void addAllFields() throws IOException {
+    public void readFieldData() throws IOException {
         // Load the fields.CSV
-        BufferedReader reader = new BufferedReader(new FileReader("fields.CSV"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/fields.CSV"));
         String textLine;
         int counter = 0;
         int jailCounter = 0;
@@ -32,35 +30,42 @@ public class ArrayOfFields {
         while ((textLine = reader.readLine()) != null) {
             String[] texts = textLine.split(","); //Splits the text if ","
 
-            if (texts[2].equals("start")) {
-                this.add(new StartField(counter));
-                counter++;
-            } else if (texts[2].equals("street")) {
-                this.add(new StreetField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8]), Integer.valueOf(texts[9]), Integer.valueOf(texts[10])}, StreetColor.RED, 0));
-                counter++;
-            } else if (texts[2].equals("chance")) {
-                this.add(new ChanceField(counter));
-                counter++;
-            } else if (texts[2].equals("ferry")) {
-                this.add(new FerryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}));
-                counter++;
-            } else if (texts[2].equals("tax")) {
-                this.add(new TaxField(counter, Integer.valueOf(texts[3])));
-                counter++;
-            } else if (texts[2].equals("jail")) {
-                if (jailCounter == 0) {
-                    this.add(new JailField(counter));
-                    jailCounter++;
-                } else {
-                    this.add(new GoToJailField(counter));
-                }
-                counter++;
+            switch (texts[2]) {
+                case "start":
+                    this.add(new StartField(counter));
+                    break;
+                case "street":
+                    this.add(new StreetField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8]), Integer.valueOf(texts[9]), Integer.valueOf(texts[10])}, StreetColor.RED, 0));
+                    break;
+                case "chance":
+                    this.add(new ChanceField(counter));
+                    break;
+                case "ferry":
+                    this.add(new FerryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}));
+                    break;
+                case "tax":
+                    this.add(new TaxField(counter, Integer.valueOf(texts[3])));
+                    break;
+                case "jail":
+                    if (jailCounter == 0) {
+                        this.add(new JailField(counter));
+                        jailCounter++;
+                    } else {
+                        this.add(new GoToJailField(counter));
+                    }
+                    break;
+                case "brewery":
+                    this.add(new BreweryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6])}));
+                    break;
+                case "refugee":
+                    this.add(new FreeParkingField(counter));
+                    break;
             }
+            counter++;
         }
     }
 
-    public Field[] addToArray() {
+    public Field[] getFields() {
         return deckOfFields.toArray(new Field[0]);
     }
-
 }
