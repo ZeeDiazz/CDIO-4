@@ -8,13 +8,13 @@ import java.util.Arrays;
 
 public class Game {
     public final Board Board;
-    private int currentTurn;
     protected ArrayList<Player> players;
+    protected int currentTurn;
 
-    public Game(Player[] players) {
+    public Game(Player[] players, Field[] fields) {
         this.currentTurn = 0;
         this.players = (ArrayList<Player>) Arrays.stream(players).toList();
-        this.Board = new Board(new Field[40], players);
+        this.Board = new Board(fields, players);
     }
 
     public Player getCurrentPlayer() {
