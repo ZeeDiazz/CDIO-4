@@ -9,7 +9,9 @@ public class DiceRollTest extends TestCase {
     public void testIfDiceRollNumbersIsCorrect(){
         Die die1 = new TestDie(5);
         Die die2 = new TestDie(6);
-        assertEquals(11);
+
+        DiceRoll roll = new DiceRoll(die1, die2);
+        assertEquals(11, roll.Sum);
     }
 
 }
