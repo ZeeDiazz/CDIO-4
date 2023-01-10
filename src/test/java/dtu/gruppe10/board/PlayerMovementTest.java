@@ -27,7 +27,7 @@ public class PlayerMovementTest extends TestCase {
         // Move pass Start
         PlayerMovement playerMovement4 = PlayerMovement.ForwardMove(38,5);
 
-        assertEquals(7,playerMovement4.getMoveAmount(43));
+        assertEquals(6,playerMovement4.getMoveAmount(40));
 
     }
     @Test
