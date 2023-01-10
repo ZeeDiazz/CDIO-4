@@ -20,7 +20,7 @@ public class StringPrompt extends GUIPrompt<String> {
 
                 if (pressedKey == '\b') {
                     if (!CurrentAnswer.isEmpty()) {
-                        CurrentAnswer = CurrentAnswer.substring(0, CurrentAnswer.length() - 2); // Remove last char
+                        CurrentAnswer = CurrentAnswer.substring(0, CurrentAnswer.length() - 1); // Remove last char
                     }
                     return;
                 }
