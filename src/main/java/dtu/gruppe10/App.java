@@ -12,6 +12,8 @@ import dtu.gruppe10.gui.GUIWindow;
 import dtu.gruppe10.gui.prompts.GUIAnswer;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
@@ -22,10 +24,10 @@ import java.util.Scanner;
  */
 public class App {
     public static Game game;
-    SixSidedDie d1 = new SixSidedDie();
-    public static Board board;
-    private static Scanner scan = new Scanner(System.in);
-  
+    protected static boolean wantsToPayBail;
+    protected static boolean moveHacks;
+    protected static int moveHackAmount;
+
     public static void main( String[] args ) {
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
 
@@ -47,7 +49,7 @@ public class App {
 
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
 
-        int startBalance = 300000;
+        int startBalance = 30000;
         for (int i = 0; i < playerCount; ++i) {
             GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
             window.repaint();
@@ -63,6 +65,41 @@ public class App {
         }
 
         window.setState(GUIState.PLAYING);
+
+        moveHacks = false;
+        window.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == 'j') {
+                    System.out.println("Player chose to pay bail");
+                    wantsToPayBail = true;
+                }
+                if (e.getKeyChar() == 'm') {
+                    moveHacks = !moveHacks;
+
+                    if (moveHacks) {
+                        System.out.println("Move hacks enabled");
+                    }
+                    else {
+                        System.out.println("Move hacks disabled");
+                        moveHackAmount = 0;
+                    }
+                }
+                if (moveHacks && Character.isDigit(e.getKeyChar())) {
+                    moveHackAmount = Character.getNumericValue(e.getKeyChar());
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
         for (int i = 0; i < playerCount; ++i) {
             window.updatePlayerBalance(i+1, startBalance);
         }
@@ -80,12 +117,22 @@ public class App {
         game = new Game(players, fieldReader.getFields());
 
         while (!game.gameIsOver()) {
+            wantsToPayBail = false;
+
             Player currentPlayer = game.getCurrentPlayer();
+            System.out.println("\nPlayer " + currentPlayer.ID + " is starting their turn");
 
             window.hasToRoll();
             window.repaint();
             while (!window.hasPressedRoll()) {
                 trySleep(10);
+                if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
+                    currentPlayer.Account.subtract(jail.BailPrice);
+                    window.updatePlayerBalance(currentPlayer.ID, -jail.BailPrice);
+                    jail.releasePlayer(currentPlayer);
+                    window.setPlayerFreeFromJail(currentPlayer.ID);
+                    window.repaint();
+                }
             }
 
             cup.roll();
@@ -102,6 +149,7 @@ public class App {
                 else if (jail.playerHasToGetOut(currentPlayer)) {
                     System.out.println("Player paid bail");
                     currentPlayer.Account.subtract(jail.BailPrice);
+                    window.updatePlayerBalance(currentPlayer.ID, -jail.BailPrice);
                     release = true;
                 }
 
@@ -118,6 +166,9 @@ public class App {
             }
 
             PlayerMovement move = game.Board.generateForwardMove(currentPlayer.ID, roll.Sum);
+            if (moveHacks && moveHackAmount != 0) {
+                move = game.Board.generateForwardMove(currentPlayer.ID, moveHackAmount);
+            }
 
             Field endField = game.Board.getFieldAt(move.End);
             if (endField instanceof GoToJailField) {
@@ -180,7 +231,7 @@ public class App {
                 window.playerWentBankrupt(currentPlayer.ID);
             }
 
-            if (!roll.AreSame) {
+            if (!moveHacks && !roll.AreSame) {
                 game.nextTurn();
             }
         }
