@@ -130,6 +130,18 @@ public class GUIWindow extends JFrame implements Runnable {
                 balances.setFont(getOptimalFontForBalances());
                 balances.draw(g, windowHeight);
             }
+            case GAME_OVER -> {
+                Font gameOverFont = getFontByWindowHeight(4);
+                g.setFont(gameOverFont);
+
+                FontMetrics metrics = g.getFontMetrics();
+                int leftShift = metrics.stringWidth("Game Over") / 2;
+
+                Point drawPoint = getCenterOfWindow();
+                drawPoint.translate(-leftShift, 0);
+
+                g.drawString("Game over", drawPoint.x, drawPoint.y);
+            }
         }
     }
 

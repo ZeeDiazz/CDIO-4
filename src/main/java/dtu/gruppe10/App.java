@@ -39,7 +39,7 @@ public class App {
             if (playerCountAnswer.hasAnswer()) {
                 break;
             }
-            System.out.println("No answer yet");
+            trySleep(10);
         }
 
         int playerCount = playerCountAnswer.getAnswer();
@@ -57,7 +57,7 @@ public class App {
                 if (playerNameAnswer.hasAnswer()) {
                     break;
                 }
-                System.out.println("No answer yet");
+                trySleep(10);
             }
 
             String playerName = playerNameAnswer.getAnswer();
@@ -147,32 +147,16 @@ public class App {
                 game.nextTurn();
             }
 
-            try {
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException ignored) {
-
-            }
+            trySleep(1000);
         }
 
         window.setState(GUIState.GAME_OVER);
     }
 
-    private static int getPlayerCount(){
-        while (true){
-            System.out.println("Enter the number of players (2-6):");
-            try{
-                int playerCount = scan.nextInt();
-                if (playerCount > 1 && playerCount < 7) {
-                    scan.nextLine();
-                    return playerCount;
-                } else {
-                    System.out.println("Enter a number between 2 and 6");
-                }
-            } catch (Exception e) {
-                System.out.println("Enter a valid number");
-                scan.next();
-            }
+    private static void trySleep(long millis) {
+        try {
+            Thread.sleep(millis);
         }
+        catch (InterruptedException ignored) {}
     }
 }
