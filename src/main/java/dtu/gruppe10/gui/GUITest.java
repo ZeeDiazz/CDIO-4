@@ -70,7 +70,7 @@ public class GUITest {
         GUIField[] fields = new GUIField[40];
 
         // Start, prison, free parking, go to jail
-        fields[0] = new GUIField(0, Color.RED, false, null);
+        fields[0] = new GUIField(0, new Color(218, 0, 0), false, null);
         fields[10] = new GUIField(10, Color.BLACK, true, null);
         fields[20] = new GUIField(20, null, false, null);
         fields[30] = new GUIField(30, Color.BLACK, true, null);
@@ -85,19 +85,21 @@ public class GUITest {
         }
 
         // Ships
-        Color shipColor = new Color(220, 34, 224);
+        Color shipColor = new Color(229, 11, 229);
         for (int shipIndex : new int[]{5, 15, 25, 35}) {
             fields[shipIndex] = new GUIField(shipIndex, shipColor, true, null);
         }
 
         // Drinks
-        Color drinkColor = new Color(14, 182, 170);
+        Color drinkColor = new Color(17, 225, 195);
         fields[12] = new GUIField(12, drinkColor, true, null);
         fields[28] = new GUIField(28, drinkColor, true, null);
 
+
+        Color y = new Color(255, 41, 41);
         // Properties
         int[][] propertyIndexes = {{1, 3}, {6, 8, 9}, {11, 13, 14}, {16, 18, 19}, {21, 23, 24}, {26, 27, 29}, {31, 32, 34}, {37, 39}};
-        Color[] propertyColors = {new Color(75, 109, 255), new Color(241, 94, 16), new Color(28, 157, 5), Color.GRAY, new Color(196, 34, 34), Color.WHITE, new Color(185, 133, 4), new Color(41, 9, 182)};
+        Color[] propertyColors = {new Color(34, 70, 224), new Color(241, 94, 16), new Color(40, 200, 40), Color.GRAY, new Color(255, 41, 41), Color.WHITE, new Color(252, 218, 21), new Color(76, 2, 255)};
         for (int i = 0; i < propertyIndexes.length; ++i) {
             Color propertyColor = propertyColors[i];
             for (int j = 0; j < propertyIndexes[i].length; ++j) {

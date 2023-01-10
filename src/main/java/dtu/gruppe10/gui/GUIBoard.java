@@ -106,6 +106,9 @@ public class GUIBoard {
     }
 
     protected void drawPlayer(Graphics g, GUIPlayer player, Point playerPosition) {
+        GUICircle playerOutline = new GUICircle(playerPosition, 6);
+        playerOutline.draw(g, Color.BLACK, true);
+
         GUICircle playerCircle = new GUICircle(playerPosition, 5);
         playerCircle.draw(g, player.TokenColor, true);
     }

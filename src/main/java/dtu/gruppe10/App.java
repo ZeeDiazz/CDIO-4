@@ -45,8 +45,7 @@ public class App {
         int playerCount = playerCountAnswer.getAnswer();
         Player[] players = new Player[playerCount];
 
-        Color t = new Color(255, 0, 0);
-        Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)};
+        Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
 
         int startBalance = 300000;
         for (int i = 0; i < playerCount; ++i) {
