@@ -14,6 +14,7 @@ public class GUIBoard {
     protected static Color boardColor = new Color(114, 24, 24);
     protected static Color fieldBaseColor = new Color(108, 159, 159);
 
+    protected int boardRadius;
     protected GUICircle outerCircle;
     protected GUICircle innerCircle;
     protected GUICircle splitCircle;
@@ -37,7 +38,7 @@ public class GUIBoard {
     }
 
     public void changePositionAndSize(Point center, int diameter) {
-        int boardRadius = diameter / 2;
+        boardRadius = diameter / 2;
 
         this.outerCircle = new GUICircle(center, boardRadius);
         this.innerCircle = outerCircle.getScaledCircle(innerCirclePercentSize);
@@ -49,6 +50,10 @@ public class GUIBoard {
 
         GUICircle prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
         this.prisonPoint = prisonCircle.getSinglePoint(prisonIndex * 2 + 1, 80);
+    }
+
+    public int getRadius() {
+        return boardRadius;
     }
 
     public void draw(Graphics g) {
@@ -86,7 +91,7 @@ public class GUIBoard {
 
             // Paint the fields' painted part (for some it's all, for others it's only a little part)
             Color fieldColor = field.PrimaryColor == null ? fieldBaseColor : field.PrimaryColor;
-            paintPolygon(g, coloredPolygon, field.PrimaryColor);
+            paintPolygon(g, coloredPolygon, fieldColor);
 
             g.setColor(Color.BLACK);
             // Draw the lines separating the fields
