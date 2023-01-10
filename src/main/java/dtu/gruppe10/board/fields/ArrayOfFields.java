@@ -30,29 +30,30 @@ public class ArrayOfFields {
         while ((textLine = reader.readLine()) != null) {
             String[] texts = textLine.split(","); //Splits the text if ","
 
-            if (texts[2].equals("start")) {
-                this.add(new StartField(counter));
-            }
-            else if (texts[2].equals("street")) {
-                this.add(new StreetField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8]), Integer.valueOf(texts[9]), Integer.valueOf(texts[10])}, StreetColor.RED, 0));
-            }
-            else if (texts[2].equals("chance")) {
-                this.add(new ChanceField(counter));
-            }
-            else if (texts[2].equals("ferry")) {
-                this.add(new FerryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}));
-            }
-            else if (texts[2].equals("tax")) {
-                this.add(new TaxField(counter, Integer.valueOf(texts[3])));
-            }
-            else if (texts[2].equals("jail")) {
-                if (jailCounter == 0) {
-                    this.add(new JailField(counter));
-                    jailCounter++;
-                }
-                else {
-                    this.add(new GoToJailField(counter));
-                }
+            switch (texts[2]) {
+                case "start":
+                    this.add(new StartField(counter));
+                    break;
+                case "street":
+                    this.add(new StreetField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8]), Integer.valueOf(texts[9]), Integer.valueOf(texts[10])}, StreetColor.RED, 0));
+                    break;
+                case "chance":
+                    this.add(new ChanceField(counter));
+                    break;
+                case "ferry":
+                    this.add(new FerryField(counter, Integer.valueOf(texts[3]), new int[]{Integer.valueOf(texts[5]), Integer.valueOf(texts[6]), Integer.valueOf(texts[7]), Integer.valueOf(texts[8])}));
+                    break;
+                case "tax":
+                    this.add(new TaxField(counter, Integer.valueOf(texts[3])));
+                    break;
+                case "jail":
+                    if (jailCounter == 0) {
+                        this.add(new JailField(counter));
+                        jailCounter++;
+                    } else {
+                        this.add(new GoToJailField(counter));
+                    }
+                    break;
             }
             counter++;
         }
