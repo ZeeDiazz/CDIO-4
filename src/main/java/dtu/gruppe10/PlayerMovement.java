@@ -15,17 +15,23 @@ public class PlayerMovement {
         this.PassedStart = passedStart;
     }
 
-    public int[] getFieldIndexes(int totalFieldCount, boolean includeStart, boolean includeEnd) {
-        int passedFieldCount;
+    public int getMoveAmount(int totalFieldCount) {
+        int amount;
         switch (this.Type) {
-            case FORWARD -> passedFieldCount = this.End - this.Start - 1;
-            case BACKWARD -> passedFieldCount = this.Start - this.End - 1;
-            default -> passedFieldCount = 0;
+            case FORWARD -> amount = this.End - this.Start - 1;
+            case BACKWARD -> amount = this.Start - this.End - 1;
+            default -> amount = 0;
         }
 
         if (PassedStart) {
-            passedFieldCount += totalFieldCount;
+            amount += totalFieldCount;
         }
+
+        return amount;
+    }
+
+    public int[] getFieldIndexes(int totalFieldCount, boolean includeStart, boolean includeEnd) {
+        int passedFieldCount = getMoveAmount(totalFieldCount);
 
         int bonusFieldCount = 0;
         if (includeStart) {
