@@ -12,6 +12,7 @@ public class DiceRollTest extends TestCase {
 
         DiceRoll roll = new DiceRoll(die1, die2);
         assertEquals(11, roll.Sum);
+        //hejhejtest
     }
 
 }
