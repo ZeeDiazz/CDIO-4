@@ -1,5 +1,5 @@
 package dtu.gruppe10.gui.prompts;
 
-public interface PromptInputHandler {
+public interface PromptErrorHandler {
     void lastInputNotAccepted();
 }
