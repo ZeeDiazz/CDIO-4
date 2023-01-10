@@ -1,5 +1,6 @@
 package dtu.gruppe10;
 import dtu.gruppe10.board.Board;
+import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.dice.DiceRoll;
 import dtu.gruppe10.dice.DieCup;
 import dtu.gruppe10.dice.SixSidedDie;
@@ -40,16 +41,12 @@ public class App {
                 cup.roll();
                 DiceRoll rollResult = cup.getResult();
                 //ROLDICE FOR NOW
-                currentPlayer.movePlayer(rollResult.getValue(0), rollResult.getValue(1));
+                PlayerMovement move = board.generateForwardMove(currentPlayer.ID, rollResult.Sum);
+                board.performMove(currentPlayer.ID, move);
+
                 System.out.println(String.format("%s rolls a %d and a %d", currentPlayer.name, rollResult.getValue(0), rollResult.getValue(1)));
 
                 if (rollResult.AreSame) {
-                    currentPlayer.setRolledPair(true);
-                } else {
-                    currentPlayer.setRolledPair(false);
-                }
-
-                if (currentPlayer.hasRolledPair()) {
                     System.out.println(String.format("%s rolled a pair! You get another turn :) ", currentPlayer.name));
                 } else {
                     game.nextTurn();
@@ -96,7 +93,7 @@ public class App {
     private static Player[] createPlayer(int playerCount){
         Player[] players = new Player[playerCount];
         for(int i = 0; i < playerCount; i++){
-            players[i] = new Player("Player " + (i + 1), 20, i); //balance for now
+            players[i] = new Player(i, "Player " + (i + 1), 20); //balance for now
         }
         return players;
     }

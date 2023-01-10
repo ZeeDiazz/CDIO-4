@@ -10,8 +10,8 @@ public class ChanceCard {
 
     //Could use a interface and than make a class for everyChanceCard...
     public void GoToPrisonAction(Player player) {
-        player.setPosition(31);
-        player.setInPrison(true);
+        // player.setPosition(31);
+        // player.setInPrison(true);
     }
 
 }
