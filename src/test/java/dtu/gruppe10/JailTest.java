@@ -8,7 +8,7 @@ import org.junit.Test;
 public class JailTest extends TestCase {
     @Test
     public void testIfPlayerCanGetPutInJail() {
-        Jail jail = new Jail(3);
+        Jail jail = new Jail(1000,3);
         Player player1 = new Player(1, 30000);
         Player player2 = new Player(1, 30000);
 
@@ -21,7 +21,7 @@ public class JailTest extends TestCase {
 
     @Test
     public void testIfPlayerCanGetReleasedFromJail() {
-        Jail jail = new Jail(3);
+        Jail jail = new Jail(1000, 3);
         Player player1 = new Player(1, 30000);
         Player player2 = new Player(1, 30000);
         jail.addPlayer(player1);
@@ -34,7 +34,7 @@ public class JailTest extends TestCase {
 
     @Test
     public void testIfPlayerCanSurveTurnsInJail() {
-        Jail jail = new Jail(3);
+        Jail jail = new Jail(1000, 3);
         Player player1 = new Player(1, 30000);
         Player player2 = new Player(2, 30000);
         jail.addPlayer(player1);
@@ -47,7 +47,7 @@ public class JailTest extends TestCase {
 
     @Test
     public void testIfPlayerCanGetOutOfJail() {
-        Jail jail = new Jail(3);
+        Jail jail = new Jail(1000, 3);
         Player player1 = new Player(1, 30000);
         Player player2 = new Player(2, 30000);
         jail.addPlayer(player1);
