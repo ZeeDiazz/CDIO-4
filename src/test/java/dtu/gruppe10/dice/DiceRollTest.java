@@ -12,7 +12,38 @@ public class DiceRollTest extends TestCase {
 
         DiceRoll roll = new DiceRoll(die1, die2);
         assertEquals(11, roll.Sum);
-        //hejhejtest
+    }
+    @Test
+    public void testIfDiceRollNumbersIsFalse() {
+        Die die1 = new TestDie(5);
+        Die die2 = new TestDie(6);
+
+        DiceRoll roll = new DiceRoll(die1, die2);
+        assertFalse(false);
+    }
+    @Test
+    public void testIfTheDiceFacesAreTheSame() {
+        Die die1 = new TestDie(6);
+        Die die2 = new TestDie(6);
+
+        DiceRoll roll = new DiceRoll(die1, die2);
+        assertEquals(true, roll.AreSame);
+    }
+    @Test
+    public void testIfTheDiceFacesAreNotTheSame() {
+        Die die1 = new TestDie(6);
+        Die die2 = new TestDie(2);
+
+        DiceRoll roll = new DiceRoll(die1, die2);
+        assertEquals(false, roll.AreSame);
+    }
+    @Test
+    public void testTheIndexOfDice() {
+        Die die1 = new TestDie(6);
+        Die die2 = new TestDie(2);
+
+        DiceRoll roll = new DiceRoll(die1, die2);
+        assertEquals();
     }
 
 }
