@@ -1,4 +1,4 @@
-package dtu.gruppe10.gui;
+package dtu.gruppe10.gui.prompts;
 
 public class GUIAnswer<T> {
     protected boolean hasAnswer;

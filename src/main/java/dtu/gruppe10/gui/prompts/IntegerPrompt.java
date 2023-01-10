@@ -1,4 +1,4 @@
-package dtu.gruppe10.gui;
+package dtu.gruppe10.gui.prompts;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,20 +9,19 @@ public class IntegerPrompt extends GUIPrompt<Integer> {
     public IntegerPrompt(String prompt, int inclusiveMinimum, int inclusiveMaximum) {
         super(prompt);
 
-
         this.keyListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
                 char pressedKey = e.getKeyChar();
 
-
-                if (e.getKeyChar() == '\b') {
+                if (pressedKey == '\b') {
                     if (CurrentAnswer != null) {
                         CurrentAnswer /= 10;
                         if (CurrentAnswer == 0) {
                             CurrentAnswer = null;
                         }
                     }
+                    return;
                 }
                 if (!Character.isDigit(pressedKey)) {
                     return;
