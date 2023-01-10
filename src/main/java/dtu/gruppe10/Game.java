@@ -13,7 +13,8 @@ public class Game {
 
     public Game(Player[] players, Field[] fields) {
         this.currentTurn = 0;
-        this.players = (ArrayList<Player>) Arrays.stream(players).toList();
+        this.players = new ArrayList<>();
+        this.players.addAll(Arrays.asList(players));
         this.Board = new Board(fields, players);
     }
 

@@ -26,7 +26,7 @@ public class App {
     private static Scanner scan = new Scanner(System.in);
   
     public static void main( String[] args ) {
-        GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 1000), GUITest.generateFields());
+        GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
 
         Thread uiThread = new Thread(window, "uiThread");
 
@@ -38,44 +38,66 @@ public class App {
             if (playerCountAnswer.hasAnswer()) {
                 break;
             }
+            System.out.println("No answer yet");
         }
 
         int playerCount = playerCountAnswer.getAnswer();
         Player[] players = new Player[playerCount];
+        GUIPlayer[] guiPlayers = new GUIPlayer[playerCount];
 
         Color[] playerColors = {new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)};
 
         for (int i = 0; i < playerCount; ++i) {
             GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
+            window.repaint();
 
             while (true) {
                 if (playerNameAnswer.hasAnswer()) {
                     break;
                 }
+                System.out.println("No answer yet");
             }
 
             String playerName = playerNameAnswer.getAnswer();
             players[i] = new Player(i+1, 30000);
+            guiPlayers[i] = new GUIPlayer(i+1, playerName, playerColors[i]);
 
             window.addPlayer(new GUIPlayer(i+1, playerName, playerColors[i]));
+        }
 
+        window.setState(GUIState.PLAYING);
+        for (int i = 0; i < playerCount; ++i) {
             window.updatePlayerBalance(i+1, 30000);
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
-
         game = new Game(players, new Field[40]);
 
-        window.setState(GUIState.PLAYING);
-
         while (!game.gameIsOver()) {
+            Player currentPlayer = game.getCurrentPlayer();
 
+            cup.roll();
+            DiceRoll roll = cup.getResult();
+
+            PlayerMovement move = game.Board.generateForwardMove(currentPlayer.ID, roll.Sum);
+            game.Board.performMove(currentPlayer.ID, move);
+
+            window.setNewPlayerPosition(currentPlayer.ID, move.End);
+            window.repaint();
+
+            if (move.PassedStart) {
+                currentPlayer.Account.add(4000);
+                window.updatePlayerBalance(currentPlayer.ID, 4000);
+            }
+
+            if (!roll.AreSame) {
+                game.nextTurn();
+            }
+
+            for (int x = 0; x < 1_000_000; ++x) {
+                System.out.println();
+            }
         }
-    }
-
-    private static int rollDice() {
-        Random rand = new Random();
-        return rand.nextInt(6) + 1;
     }
 
     private static int getPlayerCount(){

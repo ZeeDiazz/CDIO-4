@@ -23,7 +23,7 @@ public class GUITest {
         uiThread.start();
 
         window.setState(GUIState.START_GAME);
-        GUIAnswer<Integer> playerCountAnswer = window.getUserInt(2, 6);
+        GUIAnswer<Integer> playerCountAnswer = window.getUserInt("",2, 6);
 
         while (!playerCountAnswer.hasAnswer()) {
             System.out.println("No answer yet");
