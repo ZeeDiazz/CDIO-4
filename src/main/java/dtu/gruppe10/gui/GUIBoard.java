@@ -1,6 +1,11 @@
 package dtu.gruppe10.gui;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class GUIBoard {
@@ -135,5 +140,17 @@ public class GUIBoard {
 
     public void addHouse(int fieldIndex) {
         houseCount[fieldIndex]++;
+    }
+
+    public Map<String, String> getFieldData(int fieldIndex) {
+        Map<String, String> fieldData = new HashMap<>();
+        String line;
+        String splitLine = ",";
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/fields.CSV"))) {
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fieldData;
     }
 }
