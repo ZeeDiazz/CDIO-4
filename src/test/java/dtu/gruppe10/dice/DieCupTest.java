@@ -40,7 +40,7 @@ public class DieCupTest extends TestCase {
         assertTrue(isHasPair3 == (die1.getFace() == die2.getFace()));
     }
     public void testIfPlayerCanThrowOnPair(){
-        TestDie die1 = new TestDie(4, 3 ,5);
+        TestDie die1 = new TestDie(4, 3, 5);
         TestDie die2 = new TestDie(4, 3, 5);
         DieCup cup = new DieCup(die1,die2);
         cup.roll();

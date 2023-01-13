@@ -1,17 +1,19 @@
 package dtu.gruppe10;
 
 
-public class ChanceCard {
-    private String text;
+import java.util.ArrayList;
 
-    ChanceCard(String text){
-        this.text = text;
+public class ChanceCard {
+    private ArrayList<ChanceCardAction[]> actions;
+
+    public ChanceCard() {
+        this.actions = new ArrayList<>();
     }
+    public void addAction(ChanceCardAction action) {
+        this.actions.add(new ChanceCardAction[]{action});
+    }
+
 
     //Could use a interface and than make a class for everyChanceCard...
-    public void GoToPrisonAction(Player player) {
-        // player.setPosition(31);
-        // player.setInPrison(true);
-    }
 
 }
