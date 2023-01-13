@@ -178,5 +178,4 @@ public class GUIBoard {
             e.printStackTrace();
         }
     }
-
 }
