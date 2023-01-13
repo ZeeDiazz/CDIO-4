@@ -137,6 +137,8 @@ public class GUIBoard {
         houseCount[fieldIndex]++;
     }
 
+    private void displayFieldData(){
 
+    }
 
 }
