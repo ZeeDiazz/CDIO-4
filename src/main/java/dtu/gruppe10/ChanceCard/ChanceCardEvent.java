@@ -1,4 +1,4 @@
-package dtu.gruppe10;
+package dtu.gruppe10.ChanceCard;
 
 public enum ChanceCardEvent {
 
