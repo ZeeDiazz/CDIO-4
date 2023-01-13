@@ -10,6 +10,9 @@ public class GUIField {
     public final boolean IsSplit;
     public final Image Image;
 
+    private String fieldName;
+    private int fieldPrice;
+
     public GUIField(int id, Color primaryColor, boolean isSplit, Image image) {
         this.ID = id;
         this.PrimaryColor = primaryColor;
@@ -45,5 +48,11 @@ public class GUIField {
         }
 
         return polygon;
+    }
+    public void setFieldName(String fieldName){
+        this.fieldName = fieldName;
+    }
+    public void setFieldPrice(int fieldPrice){
+        this.fieldPrice = fieldPrice;
     }
 }
