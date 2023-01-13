@@ -7,7 +7,7 @@ public enum StreetColor {
     YELLOW,
     GREY,
     PURPLE,
-    TURQUOISE,
+    CYAN,
     PINK,
     WHITE,
     BLACK
