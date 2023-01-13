@@ -127,13 +127,13 @@ public class App {
 
             window.hasToRoll();
             window.repaint();
+
             while (!window.hasPressedRoll()) {
                 trySleep(10);
                 if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
 
                     freeFromJail(window, jail, currentPlayer);
-                    window.repaint();
                 }
             }
 
@@ -162,7 +162,6 @@ public class App {
                     continue;
                 }
 
-                System.out.println("Player " + currentPlayer.ID + " was released from Jail");
                 freeFromJail(window, jail, currentPlayer);
             }
 
@@ -174,19 +173,14 @@ public class App {
             Field endField = game.Board.getFieldAt(move.End);
             if (endField instanceof GoToJailField) {
                 System.out.println("Player landed on 'Go To Jail'");
-                jail.addPlayer(currentPlayer);
-                jail.playerServedTurn(currentPlayer);
 
                 move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
                 endField = game.Board.getFieldAt(move.End);
 
-                window.setPlayerInJail(currentPlayer.ID);
+                setInJail(window, jail, currentPlayer);
             }
 
-            game.Board.performMove(currentPlayer.ID, move);
-
-            window.setNewPlayerPosition(currentPlayer.ID, move.End);
-            window.repaint();
+            movePlayer(window, currentPlayer, move);
 
             if (endField instanceof PropertyField propertyField) {
                 if (propertyField.isOwned()) {
@@ -247,8 +241,17 @@ public class App {
         catch (InterruptedException ignored) {}
     }
 
+    private static void movePlayer(GUIWindow window, Player player, PlayerMovement move) {
+        game.Board.performMove(player.ID, move);
+        window.setNewPlayerPosition(player.ID, move.End);
+
+        window.repaint();
+    }
+
     private static void payRent(GUIWindow window, Player player, PropertyField propertyField, int amount) {
         Player owner = propertyField.getOwner();
+        System.out.println("Player " + player.ID + " paid " + amount + " in rent to " + owner.ID + "(property: " + propertyField.ID + ")");
+
         Player.payRent(owner, player, amount);
 
         updatePlayerBalance(window, owner, amount, false);
@@ -277,13 +280,27 @@ public class App {
     }
 
     private static void newBankruptcy(GUIWindow window, Game game, Player player) {
+        System.out.println("Player " + player.ID + " went bankrupt");
+
         game.removePlayer(player.ID);
         window.playerWentBankrupt(player.ID);
 
         window.repaint();
     }
 
+    private static void setInJail(GUIWindow window, Jail jail, Player player) {
+        System.out.println("Player " + player.ID + " was jailed");
+
+        jail.addPlayer(player);
+        jail.playerServedTurn(player);
+        window.setPlayerInJail(player.ID);
+
+        window.repaint();
+    }
+
     private static void freeFromJail(GUIWindow window, Jail jail, Player player) {
+        System.out.println("Player " + player.ID + " was released from Jail");
+
         jail.releasePlayer(player);
         window.setPlayerFreeFromJail(player.ID);
 
