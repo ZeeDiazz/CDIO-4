@@ -22,6 +22,10 @@ public class Board {
         }
     }
 
+    public Field[] getFields() {
+        return fields;
+    }
+
     public Board(Field[] fields, Player[] players) {
         this(fields, players, 0);
     }
