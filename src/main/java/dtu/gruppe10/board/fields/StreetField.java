@@ -1,7 +1,6 @@
 package dtu.gruppe10.board.fields;
 
 import dtu.gruppe10.App;
-import dtu.gruppe10.board.Board;
 
 public class StreetField extends PropertyField {
     public final StreetColor Color;
@@ -10,7 +9,7 @@ public class StreetField extends PropertyField {
 
     protected int housePrice;
 
-    public StreetField(int id, int price,int housePrice, int[] rentSteps, StreetColor color, int propertiesInSet) {
+    public StreetField(int id, int price, int housePrice, int[] rentSteps, StreetColor color, int propertiesInSet) {
         super(id, FieldType.STREET, price, rentSteps);
 
         this.Color = color;
@@ -19,6 +18,9 @@ public class StreetField extends PropertyField {
         this.housePrice = housePrice;
     }
 
+    public int getHouseCount() {
+        return houseCount;
+    }
 
     public boolean ownsAllInSet() {
         int counter = 0;
@@ -38,11 +40,24 @@ public class StreetField extends PropertyField {
         return this.PropertiesInSet == counter;
     }
 
+    // Er ikke sikker på om denne klasse skal trække penge fra spilleren
     public void buildOneHouse() {
         if (ownsAllInSet() && hasEnoughHousesOnOtherFieldsToBuildOneHouse()) {
+            this.owner.Account.subtract(this.housePrice);
             this.houseCount++;
         }
     }
+
+    // Ellers er denne metode til tjekke om man kan bygge et hus på et felt
+    public boolean eligibleToBuildHouse() {
+        // Hvis ejerens pengebeholdning skal tages i betragtning
+        if (this.owner.Account.getBalance() > housePrice) {
+            return hasEnoughHousesOnOtherFieldsToBuildOneHouse() && ownsAllInSet();
+        }
+
+        return false;
+    }
+
 
     public boolean hasEnoughHousesOnOtherFieldsToBuildOneHouse() {
         int counter = 0;
