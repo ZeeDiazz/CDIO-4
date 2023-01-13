@@ -37,10 +37,7 @@ public class App {
         uiThread.start();
 
         GUIAnswer<Integer> playerCountAnswer = window.getUserInt("Enter the number of players (between {0}-{1})", 2, 6);
-        while (true) {
-            if (playerCountAnswer.hasAnswer()) {
-                break;
-            }
+        while (!playerCountAnswer.hasAnswer()) {
             trySleep(10);
         }
 
@@ -130,14 +127,13 @@ public class App {
 
             window.hasToRoll();
             window.repaint();
+
             while (!window.hasPressedRoll()) {
                 trySleep(10);
                 if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
-                    currentPlayer.Account.subtract(jail.BailPrice);
-                    window.updatePlayerBalance(currentPlayer.ID, -jail.BailPrice);
-                    jail.releasePlayer(currentPlayer);
-                    window.setPlayerFreeFromJail(currentPlayer.ID);
-                    window.repaint();
+                    updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+
+                    freeFromJail(window, jail, currentPlayer);
                 }
             }
 
@@ -154,8 +150,8 @@ public class App {
                 }
                 else if (jail.playerHasToGetOut(currentPlayer)) {
                     System.out.println("Player paid bail");
-                    currentPlayer.Account.subtract(jail.BailPrice);
-                    window.updatePlayerBalance(currentPlayer.ID, -jail.BailPrice);
+
+                    updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
                     release = true;
                 }
 
@@ -166,9 +162,7 @@ public class App {
                     continue;
                 }
 
-                System.out.println("Player " + currentPlayer.ID + " was released from Jail");
-                jail.releasePlayer(currentPlayer);
-                window.setPlayerFreeFromJail(currentPlayer.ID);
+                freeFromJail(window, jail, currentPlayer);
             }
 
             PlayerMovement move = game.Board.generateForwardMove(currentPlayer.ID, roll.Sum);
@@ -179,19 +173,14 @@ public class App {
             Field endField = game.Board.getFieldAt(move.End);
             if (endField instanceof GoToJailField) {
                 System.out.println("Player landed on 'Go To Jail'");
-                jail.addPlayer(currentPlayer);
-                jail.playerServedTurn(currentPlayer);
 
                 move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
                 endField = game.Board.getFieldAt(move.End);
 
-                window.setPlayerInJail(currentPlayer.ID);
+                setInJail(window, jail, currentPlayer);
             }
 
-            game.Board.performMove(currentPlayer.ID, move);
-
-            window.setNewPlayerPosition(currentPlayer.ID, move.End);
-            window.repaint();
+            movePlayer(window, currentPlayer, move);
 
             if (endField instanceof PropertyField propertyField) {
                 if (propertyField.isOwned()) {
@@ -212,29 +201,21 @@ public class App {
                         toPay = propertyField.getCurrentRent(propertiesInSetOwned);
                     }
 
-                    System.out.println(currentPlayer.ID + " has paid " + toPay + " in rent to " + propertyField.getOwner().ID);
-                    System.out.println("Property: " + propertyField.ID);
-                    Player.payRent(propertyField.getOwner(), currentPlayer, toPay);
+                    payRent(window, currentPlayer, propertyField, toPay);
                 }
                 else {
                     // Buy property
-                    currentPlayer.Account.subtract(propertyField.Price);
-                    window.updatePlayerBalance(currentPlayer.ID, -propertyField.Price);
-
-                    propertyField.newOwner(currentPlayer);
-                    window.propertyBought(currentPlayer.ID, move.End);
-                    System.out.println(currentPlayer.ID + " has bought a property");
+                    buyProperty(window, currentPlayer, propertyField, move.End);
                 }
             }
 
             if (move.PassedStart) {
-                currentPlayer.Account.add(4000);
-                window.updatePlayerBalance(currentPlayer.ID, 4000);
+                updatePlayerBalance(window, currentPlayer, 4000);
             }
 
             if (currentPlayer.Account.isBankrupt()) {
-                game.removePlayer(currentPlayer.ID);
-                window.playerWentBankrupt(currentPlayer.ID);
+                newBankruptcy(window, game, currentPlayer);
+
                 game.nextTurn();
                 continue;
             }
@@ -254,4 +235,78 @@ public class App {
         catch (InterruptedException ignored) {}
     }
 
+    private static void movePlayer(GUIWindow window, Player player, PlayerMovement move) {
+        game.Board.performMove(player.ID, move);
+        window.setNewPlayerPosition(player.ID, move.End);
+
+        window.repaint();
+    }
+
+    private static void payRent(GUIWindow window, Player player, PropertyField propertyField, int amount) {
+        Player owner = propertyField.getOwner();
+        System.out.println("Player " + player.ID + " paid " + amount + " in rent to " + owner.ID + " (property: " + propertyField.ID + ")");
+
+        Player.payRent(owner, player, amount);
+
+        updatePlayerBalance(window, owner, amount, false);
+        updatePlayerBalance(window, player, -amount, false);
+
+        window.repaint();
+    }
+
+    private static void buyProperty(GUIWindow window, Player player, PropertyField propertyField, int index) {
+        System.out.println(player.ID + " has bought a property");
+
+        propertyField.newOwner(player);
+        window.propertyBought(player.ID, index);
+
+        updatePlayerBalance(window, player, -propertyField.Price);
+    }
+
+    private static void updatePlayerBalance(GUIWindow window, Player player, int amount) {
+        updatePlayerBalance(window, player, amount, true);
+    }
+
+    private static void updatePlayerBalance(GUIWindow window, Player player, int amount, boolean repaint) {
+        window.updatePlayerBalance(player.ID, amount);
+
+        if (amount < 0) {
+            player.Account.subtract(-amount);
+        }
+        else {
+            player.Account.add(amount);
+        }
+
+        if (repaint) {
+            window.repaint();
+        }
+    }
+
+    private static void newBankruptcy(GUIWindow window, Game game, Player player) {
+        System.out.println("Player " + player.ID + " went bankrupt");
+
+        game.removePlayer(player.ID);
+        window.playerWentBankrupt(player.ID);
+
+        window.repaint();
+    }
+
+    private static void setInJail(GUIWindow window, Jail jail, Player player) {
+        System.out.println("Player " + player.ID + " was jailed");
+
+        jail.addPlayer(player);
+        jail.playerServedTurn(player);
+        window.setPlayerInJail(player.ID);
+
+        window.repaint();
+    }
+
+    private static void freeFromJail(GUIWindow window, Jail jail, Player player) {
+        System.out.println("Player " + player.ID + " was released from Jail");
+
+        jail.releasePlayer(player);
+        window.setPlayerFreeFromJail(player.ID);
+
+        window.repaint();
+    }
 }
