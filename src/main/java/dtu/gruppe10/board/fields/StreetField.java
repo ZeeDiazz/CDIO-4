@@ -20,17 +20,43 @@ public class StreetField extends PropertyField {
     public boolean ownsAllInSet() {
         int counter = 0;
         for (Field street : App.game.Board.getFields()) {
-            if (!(street instanceof StreetField)) {
+            if (street == this) {
+                counter++;
+            } else if (!(street instanceof StreetField)) {
                 continue;
             } else {
-                if(((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
+                if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
                 /*if (((StreetField) street).Color == this.Color && ((StreetField) street).owner == this.owner){
                     counter++;
                 }*/
                 }
             }
         }
+
         return this.PropertiesInSet == counter;
+    }
+
+
+    public boolean hasEnoughHousesOnOtherFieldsToBuildOneHouse() {
+        int counter = 0;
+        int eligible = 0;
+        if (counter == this.PropertiesInSet) {
+            for (Field street : App.game.Board.getFields()) {
+                if (street == this) {
+                    counter++;
+                } else if (!(street instanceof StreetField)) {
+                    continue;
+                } else {
+                    if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
+                        if (((StreetField) street).houseCount == this.houseCount || this.houseCount + 1 == ((StreetField) street).houseCount) {
+                            eligible++;
+                        }
+                        counter++;
+                    }
+                }
+            }
+        }
+        return eligible == this.PropertiesInSet - 1;
     }
 
     @Override
