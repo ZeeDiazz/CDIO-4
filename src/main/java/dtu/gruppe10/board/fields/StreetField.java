@@ -23,8 +23,10 @@ public class StreetField extends PropertyField {
             if (!(street instanceof StreetField)) {
                 continue;
             } else {
-                if (((StreetField) street).Color == this.Color && ((StreetField) street).owner == this.owner){
+                if(((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
+                /*if (((StreetField) street).Color == this.Color && ((StreetField) street).owner == this.owner){
                     counter++;
+                }*/
                 }
             }
         }
