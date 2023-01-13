@@ -26,11 +26,11 @@ public class StreetField extends PropertyField {
             for (Field street : App.game.Board.getFields()) {
                 if (street == this) {
                     counter++;
-                } else if (!(street instanceof StreetField)) {
-
                 } else {
-                    if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
-                    counter++;
+                    if (street instanceof StreetField) {
+                        if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
+                            counter++;
+                        }
                     }
                 }
             }
@@ -51,19 +51,19 @@ public class StreetField extends PropertyField {
             for (Field street : App.game.Board.getFields()) {
                 if (street == this) {
                     counter++;
-                } else if (!(street instanceof StreetField)) {
-                    continue;
                 } else {
-                    if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
-                        if (((StreetField) street).houseCount == this.houseCount || this.houseCount + 1 == ((StreetField) street).houseCount) {
-                            eligible++;
+                    if (street instanceof StreetField) {
+                        if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
+                            // Hvis felt 1 har flere huse end felt 2, kan der ikke bygges huse på felt 1
+                            if (this.houseCount > ((StreetField) street).houseCount) {
+                                return false;
+                            }
                         }
-                        counter++;
                     }
                 }
             }
         }
-        return eligible == this.PropertiesInSet - 1;
+        return true;
     }
 
     @Override
