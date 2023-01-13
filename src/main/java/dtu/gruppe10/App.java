@@ -37,10 +37,7 @@ public class App {
         uiThread.start();
 
         GUIAnswer<Integer> playerCountAnswer = window.getUserInt("Enter the number of players (between {0}-{1})", 2, 6);
-        while (true) {
-            if (playerCountAnswer.hasAnswer()) {
-                break;
-            }
+        while (!playerCountAnswer.hasAnswer()) {
             trySleep(10);
         }
 
@@ -133,8 +130,8 @@ public class App {
             while (!window.hasPressedRoll()) {
                 trySleep(10);
                 if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
-                    currentPlayer.Account.subtract(jail.BailPrice);
-                    window.updatePlayerBalance(currentPlayer.ID, -jail.BailPrice);
+                    updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+
                     jail.releasePlayer(currentPlayer);
                     window.setPlayerFreeFromJail(currentPlayer.ID);
                     window.repaint();
@@ -154,8 +151,8 @@ public class App {
                 }
                 else if (jail.playerHasToGetOut(currentPlayer)) {
                     System.out.println("Player paid bail");
-                    currentPlayer.Account.subtract(jail.BailPrice);
-                    window.updatePlayerBalance(currentPlayer.ID, -jail.BailPrice);
+
+                    updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
                     release = true;
                 }
 
@@ -218,8 +215,7 @@ public class App {
                 }
                 else {
                     // Buy property
-                    currentPlayer.Account.subtract(propertyField.Price);
-                    window.updatePlayerBalance(currentPlayer.ID, -propertyField.Price);
+                    updatePlayerBalance(window, currentPlayer, -propertyField.Price);
 
                     propertyField.newOwner(currentPlayer);
                     window.propertyBought(currentPlayer.ID, move.End);
@@ -228,8 +224,7 @@ public class App {
             }
 
             if (move.PassedStart) {
-                currentPlayer.Account.add(4000);
-                window.updatePlayerBalance(currentPlayer.ID, 4000);
+                updatePlayerBalance(window, currentPlayer, 4000);
             }
 
             if (currentPlayer.Account.isBankrupt()) {
@@ -254,4 +249,14 @@ public class App {
         catch (InterruptedException ignored) {}
     }
 
+    private static void updatePlayerBalance(GUIWindow window, Player player, int amount) {
+        window.updatePlayerBalance(player.ID, amount);
+
+        if (amount < 0) {
+            player.Account.subtract(-amount);
+        }
+        else {
+            player.Account.add(amount);
+        }
+    }
 }
