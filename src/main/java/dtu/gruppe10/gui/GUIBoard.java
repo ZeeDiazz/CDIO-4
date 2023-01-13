@@ -1,6 +1,10 @@
 package dtu.gruppe10.gui;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 public class GUIBoard {
@@ -35,6 +39,7 @@ public class GUIBoard {
         this.ownerColor = new Color[this.fieldCount];
         this.houseCount = new int[this.fieldCount];
         this.prisonIndex = prisonIndex;
+        displayFieldData();
     }
 
     public void changePositionAndSize(Point center, int diameter) {
@@ -94,6 +99,12 @@ public class GUIBoard {
             paintPolygon(g, coloredPolygon, fieldColor);
 
             g.setColor(Color.BLACK);
+            //display field info
+            g.drawString(field.fieldName, outerPoints[i].x, outerPoints[i].y);
+            // Draw the price of the field
+            g.drawString(Integer.toString(field.fieldPrice), outerPoints[i].x, outerPoints[i].y + 10);
+
+
             // Draw the lines separating the fields
             Point start = innerPoints[i * 2];
             Point end = outerPoints[i];
@@ -135,5 +146,36 @@ public class GUIBoard {
 
     public void addHouse(int fieldIndex) {
         houseCount[fieldIndex]++;
+    }
+
+    private void displayFieldData(){
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/fields.CSV"));
+            String textLine;
+            //int counter = 0;
+            while ((textLine = reader.readLine()) != null){
+                String[] texts = textLine.split(",");
+                String name = texts[0]; //Because it is the first one in fields.CSV
+                int price;
+                /*if(texts.length < 3) {
+                    price = Integer.valueOf(texts[3]); // it is number four in fields.CSV
+                }*/
+
+                for (GUIField field : fields) {
+                    if (field.ID == Integer.valueOf(texts[1])) {
+                        field.setFieldName(name);
+                        if(texts.length > 3) {
+                            price = Integer.valueOf(texts[3]);
+                            field.setFieldPrice(price);
+                        }
+                        break;
+                    }
+                }
+                //counter++;
+            }
+            reader.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
