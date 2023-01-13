@@ -31,15 +31,20 @@ public abstract class PropertyField extends Field {
         this.owner = newOwner;
     }
 
-    public void mortgage() {
+    public void mortgage(Player owner) {
+        int mortgageToReceive = this.Price / 2;
+        owner.Account.add(mortgageToReceive);
         isMortgaged = true;
     }
 
-    public void unMortgage() {
+    public void unMortgage(Player owner) {
+        int mortgageToPay = (int) (this.Price / 2 * 1.1);
+        owner.Account.subtract(mortgageToPay);
         isMortgaged = false;
     }
 
     public abstract boolean inSameSet(PropertyField propertyField);
+
     public boolean inSameSet(Field field) {
         if (field instanceof PropertyField propertyField) {
             return inSameSet(propertyField);
@@ -61,6 +66,8 @@ public abstract class PropertyField extends Field {
         return false;
     }
 
+
+
     /* Til når man kan bygge huse
 
         public void updateCurrentRent(int numberHouses) {
@@ -77,4 +84,6 @@ public abstract class PropertyField extends Field {
             }
         }
     */
+
+
 }
