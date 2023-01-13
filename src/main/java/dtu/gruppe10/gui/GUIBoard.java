@@ -160,10 +160,11 @@ public class GUIBoard {
                 /*if(texts.length < 3) {
                     price = Integer.valueOf(texts[3]); // it is number four in fields.CSV
                 }*/
+
                 for (GUIField field : fields) {
-                    if (field.ID == Integer.parseInt(texts[1])) {
+                    if (field.ID == Integer.valueOf(texts[1])) {
                         field.setFieldName(name);
-                        if (texts.length < 3) {
+                        if(texts.length > 3) {
                             price = Integer.valueOf(texts[3]);
                             field.setFieldPrice(price);
                         }
