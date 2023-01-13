@@ -10,8 +10,8 @@ public class GUIField {
     public final boolean IsSplit;
     public final Image Image;
 
-    private String fieldName;
-    private int fieldPrice;
+    public String fieldName;
+    public int fieldPrice;
 
     public GUIField(int id, Color primaryColor, boolean isSplit, Image image) {
         this.ID = id;

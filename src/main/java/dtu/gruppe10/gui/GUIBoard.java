@@ -99,6 +99,12 @@ public class GUIBoard {
             paintPolygon(g, coloredPolygon, fieldColor);
 
             g.setColor(Color.BLACK);
+            //display field info
+            g.drawString(field.fieldName, outerPoints[i].x, outerPoints[i].y);
+            // Draw the price of the field
+            g.drawString(Integer.toString(field.fieldPrice), outerPoints[i].x, outerPoints[i].y + 10);
+
+
             // Draw the lines separating the fields
             Point start = innerPoints[i * 2];
             Point end = outerPoints[i];
@@ -150,13 +156,19 @@ public class GUIBoard {
             while ((textLine = reader.readLine()) != null){
                 String[] texts = textLine.split(",");
                 String name = texts[0]; //Because it is the first one in fields.CSV
-                if(texts.length < 3) {
-                    int price = Integer.valueOf(texts[3]); // it is number four in fields.CSV
-                }
+                int price;
+                /*if(texts.length < 3) {
+                    price = Integer.valueOf(texts[3]); // it is number four in fields.CSV
+                }*/
                 for (GUIField field : fields) {
+                    if (field.ID == Integer.parseInt(texts[1])) {
                         field.setFieldName(name);
-                        //field.setFieldPrice(price);
+                        if (texts.length < 3) {
+                            price = Integer.valueOf(texts[3]);
+                            field.setFieldPrice(price);
+                        }
                         break;
+                    }
                 }
                 //counter++;
             }
