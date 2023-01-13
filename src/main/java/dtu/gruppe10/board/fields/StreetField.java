@@ -8,39 +8,46 @@ public class StreetField extends PropertyField {
     public final int PropertiesInSet;
     protected int houseCount;
 
-    public StreetField(int id, int price, int[] rentSteps, StreetColor color, int propertiesInSet) {
+    protected int housePrice;
+
+    public StreetField(int id, int price,int housePrice, int[] rentSteps, StreetColor color, int propertiesInSet) {
         super(id, FieldType.STREET, price, rentSteps);
 
         this.Color = color;
         this.houseCount = 0;
         this.PropertiesInSet = propertiesInSet;
+        this.housePrice = housePrice;
     }
 
 
     public boolean ownsAllInSet() {
         int counter = 0;
-        for (Field street : App.game.Board.getFields()) {
-            if (street == this) {
-                counter++;
-            } else if (!(street instanceof StreetField)) {
-                continue;
-            } else {
-                if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
-                /*if (((StreetField) street).Color == this.Color && ((StreetField) street).owner == this.owner){
+        if (counter != this.PropertiesInSet) {
+            for (Field street : App.game.Board.getFields()) {
+                if (street == this) {
                     counter++;
-                }*/
+                } else if (!(street instanceof StreetField)) {
+
+                } else {
+                    if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
+                    counter++;
+                    }
                 }
             }
         }
-
         return this.PropertiesInSet == counter;
     }
 
+    public void buildOneHouse() {
+        if (ownsAllInSet() && hasEnoughHousesOnOtherFieldsToBuildOneHouse()) {
+            this.houseCount++;
+        }
+    }
 
     public boolean hasEnoughHousesOnOtherFieldsToBuildOneHouse() {
         int counter = 0;
         int eligible = 0;
-        if (counter == this.PropertiesInSet) {
+        if (counter != this.PropertiesInSet) {
             for (Field street : App.game.Board.getFields()) {
                 if (street == this) {
                     counter++;
