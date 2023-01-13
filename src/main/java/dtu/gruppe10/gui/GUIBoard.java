@@ -1,6 +1,10 @@
 package dtu.gruppe10.gui;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 public class GUIBoard {
@@ -35,6 +39,7 @@ public class GUIBoard {
         this.ownerColor = new Color[this.fieldCount];
         this.houseCount = new int[this.fieldCount];
         this.prisonIndex = prisonIndex;
+        displayFieldData();
     }
 
     public void changePositionAndSize(Point center, int diameter) {
@@ -138,8 +143,27 @@ public class GUIBoard {
     }
 
     private void displayFieldData(){
-
-
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/fields.CSV"));
+            String textLine;
+            //int counter = 0;
+            while ((textLine = reader.readLine()) != null){
+                String[] texts = textLine.split(",");
+                String name = texts[0]; //Because it is the first one in fields.CSV
+                if(texts.length < 3) {
+                    int price = Integer.valueOf(texts[3]); // it is number four in fields.CSV
+                }
+                for (GUIField field : fields) {
+                        field.setFieldName(name);
+                        //field.setFieldPrice(price);
+                        break;
+                }
+                //counter++;
+            }
+            reader.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 }
