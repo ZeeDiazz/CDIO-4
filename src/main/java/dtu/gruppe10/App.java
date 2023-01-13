@@ -132,8 +132,7 @@ public class App {
                 if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
 
-                    jail.releasePlayer(currentPlayer);
-                    window.setPlayerFreeFromJail(currentPlayer.ID);
+                    freeFromJail(window, jail, currentPlayer);
                     window.repaint();
                 }
             }
@@ -164,8 +163,7 @@ public class App {
                 }
 
                 System.out.println("Player " + currentPlayer.ID + " was released from Jail");
-                jail.releasePlayer(currentPlayer);
-                window.setPlayerFreeFromJail(currentPlayer.ID);
+                freeFromJail(window, jail, currentPlayer);
             }
 
             PlayerMovement move = game.Board.generateForwardMove(currentPlayer.ID, roll.Sum);
@@ -211,7 +209,7 @@ public class App {
 
                     System.out.println(currentPlayer.ID + " has paid " + toPay + " in rent to " + propertyField.getOwner().ID);
                     System.out.println("Property: " + propertyField.ID);
-                    Player.payRent(propertyField.getOwner(), currentPlayer, toPay);
+                    payRent(window, currentPlayer, propertyField, toPay);
                 }
                 else {
                     // Buy property
@@ -228,8 +226,8 @@ public class App {
             }
 
             if (currentPlayer.Account.isBankrupt()) {
-                game.removePlayer(currentPlayer.ID);
-                window.playerWentBankrupt(currentPlayer.ID);
+                newBankruptcy(window, game, currentPlayer);
+
                 game.nextTurn();
                 continue;
             }
@@ -249,7 +247,21 @@ public class App {
         catch (InterruptedException ignored) {}
     }
 
+    private static void payRent(GUIWindow window, Player player, PropertyField propertyField, int amount) {
+        Player owner = propertyField.getOwner();
+        Player.payRent(owner, player, amount);
+
+        updatePlayerBalance(window, owner, amount, false);
+        updatePlayerBalance(window, player, -amount, false);
+
+        window.repaint();
+    }
+
     private static void updatePlayerBalance(GUIWindow window, Player player, int amount) {
+        updatePlayerBalance(window, player, amount, true);
+    }
+
+    private static void updatePlayerBalance(GUIWindow window, Player player, int amount, boolean repaint) {
         window.updatePlayerBalance(player.ID, amount);
 
         if (amount < 0) {
@@ -258,5 +270,23 @@ public class App {
         else {
             player.Account.add(amount);
         }
+
+        if (repaint) {
+            window.repaint();
+        }
+    }
+
+    private static void newBankruptcy(GUIWindow window, Game game, Player player) {
+        game.removePlayer(player.ID);
+        window.playerWentBankrupt(player.ID);
+
+        window.repaint();
+    }
+
+    private static void freeFromJail(GUIWindow window, Jail jail, Player player) {
+        jail.releasePlayer(player);
+        window.setPlayerFreeFromJail(player.ID);
+
+        window.repaint();
     }
 }
