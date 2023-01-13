@@ -15,8 +15,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Hello world!
@@ -28,6 +26,7 @@ public class App {
     protected static boolean moveHacks;
     protected static int moveHackAmount;
     protected static boolean moveHackDouble;
+
 
     public static void main( String[] args ) {
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
@@ -254,4 +253,5 @@ public class App {
         }
         catch (InterruptedException ignored) {}
     }
+
 }
