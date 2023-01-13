@@ -201,17 +201,11 @@ public class App {
                         toPay = propertyField.getCurrentRent(propertiesInSetOwned);
                     }
 
-                    System.out.println(currentPlayer.ID + " has paid " + toPay + " in rent to " + propertyField.getOwner().ID);
-                    System.out.println("Property: " + propertyField.ID);
                     payRent(window, currentPlayer, propertyField, toPay);
                 }
                 else {
                     // Buy property
-                    updatePlayerBalance(window, currentPlayer, -propertyField.Price);
-
-                    propertyField.newOwner(currentPlayer);
-                    window.propertyBought(currentPlayer.ID, move.End);
-                    System.out.println(currentPlayer.ID + " has bought a property");
+                    buyProperty(window, currentPlayer, propertyField, move.End);
                 }
             }
 
@@ -250,7 +244,7 @@ public class App {
 
     private static void payRent(GUIWindow window, Player player, PropertyField propertyField, int amount) {
         Player owner = propertyField.getOwner();
-        System.out.println("Player " + player.ID + " paid " + amount + " in rent to " + owner.ID + "(property: " + propertyField.ID + ")");
+        System.out.println("Player " + player.ID + " paid " + amount + " in rent to " + owner.ID + " (property: " + propertyField.ID + ")");
 
         Player.payRent(owner, player, amount);
 
@@ -258,6 +252,15 @@ public class App {
         updatePlayerBalance(window, player, -amount, false);
 
         window.repaint();
+    }
+
+    private static void buyProperty(GUIWindow window, Player player, PropertyField propertyField, int index) {
+        System.out.println(player.ID + " has bought a property");
+
+        propertyField.newOwner(player);
+        window.propertyBought(player.ID, index);
+
+        updatePlayerBalance(window, player, -propertyField.Price);
     }
 
     private static void updatePlayerBalance(GUIWindow window, Player player, int amount) {
