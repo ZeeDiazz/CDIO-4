@@ -82,6 +82,21 @@ public class GUIWindow extends JFrame implements Runnable {
                     needToRoll = false;
                     repaint();
                 }
+                //if the player is playing
+                if (currentState == GUIState.PLAYING) {
+                    for (int i = 0; i < Board.fields.length; i++) {
+                        //if the field is clicked
+                        if (Board.fields[i].getFullPolygon(Board.outerCircle, Board.innerCircle, i, Board.fields.length).contains(e.getPoint())) {
+                            // Show information
+                            //Show the panel in the middle of the board
+                            Point center = getCenterOfWindow();
+                            //If it is not null
+                            if(displayFieldInfo(Board.fields[i])!=null) {
+                                getGraphics().drawString(displayFieldInfo(Board.fields[i]), center.x, center.y);
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
@@ -412,5 +427,9 @@ public class GUIWindow extends JFrame implements Runnable {
     public void run() {
         setVisible(true);
         paint(getGraphics());
+    }
+    private String displayFieldInfo(GUIField field) {
+        JOptionPane.showMessageDialog(this, "Field Name: " + field.fieldName + "\nPrice: " + field.fieldPrice, "Field Information", JOptionPane.INFORMATION_MESSAGE);
+        return null;
     }
 }
