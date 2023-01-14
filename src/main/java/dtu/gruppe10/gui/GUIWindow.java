@@ -87,7 +87,7 @@ public class GUIWindow extends JFrame implements Runnable {
                     for (int i = 0; i < Board.fields.length; i++) {
                         //if the field is clicked
                         if (Board.fields[i].getFullPolygon(Board.outerCircle, Board.innerCircle, i, Board.fields.length).contains(e.getPoint())) {
-                            // Show information
+                            // Display Field information
                             //Show the panel in the middle of the board
                             Point center = getCenterOfWindow();
                             //If it is not null
