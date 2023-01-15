@@ -25,4 +25,18 @@ public class GUIDie {
             sprites[i] = spriteSheet.getSubimage(pixelWidth * i, 0, pixelWidth, pixelHeight);
         }
     }
+
+    protected int currentFace;
+
+    public GUIDie() {
+        currentFace = 0;
+    }
+
+    public void setFace(int face) {
+        currentFace = face;
+    }
+
+    public Image getCurrentFace() {
+        return sprites[currentFace];
+    }
 }
