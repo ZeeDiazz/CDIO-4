@@ -234,7 +234,9 @@ public class App {
 
     private static void movePlayer(GUIWindow window, Player player, PlayerMovement move) {
         game.Board.performMove(player.ID, move);
-        window.setNewPlayerPosition(player.ID, move.End);
+
+        window.movePlayer(player.ID, move, 5, 100);
+        // window.setNewPlayerPosition(player.ID, move.End);
 
         window.repaint();
     }

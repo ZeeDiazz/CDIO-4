@@ -1,5 +1,6 @@
 package dtu.gruppe10.gui;
 
+import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.gui.prompts.*;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ public class GUIWindow extends JFrame implements Runnable {
 
     protected GUIState currentState;
     protected HashMap<Integer, GUIPlayer> idToPlayer;
-    protected HashMap<Integer, Integer> idToPosition;
+    protected HashMap<Integer, Float> idToPosition;
     protected HashMap<Integer, Boolean> idToJailedStatus;
 
     protected ArrayList<Integer> bankruptIds;
@@ -141,7 +142,7 @@ public class GUIWindow extends JFrame implements Runnable {
 
     public void addPlayer(GUIPlayer player) {
         idToPlayer.put(player.ID, player);
-        idToPosition.put(player.ID, 0);
+        idToPosition.put(player.ID, 0f);
         idToJailedStatus.put(player.ID, false);
     }
 
@@ -368,8 +369,30 @@ public class GUIWindow extends JFrame implements Runnable {
         needToRoll = true;
     }
 
-    public void setNewPlayerPosition(int playerId, int positionIndex) {
+    public void setNewPlayerPosition(int playerId, float positionIndex) {
         idToPosition.put(playerId, positionIndex);
+    }
+
+    public void movePlayer(int playerId, PlayerMovement move, int stepsPerField, int fieldMilliTime) {
+        int[] fieldIndexes = move.getFieldIndexes(40, true, false);
+        float moveAmount = 1f / stepsPerField;
+        int waitTime = fieldMilliTime / stepsPerField;
+
+        for (int fieldIndex : fieldIndexes) {
+            for (int j = 0; j < stepsPerField; ++j) {
+                setNewPlayerPosition(playerId, fieldIndex + moveAmount * j);
+
+                try {
+                    Thread.sleep(waitTime);
+                }
+                catch (InterruptedException ignored) { }
+                repaint();
+            }
+            setNewPlayerPosition(playerId, fieldIndex);
+            repaint();
+        }
+
+        setNewPlayerPosition(playerId, move.End);
     }
 
     public void playerWentBankrupt(int playerId) {

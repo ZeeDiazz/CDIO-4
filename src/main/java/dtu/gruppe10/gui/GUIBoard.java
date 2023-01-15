@@ -125,6 +125,15 @@ public class GUIBoard {
         drawPlayer(g, player, playerPoint);
     }
 
+    public void drawPlayer(Graphics g, GUIPlayer player, float position) {
+        int maxDiscreteSteps = 1000;
+        int drawIndex = (int)(position * maxDiscreteSteps + maxDiscreteSteps / 2);
+
+        Point playerPoint = playerPathCircle.getSinglePoint(drawIndex, fieldCount * maxDiscreteSteps);
+
+        drawPlayer(g, player, playerPoint);
+    }
+
     protected void drawPlayer(Graphics g, GUIPlayer player, Point playerPosition) {
         int outlineRadius = playerRadius + (playerRadius / 10) + 1;
 
