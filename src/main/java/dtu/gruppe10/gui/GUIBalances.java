@@ -115,4 +115,7 @@ public class GUIBalances {
 
         bankruptPlayers.add(bankruptPlayer.Name);
     }
+    public int getPlayerBalance(int playerId) {
+        return idToBalance.get(playerId);
+    }
 }

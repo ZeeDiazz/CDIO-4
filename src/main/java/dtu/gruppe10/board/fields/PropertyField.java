@@ -5,6 +5,7 @@ import dtu.gruppe10.Player;
 public abstract class PropertyField extends Field {
     public final int Price;
     protected Player owner;
+    private int ownerId;
     protected boolean isMortgaged;
     protected int[] rentSteps;
 
@@ -65,7 +66,9 @@ public abstract class PropertyField extends Field {
         }
         return false;
     }
-
+    public void setOwnerId(int newOwnerId) {
+        this.ownerId = newOwnerId;
+    }
 
 
     /* Til når man kan bygge huse
