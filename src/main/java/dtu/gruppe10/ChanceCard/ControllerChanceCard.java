@@ -1,6 +1,7 @@
 package dtu.gruppe10.ChanceCard;
 
 
+import dtu.gruppe10.Account;
 import dtu.gruppe10.Jail;
 import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
@@ -13,6 +14,7 @@ public class ControllerChanceCard {
     public Board board;
     public Player player;
     public Jail jail;
+    public Account account;
     public Inventory inventory;
     // Implement Acccount/balance
 
@@ -38,8 +40,19 @@ public class ControllerChanceCard {
                 new MoveCard(31,3),
                 new MoveCard(32,-3),
 
-                new TaxCard(47, 1000),
-
+                new TaxCard(47, 500),
+                new TaxCard(47, 500),
+                new TaxCard(48, 1000),
+                new TaxCard(48, 1000),
+                new TaxCard(48, 1000),
+                new TaxCard(49, 3000),
+                new TaxCard(50, 1000),
+                new TaxCard(51, 1000),
+                new TaxCard(52, 1000),
+                new TaxCard(52, 1000),
+                new TaxCard(53, 1000),
+                new TaxCard(54, 200),
+                new TaxCard(55, 200),
                 new GetOutOfJailFreeCard(1)
         };
     }
@@ -107,9 +120,54 @@ public class ControllerChanceCard {
                 }
 
 
-            } else if (upper instanceof  TaxCard) {
-                // Skriv den kode her. aka hvad sker når kortet bliver trukket
+            } else if (upper instanceof  TaxCard) { //add to account
                 TaxCard card = ((TaxCard) upper);
+                switch (upper.getID()) {
+
+                    case 47: //klasselotteriet
+                        amount = 500;
+                        break;
+
+                    case 48: //aktieudbytte
+                        amount = 1000;
+                        break;
+
+                    case 49: //kvartals skat
+                        amount = 3000;
+                        break;
+
+                    case 50: //tipning
+                        amount = 1000;
+                        break;
+
+                    case 51: //gageforhøjelse
+                        amount = 1000;
+                        break;
+
+                    case 52: //præmieobligation
+                        amount = 1000;
+                        break;
+
+                    case 53: //gamle møbler på aktion
+                        amount = 1000;
+                        break;
+
+                    case 54: //Værdien af egen avl fra nyttehaven
+                        amount = 200;
+                        break;
+
+                    case 55: //fødsesldag
+                        amount = 200;
+                        break;
+
+
+
+
+                }
+
+                account.add(amount);
+
+
 
 
 
