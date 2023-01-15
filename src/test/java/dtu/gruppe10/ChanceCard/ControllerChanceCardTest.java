@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Collections.shuffle;
 import static org.junit.Assert.*;
@@ -30,7 +31,7 @@ public class ControllerChanceCardTest extends TestCase {
                     new MoveToCard(4, new int[]{20})
             };
             ParentChanceCard[] shuffledCards = originalCards.clone();
-            shuffle(shuffledCards);
+            bland(shuffledCards);
 
             // Assert that the original and shuffled arrays are not the same
             assertFalse(Arrays.equals(originalCards, shuffledCards));
@@ -40,7 +41,6 @@ public class ControllerChanceCardTest extends TestCase {
             Arrays.sort(shuffledCards);
             assertArrayEquals(originalCards, shuffledCards);
         }
-    }
     @Test
     public void shuffle_shouldShuffleCards() {
         ParentChanceCard[] cards = {
@@ -49,7 +49,7 @@ public class ControllerChanceCardTest extends TestCase {
                 new MoveCard(3, 5)
         };
         ParentChanceCard[] shuffledCards = Arrays.copyOf(cards, cards.length);
-        shuffle(shuffledCards);
+        bland(shuffledCards);
         boolean isShuffled = false;
         for(int i = 0; i < cards.length; i++){
             if(cards[i] != shuffledCards[i]){
