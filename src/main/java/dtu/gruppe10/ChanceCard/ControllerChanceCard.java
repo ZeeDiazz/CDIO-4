@@ -262,7 +262,7 @@ public class ControllerChanceCard {
             return upper;
         }
     // Fisher-Yates shuffle algorithm
-    public void shuffle() {
+    public void shuffle(ParentChanceCard[] chanceCards) {
         for (int i = 0; i < chanceCards.length; i++) {
             int randomIndex = (int)(Math.random() * chanceCards.length);
             ParentChanceCard temp = chanceCards[i];
