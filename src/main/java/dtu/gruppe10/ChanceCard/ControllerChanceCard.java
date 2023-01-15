@@ -19,7 +19,7 @@ public class ControllerChanceCard {
 
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
-    private ControllerChanceCard() {
+    public ControllerChanceCard() {
         chanceCards = new ParentChanceCard[]{
                 new MoveToCard(29, new int[]{1}),
                 new MoveToCard(29, new int[]{1}),
