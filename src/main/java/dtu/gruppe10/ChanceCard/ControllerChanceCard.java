@@ -145,6 +145,15 @@ public class ControllerChanceCard {
             }
             return upper;
         }
+    // Fisher-Yates shuffle algorithm
+    public void shuffle() {
+        for (int i = 0; i < chanceCards.length; i++) {
+            int randomIndex = (int)(Math.random() * chanceCards.length);
+            ParentChanceCard temp = chanceCards[i];
+            chanceCards[i] = chanceCards[randomIndex];
+            chanceCards[randomIndex] = temp;
+        }
+    }
     public static ControllerChanceCard get()
     {
         if (instance == null) {
