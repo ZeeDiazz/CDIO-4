@@ -29,7 +29,9 @@ public class ControllerChanceCard {
                 new MoveToCard(629, new int[]{6, 16, 26, 36}),
                 new MoveToCard(729, new int[]{13,29}),
                 new MoveToCard(829, new int[]{16}),
+
                 new GoToJailCard(40),
+
                 new MoveCard(31,3),
                 new MoveCard(32,-3)
 
@@ -141,58 +143,3 @@ public class ControllerChanceCard {
 
 
     }
-    //int destination = card.getDestination()[0];
-//PlayerMovement moveAmount = board.generateDirectMove(player.ID, destination);
-////også bruger
-//board.prefromMove(player.ID,moveAmount);
-
-
-    /*
-
-        private String name;
-        private String description;
-        private Action action;
-
-        public ChanceCard(String name, String description, Action action) {
-            this.name = name;
-            this.description = description;
-            this.action = action;
-        }
-
-        public void takeAction(Player player) {
-            action.perform(player);
-        }
-    }
-
-    interface Action {
-        void perform(Player player);
-    }
-
-    /*
-    private ArrayList<ChanceCardAction[]> actions;
-
-    public ChanceCard() {
-        this.actions = new ArrayList<>();
-    }
-    public void addAction(ChanceCardAction action) {
-        this.actions.add(new ChanceCardAction[]{action});
-    }
-    public ArrayList<ChanceCardAction[]> getActions() {
-        return actions;
-    }
-
-    public void takeActions(Player player, Board board){
-        for (ChanceCardAction[] actionList : actions) {
-            for (ChanceCardAction action : actionList) {
-                action.perform(player, board);
-            }
-        }
-    }
-
-
-
-    //Could use a interface and than make a class for everyChanceCard...
-    interface ChanceKortAction{
-        void perform(Player player, Board board);
-    }*/
-
