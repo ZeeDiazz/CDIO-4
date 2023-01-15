@@ -5,10 +5,7 @@ import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
 import dtu.gruppe10.dice.DieCup;
 import dtu.gruppe10.dice.SixSidedDie;
-import dtu.gruppe10.gui.GUIPlayer;
-import dtu.gruppe10.gui.GUIState;
-import dtu.gruppe10.gui.GUITest;
-import dtu.gruppe10.gui.GUIWindow;
+import dtu.gruppe10.gui.*;
 import dtu.gruppe10.gui.prompts.GUIAnswer;
 
 import java.awt.*;
