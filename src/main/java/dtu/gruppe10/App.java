@@ -136,6 +136,8 @@ public class App {
 
             cup.roll();
             DiceRoll roll = cup.getResult();
+            window.Board.diceThrown(roll.getValue(0), roll.getValue(1));
+            window.repaint();
 
             if (jail.playerIsJailed(currentPlayer)) {
                 boolean release = false;

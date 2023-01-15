@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class GUIBoard {
@@ -13,16 +15,20 @@ public class GUIBoard {
     private static final float prisonCirclePercentSize = 0.8f;
     private static final float innerCirclePercentSize = 0.7f;
     private static final float ownedCirclePercentSize = 0.65f;
+    private static final float diceCirclePercentSize = 0.4f;
     private static final float playerPercentSize = 0.02f;
 
     protected static Color boardColor = new Color(114, 24, 24);
     protected static Color fieldBaseColor = new Color(108, 159, 159);
 
+    protected Random rng;
+
     protected int boardRadius;
     protected GUICircle outerCircle;
-    protected GUICircle innerCircle;
     protected GUICircle splitCircle;
+    protected GUICircle innerCircle;
     protected GUICircle ownedCircle;
+    protected GUICircle dieDrawCircle;
     protected GUICircle playerPathCircle;
     protected int playerRadius;
     protected int fieldCount;
@@ -31,14 +37,21 @@ public class GUIBoard {
     protected int[] houseCount;
     protected int prisonIndex;
     protected Point prisonPoint;
+    protected GUIDie[] dice;
+    protected Point[] diceDrawPoints;
 
     public GUIBoard(GUIField[] fields, int prisonIndex) {
+        rng = new Random();
         // Save variables
         this.fields = fields;
         this.fieldCount = fields.length;
         this.ownerColor = new Color[this.fieldCount];
         this.houseCount = new int[this.fieldCount];
         this.prisonIndex = prisonIndex;
+
+        this.dice = new GUIDie[] {new GUIDie(), new GUIDie()};
+        this.diceDrawPoints = new Point[2];
+
         displayFieldData();
     }
 
@@ -50,6 +63,11 @@ public class GUIBoard {
         this.splitCircle = outerCircle.getScaledCircle(splitCirclePercentSize);
         this.ownedCircle = outerCircle.getScaledCircle(ownedCirclePercentSize);
         this.playerPathCircle = outerCircle.getScaledCircle(playerPathPercentSize);
+        this.dieDrawCircle = outerCircle.getScaledCircle(diceCirclePercentSize);
+
+        for (GUIDie die : dice) {
+            die.setSize(dieDrawCircle.Diameter / 5);
+        }
 
         this.playerRadius = (int)(boardRadius * playerPercentSize);
 
@@ -113,6 +131,19 @@ public class GUIBoard {
 
         outerCircle.draw(g, false);
         innerCircle.draw(g, false);
+
+        for (int i = 0; i < dice.length; ++i) {
+            GUIDie die = dice[i];
+            Point info = diceDrawPoints[i];
+
+            Image currentFace = die.getCurrentFace();
+            if (currentFace == null || info == null) {
+                continue;
+            }
+
+            Point drawPoint = dieDrawCircle.getScaledCircle((float)info.x / 100).getSinglePoint(info.y, 360);
+            g.drawImage(currentFace, drawPoint.x, drawPoint.y, null);
+        }
     }
 
     public void drawPlayerInPrison(Graphics g, GUIPlayer player) {
@@ -142,6 +173,43 @@ public class GUIBoard {
 
         GUICircle playerCircle = new GUICircle(playerPosition, playerRadius);
         playerCircle.draw(g, player.TokenColor, true);
+    }
+
+    public void diceThrown(int... values) {
+        int index;
+
+        for (index = 0; index < values.length; ++index) {
+            GUIDie die = dice[index];
+
+            die.setFace(values[index]);
+
+            Point dimensions = new Point(1, 0);
+            boolean searchingForPoint = true;
+            while (searchingForPoint) {
+                int randomRadius = rng.nextInt(80) + 20;
+                float radiusPercent = (float)randomRadius / 100;
+                int randomAngle = rng.nextInt(359);
+                Point drawPoint = dieDrawCircle.getScaledCircle(radiusPercent).getSinglePoint(randomAngle, 360);
+
+                searchingForPoint = false;
+                for (int j = 0; j < index; ++j) {
+                    if (drawPoint.distance(diceDrawPoints[j]) < (float)dieDrawCircle.Radius / 3) {
+                        searchingForPoint = true;
+                    }
+                }
+
+                if (!searchingForPoint) {
+                    dimensions = new Point(randomRadius, randomAngle);
+                }
+            }
+
+            diceDrawPoints[index] = dimensions;
+        }
+
+        // Set all the non-thrown dice to not be shown
+        for ( ; index < dice.length; ++index) {
+            dice[index].setFace(-1);
+        }
     }
 
     protected void paintPolygon(Graphics g, Polygon polygon, Color color) {
