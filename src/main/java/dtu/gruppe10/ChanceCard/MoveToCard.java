@@ -2,14 +2,14 @@ package dtu.gruppe10.ChanceCard;
 
 public class MoveToCard extends ParentChanceCard{
 
-    private int[] destination;
-    MoveToCard(int ID, int[] destination) {
+    private int[] newPos;
+    MoveToCard(int ID, int[] newPos) {
         super(ID);
-        this.destination = destination;
+        this.newPos = newPos;
     }
 
     int[] getDestination() {
-        return destination;
+        return  newPos;
     }
 
     }

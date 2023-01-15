@@ -15,7 +15,8 @@ public class ControllerChanceCard {
     public Jail jail;
 
 
-
+    // TODO: -1 på alle positioner
+    // TODO: Chancekort med Balance
     private ControllerChanceCard() {
         chanceCards = new ParentChanceCard[]{
                 new MoveToCard(29, new int[]{1}),
@@ -105,12 +106,13 @@ public class ControllerChanceCard {
                 GoToJailCard card = ((GoToJailCard) upper);
                 switch (upper.getID()) {
                     case 40: // jail
-                        newPos = 1;
+                        newPos = 31;
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid ID value");
                 }
                 PlayerMovement goToJail = board.generateDirectMove(player.ID, newPos);
+                board.performMove(player.ID,goToJail);
                 //jail.addPlayer(Player playerId);
 
             } else if (upper instanceof MoveCard) {
@@ -122,6 +124,8 @@ public class ControllerChanceCard {
                     case 32:
                         amount = -3;
                         break;
+                    default:
+                        throw  new IllegalArgumentException("Invalid ID value");
                 }
                 // tænker her at at card.get_amount burde kunne eleminere switch casen
                 int moveToFields = card.get_amount();
