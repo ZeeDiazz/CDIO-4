@@ -53,6 +53,18 @@ public class ControllerChanceCard {
                 new TaxCard(53, 1000),
                 new TaxCard(54, 200),
                 new TaxCard(55, 200),
+                new TaxCard(56, 1000),
+                new TaxCard(57, 300),
+                new TaxCard(58, 200),
+                new TaxCard(59, 3000),
+                new TaxCard(59, 3000),
+                new TaxCard(60, 1000),
+                new TaxCard(61, 200),
+                new TaxCard(62, 1000),
+                new TaxCard(63, 200),
+                new TaxCard(64, 2000),
+
+
                 new GetOutOfJailFreeCard(1)
         };
     }
@@ -159,13 +171,50 @@ public class ControllerChanceCard {
                     case 55: //fødsesldag
                         amount = 200;
                         break;
-
-
-
-
                 }
-
                 account.add(amount);
+
+            } else if (upper instanceof  TaxCard) { //subtract from account
+                TaxCard card = ((TaxCard) upper);
+                switch (upper.getID()) {
+
+                    case 56: //"fuld stop" bøde
+                        amount = 1000;
+                        break;
+
+                    case 57: //vognvask og smøring
+                        amount = 300;
+                        break;
+
+                    case 58: //levering af 2 kasser øl
+                        amount = 200;
+                        break;
+
+                    case 59: //reparation af deres vogn
+                        amount = 3000;
+                        break;
+
+                    case 60: //4 nye dæk
+                        amount = 1000;
+                        break;
+
+                    case 61: //parkeringsbøde
+                        amount = 200;
+                        break;
+
+                    case 62: //bilforsikring
+                        amount = 1000;
+                        break;
+
+                    case 63: //betaling af smør i told
+                        amount = 200;
+                        break;
+
+                    case 64: //Tandlægeregning
+                        amount = 2000;
+                        break;
+                }
+                account.subtract(amount);
 
 
 
