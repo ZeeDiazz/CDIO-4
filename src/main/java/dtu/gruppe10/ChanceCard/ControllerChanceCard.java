@@ -8,7 +8,7 @@ import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 
 public class ControllerChanceCard {
-    private ParentChanceCard[] chanceCards;
+    private ChanceCard[] chanceCards;
     private  static ControllerChanceCard instance;
     public PlayerMovement playerMovement;
     public Board board;
@@ -22,7 +22,7 @@ public class ControllerChanceCard {
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
     public ControllerChanceCard() {
-        chanceCards = new ParentChanceCard[]{
+        chanceCards = new ChanceCard[]{
                 new MoveToCard(29, new int[]{1}),
                 new MoveToCard(29, new int[]{1}),
                 new MoveToCard(129, new int[]{12}),
@@ -40,29 +40,29 @@ public class ControllerChanceCard {
                 new MoveCard(31,3),
                 new MoveCard(32,-3),
 
-                new PayToBank(47, 500),
-                new PayToBank(47, 500),
-                new PayToBank(48, 1000),
-                new PayToBank(48, 1000),
-                new PayToBank(48, 1000),
-                new PayToBank(49, 3000),
-                new PayToBank(50, 1000),
-                new PayToBank(51, 1000),
-                new PayToBank(52, 1000),
-                new PayToBank(52, 1000),
-                new PayToBank(53, 1000),
-                new PayToBank(54, 200),
-                new PayToBank(55, 200),
-                new PayToBank(56, 1000),
-                new PayToBank(57, 300),
-                new PayToBank(58, 200),
-                new PayToBank(59, 3000),
-                new PayToBank(59, 3000),
-                new PayToBank(60, 1000),
-                new PayToBank(61, 200),
-                new PayToBank(62, 1000),
-                new PayToBank(63, 200),
-                new PayToBank(64, 2000),
+                new BankMoneyCard(47, 500),
+                new BankMoneyCard(47, 500),
+                new BankMoneyCard(48, 1000),
+                new BankMoneyCard(48, 1000),
+                new BankMoneyCard(48, 1000),
+                new BankMoneyCard(49, 3000),
+                new BankMoneyCard(50, 1000),
+                new BankMoneyCard(51, 1000),
+                new BankMoneyCard(52, 1000),
+                new BankMoneyCard(52, 1000),
+                new BankMoneyCard(53, 1000),
+                new BankMoneyCard(54, 200),
+                new BankMoneyCard(55, 200),
+                new BankMoneyCard(56, 1000),
+                new BankMoneyCard(57, 300),
+                new BankMoneyCard(58, 200),
+                new BankMoneyCard(59, 3000),
+                new BankMoneyCard(59, 3000),
+                new BankMoneyCard(60, 1000),
+                new BankMoneyCard(61, 200),
+                new BankMoneyCard(62, 1000),
+                new BankMoneyCard(63, 200),
+                new BankMoneyCard(64, 2000),
 
 
                 new GetOutOfJailFreeCard(1)
@@ -74,8 +74,8 @@ public class ControllerChanceCard {
         * cards and returning it. The method takes a player_iD as an argument, it shifts all the
         * elements of the array to the left, and moves the first element to the last, so the element
         * that is at the last position of the array is the one that is drawn.*/
-        public ParentChanceCard draw(int playerId) {
-            ParentChanceCard upper = chanceCards[0];
+        public ChanceCard draw(int playerId) {
+            ChanceCard upper = chanceCards[0];
             for (int i = 0; i < chanceCards.length - 1; i++) {
                 chanceCards[i] = chanceCards[i + 1];
             }
@@ -132,8 +132,8 @@ public class ControllerChanceCard {
                 }
 
 
-            } else if (upper instanceof PayToBank) { //add to account
-                PayToBank card = ((PayToBank) upper);
+            } else if (upper instanceof BankMoneyCard) { //add to account
+                BankMoneyCard card = ((BankMoneyCard) upper);
                 switch (upper.getID()) {
 
                     case 47: //klasselotteriet
@@ -174,8 +174,8 @@ public class ControllerChanceCard {
                 }
                 account.add(amount);
 
-            } else if (upper instanceof PayToBank) { //subtract from account
-                PayToBank card = ((PayToBank) upper);
+            } else if (upper instanceof BankMoneyCard) { //subtract from account
+                BankMoneyCard card = ((BankMoneyCard) upper);
                 switch (upper.getID()) {
 
                     case 56: //"fuld stop" bøde
@@ -258,10 +258,10 @@ public class ControllerChanceCard {
             return upper;
         }
     // Fisher-Yates shuffle algorithm
-    public void bland(ParentChanceCard[] chanceCards) {
+    public void bland(ChanceCard[] chanceCards) {
         for (int i = 0; i < chanceCards.length; i++) {
             int randomIndex = (int)(Math.random() * chanceCards.length);
-            ParentChanceCard temp = chanceCards[i];
+            ChanceCard temp = chanceCards[i];
             chanceCards[i] = chanceCards[randomIndex];
             chanceCards[randomIndex] = temp;
         }
