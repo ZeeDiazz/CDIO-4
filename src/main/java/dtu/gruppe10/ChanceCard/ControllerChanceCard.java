@@ -23,6 +23,7 @@ public class ControllerChanceCard {
     // TODO: Chancekort med Balance
     public ControllerChanceCard() {
         chanceCards = new ChanceCard[]{
+                /*
                 new MoveToCard(29, new int[]{1}),
                 new MoveToCard(29, new int[]{1}),
                 new MoveToCard(129, new int[]{12}),
@@ -35,6 +36,7 @@ public class ControllerChanceCard {
                 new MoveToCard(729, new int[]{13,29}),
                 new MoveToCard(829, new int[]{16}),
 
+                 */
                 new GoToJailCard(40),
 
                 new MoveCard(31,3),
@@ -123,8 +125,8 @@ public class ControllerChanceCard {
 
                 MoveToCard card = ((MoveToCard) upper);
                 // hvis det virker at tage et tilfældigt moveToCard hver gang der bliver trukket et moveToCard:
-                int destinationIndex = (int)(Math.random() * card.getDestination().length);
-                int randomDestination = card.getDestination()[destinationIndex];
+                // int destinationIndex = (int)(Math.random() * card.getDestination().length);
+                // int randomDestination = card.getDestination()[destinationIndex];
                 //randomDestination skal så erstatte newPos i næste linje
                 if (player !=null){
                 PlayerMovement moveAmount = board.generateDirectMove(player.ID, newPos);
@@ -243,7 +245,7 @@ public class ControllerChanceCard {
                         throw  new IllegalArgumentException("Invalid ID value");
                 }
                 // tænker her at at card.get_amount burde kunne eleminere switch casen
-                int moveToFields = card.get_amount();
+                // int moveToFields = card.get_amount();
                 PlayerMovement moveAmount = board.generateForwardMove(player.ID,amount);
 
                 board.performMove(player.ID,moveAmount);
