@@ -2,6 +2,7 @@ package dtu.gruppe10.ChanceCard;
 
 import dtu.gruppe10.Player;
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,6 +13,12 @@ import static java.util.Collections.shuffle;
 import static org.junit.Assert.*;
 
 public class ControllerChanceCardTest extends TestCase {
+    @Before
+    public void init(){
+        controller = new ControllerChanceCard();
+    }
+    ControllerChanceCard controller;
+
 
     @Test
     public void testDrawMethod() {
@@ -23,7 +30,8 @@ public class ControllerChanceCardTest extends TestCase {
         assertEquals(29, drawnCard.getID());
     }
     @Test
-    public void testShuffleMethod(ParentChanceCard[] chanceCards){
+    public void testShuffleMethod(){
+        controller = new ControllerChanceCard();
             ParentChanceCard[] originalCards = new ParentChanceCard[]{
                     new MoveToCard(1, new int[]{5}),
                     new MoveToCard(2, new int[]{10}),
@@ -31,7 +39,7 @@ public class ControllerChanceCardTest extends TestCase {
                     new MoveToCard(4, new int[]{20})
             };
             ParentChanceCard[] shuffledCards = originalCards.clone();
-            bland(shuffledCards);
+            controller.bland(shuffledCards);
 
             // Assert that the original and shuffled arrays are not the same
             assertFalse(Arrays.equals(originalCards, shuffledCards));
@@ -41,15 +49,16 @@ public class ControllerChanceCardTest extends TestCase {
             Arrays.sort(shuffledCards);
             assertArrayEquals(originalCards, shuffledCards);
         }
+
     @Test
-    public void shuffle_shouldShuffleCards() {
+    public void testshuffleshouldShuffleCards() {
         ParentChanceCard[] cards = {
                 new MoveToCard(1, new int[] {1}),
                 new GoToJailCard(2),
                 new MoveCard(3, 5)
         };
         ParentChanceCard[] shuffledCards = Arrays.copyOf(cards, cards.length);
-        bland(shuffledCards);
+        controller.bland(shuffledCards);
         boolean isShuffled = false;
         for(int i = 0; i < cards.length; i++){
             if(cards[i] != shuffledCards[i]){
