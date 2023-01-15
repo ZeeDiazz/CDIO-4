@@ -29,7 +29,7 @@ public class GUIDie {
     protected int currentFace;
 
     public GUIDie() {
-        currentFace = 0;
+        currentFace = -1;
     }
 
     public void setFace(int face) {
@@ -37,6 +37,9 @@ public class GUIDie {
     }
 
     public Image getCurrentFace() {
+        if (currentFace < 0 || currentFace >= sprites.length) {
+            return null;
+        }
         return sprites[currentFace];
     }
 }
