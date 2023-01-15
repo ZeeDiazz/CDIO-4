@@ -10,6 +10,7 @@ public class ControllerChanceCardTest extends TestCase {
 
     @Test
     public void testDrawMethod() {
+        Player player = new Player(1,1);
         // Create an instance of ControllerChanceCard
         ControllerChanceCard controller = new ControllerChanceCard();
         // Call the draw method and store the result in a variable

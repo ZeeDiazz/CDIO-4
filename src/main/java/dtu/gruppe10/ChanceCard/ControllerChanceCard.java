@@ -101,9 +101,10 @@ public class ControllerChanceCard {
                 int destinationIndex = (int)(Math.random() * card.getDestination().length);
                 int randomDestination = card.getDestination()[destinationIndex];
                 //randomDestination skal så erstatte newPos i næste linje
-
+                if (player !=null){
                 PlayerMovement moveAmount = board.generateDirectMove(player.ID, newPos);
                 board.performMove(player.ID,moveAmount);
+                }
 
 
             } else if (upper instanceof  TaxCard) {
