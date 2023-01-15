@@ -85,7 +85,7 @@ public class ControllerChanceCard {
 
 
             if (upper instanceof MoveToCard) {
-                switch (upper.getID()) {
+                switch (upper.ID) {
                     case 29: // start
                         newPos = 1;
                         break;
@@ -134,7 +134,7 @@ public class ControllerChanceCard {
 
             } else if (upper instanceof BankMoneyCard) { //add to account
                 BankMoneyCard card = ((BankMoneyCard) upper);
-                switch (upper.getID()) {
+                switch (upper.ID) {
 
                     case 47: //klasselotteriet
                         amount = 500;
@@ -176,7 +176,7 @@ public class ControllerChanceCard {
 
             } else if (upper instanceof BankMoneyCard) { //subtract from account
                 BankMoneyCard card = ((BankMoneyCard) upper);
-                switch (upper.getID()) {
+                switch (upper.ID) {
 
                     case 56: //"fuld stop" bøde
                         amount = 1000;
@@ -218,7 +218,7 @@ public class ControllerChanceCard {
 
             } else if (upper instanceof GoToJailCard){
                 GoToJailCard card = ((GoToJailCard) upper);
-                switch (upper.getID()) {
+                switch (upper.ID) {
                     case 40: // jail
                         newPos = 31;
                         break;
@@ -232,7 +232,7 @@ public class ControllerChanceCard {
             }
             else if (upper instanceof MoveCard) {
                 MoveCard card = ((MoveCard) upper);
-                switch (upper.getID()) {
+                switch (upper.ID) {
                     case 31:
                         amount = 3;
                         break;
