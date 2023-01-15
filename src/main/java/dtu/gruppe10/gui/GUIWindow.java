@@ -34,7 +34,6 @@ public class GUIWindow extends JFrame implements Runnable {
         super("Matador");
 
         Board = new GUIBoard(guiFields, 10);
-
         idToPlayer = new HashMap<>();
         idToPosition = new HashMap<>();
         idToJailedStatus = new HashMap<>();

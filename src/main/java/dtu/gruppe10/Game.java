@@ -62,4 +62,6 @@ public class Game {
     public boolean gameIsOver() {
         return players == null || players.size() < 2;
     }
+
+    public int getCurrentPlayerTurn() {return currentTurn;}
 }

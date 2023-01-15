@@ -4,7 +4,9 @@ package dtu.gruppe10.board;
 import dtu.gruppe10.Player;
 import dtu.gruppe10.board.fields.Field;
 import dtu.gruppe10.board.fields.JailField;
+import dtu.gruppe10.board.fields.PropertyField;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Board {
@@ -69,5 +71,15 @@ public class Board {
 
     public void performMove(int playerId, PlayerMovement move) {
         playerPositions.put(playerId, move.End);
+    }
+
+    public PropertyField[] getProperty(int playerId){
+        ArrayList<PropertyField> properties = new ArrayList<>();
+        for (Field field : fields) {
+            if (field instanceof PropertyField) {
+                properties.add((PropertyField) field);
+            }
+        }
+        return properties.toArray(new PropertyField[0]);
     }
 }
