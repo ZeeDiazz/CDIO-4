@@ -3,7 +3,7 @@ package dtu.gruppe10.ChanceCard;
 import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
 
-class ParentChanceCard {
+public class ParentChanceCard {
     private int ID;
 
 

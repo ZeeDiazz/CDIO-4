@@ -28,4 +28,7 @@ public class Inventory {
             }
         }
     }
+    public ArrayList<ParentChanceCard> getInventory(){
+        return inventory;
+    }
 }

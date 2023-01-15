@@ -14,6 +14,7 @@ public class ControllerChanceCard {
     public Player player;
     public Jail jail;
     public Inventory inventory;
+    // Implement Acccount/balance
 
 
     // TODO: -1 på alle positioner
@@ -36,6 +37,8 @@ public class ControllerChanceCard {
 
                 new MoveCard(31,3),
                 new MoveCard(32,-3),
+
+                new TaxCard(47, 1000),
 
                 new GetOutOfJailFreeCard(1)
         };
@@ -103,8 +106,13 @@ public class ControllerChanceCard {
                 board.performMove(player.ID,moveAmount);
 
 
-            }
-            else if (upper instanceof GoToJailCard){
+            } else if (upper instanceof  TaxCard) {
+                // Skriv den kode her. aka hvad sker når kortet bliver trukket
+                TaxCard card = ((TaxCard) upper);
+
+
+
+            } else if (upper instanceof GoToJailCard){
                 GoToJailCard card = ((GoToJailCard) upper);
                 switch (upper.getID()) {
                     case 40: // jail
