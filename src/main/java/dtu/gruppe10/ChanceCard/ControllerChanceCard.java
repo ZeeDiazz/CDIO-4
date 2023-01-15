@@ -34,8 +34,9 @@ public class ControllerChanceCard {
                 new GoToJailCard(40),
 
                 new MoveCard(31,3),
-                new MoveCard(32,-3)
+                new MoveCard(32,-3),
 
+                new GetOutOfJailFreeCard(1)
         };
     }
 
