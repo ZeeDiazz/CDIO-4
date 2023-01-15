@@ -13,6 +13,7 @@ public class ControllerChanceCard {
     public Board board;
     public Player player;
     public Jail jail;
+    public Inventory inventory;
 
 
     // TODO: -1 på alle positioner
@@ -114,9 +115,10 @@ public class ControllerChanceCard {
                 }
                 PlayerMovement goToJail = board.generateDirectMove(player.ID, newPos);
                 board.performMove(player.ID,goToJail);
-                //jail.addPlayer(Player playerId);
+                jail.addPlayer(player);
 
-            } else if (upper instanceof MoveCard) {
+            }
+            else if (upper instanceof MoveCard) {
                 MoveCard card = ((MoveCard) upper);
                 switch (upper.getID()) {
                     case 31:
@@ -133,6 +135,12 @@ public class ControllerChanceCard {
                 PlayerMovement moveAmount = board.generateForwardMove(player.ID,amount);
 
                 board.performMove(player.ID,moveAmount);
+
+            }
+            else if (upper instanceof GetOutOfJailFreeCard){
+                MoveCard card = ((MoveCard) upper);
+
+                inventory.addChanceCard(card);
 
             }
             return upper;
