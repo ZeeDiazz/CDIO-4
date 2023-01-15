@@ -40,29 +40,29 @@ public class ControllerChanceCard {
                 new MoveCard(31,3),
                 new MoveCard(32,-3),
 
-                new TaxCard(47, 500),
-                new TaxCard(47, 500),
-                new TaxCard(48, 1000),
-                new TaxCard(48, 1000),
-                new TaxCard(48, 1000),
-                new TaxCard(49, 3000),
-                new TaxCard(50, 1000),
-                new TaxCard(51, 1000),
-                new TaxCard(52, 1000),
-                new TaxCard(52, 1000),
-                new TaxCard(53, 1000),
-                new TaxCard(54, 200),
-                new TaxCard(55, 200),
-                new TaxCard(56, 1000),
-                new TaxCard(57, 300),
-                new TaxCard(58, 200),
-                new TaxCard(59, 3000),
-                new TaxCard(59, 3000),
-                new TaxCard(60, 1000),
-                new TaxCard(61, 200),
-                new TaxCard(62, 1000),
-                new TaxCard(63, 200),
-                new TaxCard(64, 2000),
+                new PayToBank(47, 500),
+                new PayToBank(47, 500),
+                new PayToBank(48, 1000),
+                new PayToBank(48, 1000),
+                new PayToBank(48, 1000),
+                new PayToBank(49, 3000),
+                new PayToBank(50, 1000),
+                new PayToBank(51, 1000),
+                new PayToBank(52, 1000),
+                new PayToBank(52, 1000),
+                new PayToBank(53, 1000),
+                new PayToBank(54, 200),
+                new PayToBank(55, 200),
+                new PayToBank(56, 1000),
+                new PayToBank(57, 300),
+                new PayToBank(58, 200),
+                new PayToBank(59, 3000),
+                new PayToBank(59, 3000),
+                new PayToBank(60, 1000),
+                new PayToBank(61, 200),
+                new PayToBank(62, 1000),
+                new PayToBank(63, 200),
+                new PayToBank(64, 2000),
 
 
                 new GetOutOfJailFreeCard(1)
@@ -132,8 +132,8 @@ public class ControllerChanceCard {
                 }
 
 
-            } else if (upper instanceof  TaxCard) { //add to account
-                TaxCard card = ((TaxCard) upper);
+            } else if (upper instanceof PayToBank) { //add to account
+                PayToBank card = ((PayToBank) upper);
                 switch (upper.getID()) {
 
                     case 47: //klasselotteriet
@@ -174,8 +174,8 @@ public class ControllerChanceCard {
                 }
                 account.add(amount);
 
-            } else if (upper instanceof  TaxCard) { //subtract from account
-                TaxCard card = ((TaxCard) upper);
+            } else if (upper instanceof PayToBank) { //subtract from account
+                PayToBank card = ((PayToBank) upper);
                 switch (upper.getID()) {
 
                     case 56: //"fuld stop" bøde
@@ -215,10 +215,6 @@ public class ControllerChanceCard {
                         break;
                 }
                 account.subtract(amount);
-
-
-
-
 
             } else if (upper instanceof GoToJailCard){
                 GoToJailCard card = ((GoToJailCard) upper);

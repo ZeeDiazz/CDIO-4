@@ -1,10 +1,10 @@
 package dtu.gruppe10.ChanceCard;
 
 
-    public class TaxCard extends ParentChanceCard {
+    public class PayToBank extends ParentChanceCard {
         private int amount;
 
-        TaxCard(int ID, int amount) {
+        PayToBank(int ID, int amount) {
             super(ID);
             this.amount = amount;
         }
