@@ -9,6 +9,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static dtu.gruppe10.App.game;
+
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
     protected GUIBalances balances;
@@ -94,6 +96,10 @@ public class GUIWindow extends JFrame implements Runnable {
                         }
                     }
                 }
+                if (isVisible() && currentState == GUIState.PLAYING){
+                    createSellButton();
+
+                }
             }
 
             @Override
@@ -116,7 +122,6 @@ public class GUIWindow extends JFrame implements Runnable {
 
             }
         });
-
         // Set the size of the window
         setBounds(bounds);
 
@@ -177,7 +182,6 @@ public class GUIWindow extends JFrame implements Runnable {
             case PLAYING -> {
                 Board.changePositionAndSize(windowCenter, getMaxBoardSize());
                 Board.draw(g);
-
                 for (int playerId : idToPlayer.keySet()) {
                     GUIPlayer player = idToPlayer.get(playerId);
 
@@ -200,7 +204,6 @@ public class GUIWindow extends JFrame implements Runnable {
 
                     drawPoint.translate(0, (int)(boardCircle.Radius * 1.1f));
                     String rollPrompt = "Press middle of board to roll";
-
                     Font prevFont = g.getFont();
                     Font rollFont = getFontByWindowHeight(30);
                     g.setFont(rollFont);
@@ -450,5 +453,18 @@ public class GUIWindow extends JFrame implements Runnable {
     private String displayFieldInfo(GUIField field) {
         JOptionPane.showMessageDialog(this, "Field Name: " + field.fieldName + "\nPrice: " + field.fieldPrice, "Field Information", JOptionPane.INFORMATION_MESSAGE);
         return null;
+    }
+    private void createSellButton() {
+            setVisible(true);
+            JButton sellButton = new JButton("Sell");
+            sellButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances);
+                    sellProperty.setVisible(true);
+                    sellButton.setPreferredSize(new Dimension(10,10));
+                }
+            });
+            add(sellButton, BorderLayout.NORTH);
     }
 }
