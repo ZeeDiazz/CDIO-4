@@ -1,5 +1,4 @@
 package dtu.gruppe10;
-import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
@@ -45,23 +44,26 @@ public class App {
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
 
         int startBalance = 30000;
-        for (int i = 0; i < playerCount; i++) {
-            choosePlayerType(i, startBalance);
-        }
-
 
         for (int i = 0; i < playerCount; ++i) {
-            GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i + 1) + " enter your name", 1, 15);
-            window.repaint();
+            players[i] = makePlayer(i, startBalance);
 
-            while (!playerNameAnswer.hasAnswer()) {
-                trySleep(10);
+            String playerName;
+            if (!(players[i] instanceof AIPlayer)) {
+                GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i + 1) + " enter your name", 1, 15);
+                window.repaint();
+
+                while (!playerNameAnswer.hasAnswer()) {
+                    trySleep(10);
+                }
+
+                playerName = playerNameAnswer.getAnswer();
+            }
+            else {
+                playerName = "CPU #" + (i+1);
             }
 
-            String playerName = playerNameAnswer.getAnswer();
-            players[i] = new Player(i + 1, startBalance);
-
-            window.addPlayer(new GUIPlayer(i + 1, playerName, playerColors[i]));
+            window.addPlayer(new GUIPlayer(i, playerName, playerColors[i]));
         }
 
         window.setState(GUIState.PLAYING);
@@ -310,18 +312,18 @@ public class App {
         window.repaint();
     }
 
-    private static void choosePlayerType(int i, int startingBalance) {
+    private static Player makePlayer(int i, int startingBalance) {
+        Player player;
         int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i + 1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Human", "AI"}, "Human");
         if (playerType == 0) {
             //Create "Human" players
+            player = new Player(i, startingBalance);
             GUIPlayer players = new GUIPlayer(i, "Player " + (i + 1), Color.cyan); //NEED TO PICK RANDOM COLOR
-            //game.players.add(players);
-        } else if (playerType == 1) {
+        } else /* if (playerType == 1) */ {
             //Create AI players and choose their Intelligence
             int intelligence = Integer.parseInt(JOptionPane.showInputDialog("Enter AI intelligence level (1-10):"));
-            AIPlayer players = new AIPlayer(i, "AI Player " + (i + 1), startingBalance, intelligence, game.Board);
+            player = new AIPlayer(i, startingBalance, intelligence);
         }
-
+        return player;
     }
-
 }
