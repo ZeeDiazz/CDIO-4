@@ -197,14 +197,18 @@ public class GUIWindow extends JFrame implements Runnable {
 
                 GUIPlayer[] players = new GUIPlayer[idToPlayer.size()];
                 boolean[] inJail = new boolean[players.length];
+                float[] positions = new float[players.length];
 
                 Integer[] playerIds = idToPlayer.keySet().toArray(new Integer[0]);
                 for (int i = 0; i < players.length; ++i) {
-                    players[i] = idToPlayer.get(playerIds[i]);
-                    inJail[i] = idToJailedStatus.get(playerIds[i]);
+                    int playerId = playerIds[i];
+
+                    players[i] = idToPlayer.get(playerId);
+                    inJail[i] = idToJailedStatus.get(playerId);
+                    positions[i] = idToPosition.get(playerId);
                 }
 
-                Board.drawPlayers(g, players, inJail);
+                Board.drawPlayers(g, players, positions, inJail);
 
                 int windowHeight = getHeight();
                 balances.setFont(getOptimalFontForBalances());

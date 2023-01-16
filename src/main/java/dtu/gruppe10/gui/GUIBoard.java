@@ -30,6 +30,7 @@ public class GUIBoard {
     protected GUICircle ownedCircle;
     protected GUICircle dieDrawCircle;
     protected GUICircle playerPathCircle;
+    protected GUICircle prisonCircle;
     protected int playerRadius;
     protected int fieldCount;
     protected GUIField[] fields;
@@ -71,7 +72,7 @@ public class GUIBoard {
 
         this.playerRadius = (int)(boardRadius * playerPercentSize);
 
-        GUICircle prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
+        prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
         this.prisonPoint = prisonCircle.getSinglePoint(prisonIndex * 2 + 1, 80);
     }
 
@@ -146,8 +147,42 @@ public class GUIBoard {
         }
     }
 
-    public void drawPlayers(Graphics g, GUIPlayer[] players, boolean[] inPrison) {
+    public void drawPlayers(Graphics g, GUIPlayer[] players, float[] positions, boolean[] inPrison) {
+        HashMap<Float, ArrayList<GUIPlayer>> playersInPositions = new HashMap<>();
+        ArrayList<GUIPlayer> imprisoned = new ArrayList<>();
 
+        for (int i = 0; i < players.length; ++i) {
+            if (inPrison[i]) {
+                imprisoned.add(players[i]);
+                continue;
+            }
+
+            float position = positions[i];
+
+            if (!playersInPositions.containsKey(position)) {
+                playersInPositions.put(position, new ArrayList<>());
+            }
+
+            playersInPositions.get(position).add(players[i]);
+        }
+
+        if (imprisoned.size() == 1) {
+            drawPlayerInPrison(g, imprisoned.get(0));
+        }
+        else {
+            // Draw them not on top of each other
+        }
+
+        for (float position : playersInPositions.keySet()) {
+            ArrayList<GUIPlayer> toDraw = playersInPositions.get(position);
+
+            if (toDraw.size() == 1) {
+                drawPlayer(g, toDraw.get(0), position);
+            }
+            else {
+                // Draw them not on top of each other
+            }
+        }
     }
 
     public void drawPlayerInPrison(Graphics g, GUIPlayer player) {
