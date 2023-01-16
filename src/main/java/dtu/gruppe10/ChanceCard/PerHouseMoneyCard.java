@@ -1,7 +1,15 @@
 package dtu.gruppe10.ChanceCard;
 
+import dtu.gruppe10.Player;
+
 public class PerHouseMoneyCard extends MoneyCard {
-    PerHouseMoneyCard(int ID) {
+    int amount;
+    PerHouseMoneyCard(int ID, int amount) {
         super(ID);
+        this.amount = amount;
     }
-}
+    public int getAmount() {
+        int houseMultiplier;
+        //housecount = getHouseCount();
+        //switch (housecount)
+    }

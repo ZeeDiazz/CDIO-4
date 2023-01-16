@@ -4,4 +4,8 @@ public class MoveByCard extends MoveCard {
     public MoveByCard(int ID, int amount) {
         super(ID, amount);
     }
+
+    public int getAmount (){
+        return amount;
+    }
 }

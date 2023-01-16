@@ -12,63 +12,58 @@ import java.util.Random;
 public class ControllerChanceCard {
     private ChanceCard[] chanceCards;
     private  static ControllerChanceCard instance;
-    public PlayerMovement playerMovement;
-    public Board board;
-    public Player player;
-    public Jail jail;
-    public Account account;
-    public Inventory inventory;
-    public int Info;
 
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
     public ControllerChanceCard() {
         chanceCards = new ChanceCard[]{
+                // BetalingsKort:
+                new PerHouseMoneyCard(1, 500), // 500 pr hus 2000kr pr hotel
+                new PerHouseMoneyCard(2, 800), // 800 kr pr hus, 2300 kr pr hotel
 
+                new BankMoneyCard(3, 1000), // Betal 1000 kroner i bøde
+                new BankMoneyCard(4, 300), // Betal for vognvask og smøring kr 300
+                new BankMoneyCard(5, 200), // Betal kr 200 for levering af 2 kasser øl
+                new BankMoneyCard(6, 3000), // Betal 3000 for reparation af deres vogn
+                new BankMoneyCard(7, 3000), // Betal 3000 for reparation af deres vogn
+                new BankMoneyCard(8, 1000), // De har købt 4 nye dæk til Deres vogn, betal kr 1000
+                new BankMoneyCard(9, 200), // parkeringsbøde 200kr
+                new BankMoneyCard(10, 1000), // bilforskikring 1000
+                new BankMoneyCard(11, 200),// 200kr told
+                new BankMoneyCard(12, 2000), // 2000kr tandlæge
+                new BankMoneyCard(13, 500), // modtag 500kr
+                new BankMoneyCard(14, 500),// modtag 500kr
+                new BankMoneyCard(15, 1000), // modtag 1000kr
+                new BankMoneyCard(16, 1000), // modtag 1000kr
+                new BankMoneyCard(17, 1000), // modtag 1000kr
+                new BankMoneyCard(18, 200), // modtag 200
+                new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
+                new BankMoneyCard(20, 200), // 200 fra andre spillere
+
+                new OtherPlayersMoneyCard(21, 500), // modtag 500 fra hver spiller
+                // BevægelsesKort:
                 new MoveToCard(29, 1), // start
-                new MoveToCard(29, 1), // start
-                new MoveToCard(129, 12), // frederiksberg alle
-                new MoveToCard(229, 25), // grønningen
-                new MoveToCard(329, 33), // hvimmelskaftet
-                new MoveToCard(429, 20), // strandvejen
-                new MoveToCard(529, 40), // rådhudspladsen
-/*
-                new MoveToCard(629, 6, 16, 26, 36), // færge
-                new MoveToCard(729, 13,29),
-                new MoveToCard(829, 16),// mols-linjien*/
+                new MoveToCard(30, 1), // start
+
+                new MoveCard(31, 3),// tre felter frem
+                new MoveCard(32, -3),// tre felter tilbage
+                new MoveCard(33, -3),// tre felter tilbage
+
+                new MoveToCard(34, 12), // frederiksberg alle
+                new MoveToNearestCard(35, 1), // færge
+                new MoveToNearestCard(36, 1), // færge
+
+                new MoveToCard(37, 16),// mols-linjien
+                new MoveToCard(38, 33),// hvimmeskaftet
+                new MoveToCard(39, 25), // grønningen
+                new MoveToNearestCard(40, 1), // færge
+                new MoveToCard(41, 20), // strandvejen
+                new MoveToCard(42, 40), // rådhudspladsen
+                new GetOutOfJailFreeCard(43), // ud af fængsel
+                new GoToJailCard(44), // fængsel
+                new GoToJailCard(45) // fængsel
 
 
-                new GoToJailCard(40),
-
-                new MoveCard(31,3),
-                new MoveCard(32,-3),
-
-                new BankMoneyCard(47, 500),
-                new BankMoneyCard(47, 500),
-                new BankMoneyCard(48, 1000),
-                new BankMoneyCard(48, 1000),
-                new BankMoneyCard(48, 1000),
-                new BankMoneyCard(49, 3000),
-                new BankMoneyCard(50, 1000),
-                new BankMoneyCard(51, 1000),
-                new BankMoneyCard(52, 1000),
-                new BankMoneyCard(52, 1000),
-                new BankMoneyCard(53, 1000),
-                new BankMoneyCard(54, 200),
-                new BankMoneyCard(55, 200),
-                new BankMoneyCard(56, 1000),
-                new BankMoneyCard(57, 300),
-                new BankMoneyCard(58, 200),
-                new BankMoneyCard(59, 3000),
-                new BankMoneyCard(59, 3000),
-                new BankMoneyCard(60, 1000),
-                new BankMoneyCard(61, 200),
-                new BankMoneyCard(62, 1000),
-                new BankMoneyCard(63, 200),
-                new BankMoneyCard(64, 2000),
-
-
-                new GetOutOfJailFreeCard(1)
         };
     }
     public ChanceCard draw() {
