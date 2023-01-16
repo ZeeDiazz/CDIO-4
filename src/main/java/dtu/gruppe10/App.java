@@ -117,11 +117,21 @@ public class App {
         }
         game = new Game(players, fieldReader.getFields());
 
+        int turnCount = 0;
         while (!game.gameIsOver()) {
             wantsToPayBail = false;
 
             Player currentPlayer = game.getCurrentPlayer();
             System.out.println("\nPlayer " + currentPlayer.ID + " is starting their turn");
+            turnCount++;
+            if (turnCount == 4) {
+                System.out.println("Player was sent to jail for three consecutive doubles");
+                setInJail(window, jail, currentPlayer);
+
+                turnCount = 0;
+                game.nextTurn();
+                continue;
+            }
 
             window.hasToRoll();
             window.repaint();
@@ -159,6 +169,7 @@ public class App {
                     jail.playerServedTurn(currentPlayer);
                     System.out.println("Player is spending their turn number " + jail.turnsServed(currentPlayer) + " in jail");
                     game.nextTurn();
+                    turnCount = 0;
                     continue;
                 }
 
@@ -217,11 +228,13 @@ public class App {
                 newBankruptcy(window, game, currentPlayer);
 
                 game.nextTurn();
+                turnCount = 0;
                 continue;
             }
 
             if (!moveHacks && !roll.AreSame) {
                 game.nextTurn();
+                turnCount = 0;
             }
         }
 
