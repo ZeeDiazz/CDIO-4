@@ -44,17 +44,15 @@ public class ArrayOfFields {
                     this.add(new TaxField(Integer.parseInt(parts[0]), Integer.parseInt(parts[4])));
                     break;
                 case "jail":
-                    if (jailCounter == 0) {
-                        this.add(new JailField(Integer.parseInt(parts[0])));
-                        jailCounter++;
-                    } else {
-                        this.add(new GoToJailField(Integer.parseInt(parts[0])));
-                    }
+                    this.add(new JailField(Integer.parseInt(parts[0])));
+                    break;
+                case "police":
+                    this.add(new GoToJailField(Integer.parseInt(parts[0])));
                     break;
                 case "brewery":
                     this.add(new BreweryField(Integer.parseInt(parts[0]), Integer.parseInt(parts[4]), new int[]{Integer.parseInt(parts[6]), Integer.parseInt(parts[7])}));
                     break;
-                case "refugee":
+                case "parking":
                     this.add(new FreeParkingField(Integer.parseInt(parts[0])));
                     break;
             }
