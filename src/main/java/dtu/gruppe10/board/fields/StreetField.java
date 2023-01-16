@@ -22,19 +22,15 @@ public class StreetField extends PropertyField {
         return houseCount;
     }
 
+    public int getHousePrice() {
+        return housePrice;
+    }
+
     public boolean ownsAllInSet() {
         int counter = 0;
-        if (counter != this.PropertiesInSet) {
-            for (Field street : App.game.Board.getFields()) {
-                if (street == this) {
-                    counter++;
-                } else {
-                    if (street instanceof StreetField) {
-                        if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
-                            counter++;
-                        }
-                    }
-                }
+        for (Field field : App.game.Board.getFields()) {
+            if (inSameSet(field) && ((StreetField) field).getOwner().equals(this.owner)) {
+                counter++;
             }
         }
         return this.PropertiesInSet == counter;
@@ -42,8 +38,7 @@ public class StreetField extends PropertyField {
 
     // Er ikke sikker på om denne klasse skal trække penge fra spilleren
     public void buildOneHouse() {
-        if (ownsAllInSet() && hasEnoughHousesOnOtherFieldsToBuildOneHouse()) {
-            this.owner.Account.subtract(this.housePrice);
+        if (eligibleToBuildHouse()) {
             this.houseCount++;
         }
     }
@@ -59,9 +54,36 @@ public class StreetField extends PropertyField {
     }
 
 
+    // Er ikke sikker på om denne klasse skal tilføje penge fra spilleren
+    public void sellOneHouse() {
+        if (eligibleToSellHouse()) {
+            this.houseCount = this.houseCount - 1;
+        }
+    }
+
+    // Ellers er denne metode til tjekke om man kan sælge et hus på et felt
+    public boolean eligibleToSellHouse() {
+        return hasEnoughHousesOnOtherFieldsToSellOneHouse() && this.houseCount > 0;
+    }
+
+
     public boolean hasEnoughHousesOnOtherFieldsToBuildOneHouse() {
+        if (!ownsAllInSet()) {
+            return false;
+        }
+
+        for (Field field : App.game.Board.getFields()) {
+            if (inSameSet(field)) {
+                if (this.houseCount > ((StreetField) field).houseCount) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean hasEnoughHousesOnOtherFieldsToSellOneHouse() {
         int counter = 0;
-        int eligible = 0;
         if (counter != this.PropertiesInSet) {
             for (Field street : App.game.Board.getFields()) {
                 if (street == this) {
@@ -69,10 +91,11 @@ public class StreetField extends PropertyField {
                 } else {
                     if (street instanceof StreetField) {
                         if (((StreetField) street).inSameSet(this) && ((StreetField) street).owner == this.owner) {
-                            // Hvis felt 1 har flere huse end felt 2, kan der ikke bygges huse på felt 1
-                            if (this.houseCount > ((StreetField) street).houseCount) {
+                            // Hvis felt 1 har færre huse end felt 2, kan huset på felt 1 ikke sælges
+                            if (this.houseCount < ((StreetField) street).houseCount) {
                                 return false;
                             }
+                            counter++;
                         }
                     }
                 }
@@ -80,6 +103,7 @@ public class StreetField extends PropertyField {
         }
         return true;
     }
+
 
     @Override
     public int getCurrentRent(int propertiesInSetOwned) {
@@ -104,25 +128,5 @@ public class StreetField extends PropertyField {
         }
         return false;
     }
-
-
-
-   /* // Til når man kan bygge huse
-
-    public void updateCurrentRent(int numberHouses) {
-        if (numberHouses == 1) {
-            this.currentRent = this.rent1;
-        } else if (numberHouses == 2) {
-            this.currentRent = this.rent2;
-        } else if (numberHouses == 3) {
-            this.currentRent = this.rent3;
-        } else if (numberHouses == 4) {
-            this.currentRent = this.rent4;
-        } else if (numberHouses == 5) {
-            this.currentRent = this.rent5;
-        }
-    }*/
-
-
 }
 

@@ -22,12 +22,13 @@ public class GUISellProperty extends JFrame {
     private JTextField priceField;
     private JButton sellButton;
 
-    public GUISellProperty(GUIPlayer[] players, GUIBalances balances) {
+    public GUISellProperty(GUIPlayer[] players, GUIBalances balances, Game game, Board board) {
         super("Sell Property");
 
         this.players = players;
         this.balances = balances;
-
+        this.game = game;
+        this.board = board;
         //makes a new window
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,9 +45,9 @@ public class GUISellProperty extends JFrame {
         propertySelector = new JComboBox<>();
             GUIPlayer currentPlayer = players[game.getCurrentPlayerTurn()];
             for (PropertyField property : board.getProperty(currentPlayer.ID)) {
-                if (property.getOwner().ID == currentPlayer.ID) {
+                //if (property.getOwner().ID == currentPlayer.ID) {
                     propertySelector.addItem(property);
-                }
+                //}
             }
             sellPanel.add(propertySelector);
 
@@ -111,5 +112,8 @@ public class GUISellProperty extends JFrame {
     private void setOwnerId(int fieldId, int newOwnerId) {
         PropertyField property = (PropertyField) board.getFieldAt(fieldId);
         property.setOwnerId(newOwnerId);
+        if (fieldId < 0 || fieldId >= game.getPlayersLeft().length) {
+            throw new IllegalArgumentException("Invalid field ID: " + fieldId);
+        }
     }
 }

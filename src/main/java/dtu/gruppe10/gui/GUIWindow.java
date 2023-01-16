@@ -1,6 +1,8 @@
 package dtu.gruppe10.gui;
 
 import dtu.gruppe10.AIPlayer;
+import dtu.gruppe10.Game;
+import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.gui.prompts.*;
 
@@ -14,6 +16,7 @@ import static dtu.gruppe10.App.game;
 
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
+    public Board board;
     protected GUIBalances balances;
 
     protected GUIState currentState;
@@ -461,7 +464,7 @@ public class GUIWindow extends JFrame implements Runnable {
             sellButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances);
+                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances, game,game.Board);
                     sellProperty.setVisible(true);
                     sellButton.setPreferredSize(new Dimension(10,10));
                 }
@@ -470,13 +473,16 @@ public class GUIWindow extends JFrame implements Runnable {
     }
     //Choose AI or other Players
     /*private void createPlayers() {
-        for (int i = 0; i < numberOfPlayers; i++) {
+        for (int i = 0; i < game.getPlayersLeft().length; i++) {
             int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i+1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Human", "AI" }, "Human");
             if (playerType == 0) {
                 //Create "Human" players
-                players[i] = new GUIPlayer(i, "Player " + (i+1), startingBalance);
+                GUIPlayer[] players = new GUIPlayer(i, "Player " + (i+1), startingBalance);
+                //Is this RIGHT???
             } else if (playerType == 1) {
                 //Create AI players and choose their Intelligence
+                int intelligence = 7;
+
                 players[i] = new AIPlayer(i, "AI Player " + (i+1), startingBalance, Board);
             }
         }
