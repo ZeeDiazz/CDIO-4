@@ -116,7 +116,7 @@ public class App {
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
-        Jail jail = new Jail(1000,3);
+        jail = new Jail(1000,3);
 
         ArrayOfFields fieldReader = new ArrayOfFields();
         try {
