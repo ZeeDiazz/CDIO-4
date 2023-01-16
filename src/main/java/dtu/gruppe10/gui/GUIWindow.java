@@ -473,13 +473,16 @@ public class GUIWindow extends JFrame implements Runnable {
     }
     //Choose AI or other Players
     /*private void createPlayers() {
-        for (int i = 0; i < numberOfPlayers; i++) {
+        for (int i = 0; i < game.getPlayersLeft().length; i++) {
             int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i+1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Human", "AI" }, "Human");
             if (playerType == 0) {
                 //Create "Human" players
-                players[i] = new GUIPlayer(i, "Player " + (i+1), startingBalance);
+                GUIPlayer[] players = new GUIPlayer(i, "Player " + (i+1), startingBalance);
+                //Is this RIGHT???
             } else if (playerType == 1) {
                 //Create AI players and choose their Intelligence
+                int intelligence = 7;
+
                 players[i] = new AIPlayer(i, "AI Player " + (i+1), startingBalance, Board);
             }
         }
