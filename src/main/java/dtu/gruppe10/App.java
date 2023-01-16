@@ -127,15 +127,17 @@ public class App {
             Player currentPlayer = game.getCurrentPlayer();
             System.out.println("\nPlayer " + currentPlayer.ID + " is starting their turn");
 
-            window.hasToRoll();
-            window.repaint();
+            if (!(currentPlayer instanceof AIPlayer)) {
+                window.hasToRoll();
+                window.repaint();
 
-            while (!window.hasPressedRoll()) {
-                trySleep(10);
-                if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
-                    updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+                while (!window.hasPressedRoll()) {
+                    trySleep(10);
+                    if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
+                        updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
 
-                    freeFromJail(window, jail, currentPlayer);
+                        freeFromJail(window, jail, currentPlayer);
+                    }
                 }
             }
 
@@ -152,7 +154,7 @@ public class App {
                     System.out.println(roll.getValue(0) + " " + roll.getValue(1));
                     release = true;
                 } else if (jail.playerHasToGetOut(currentPlayer)) {
-                    System.out.println("Player paid bail");
+                    System.out.println("Player was forced to pay bail");
 
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
                     release = true;
@@ -205,8 +207,22 @@ public class App {
 
                     payRent(window, currentPlayer, propertyField, toPay);
                 } else {
-                    // Buy property
-                    buyProperty(window, currentPlayer, propertyField, move.End);
+                    // TODO ask the player if they want to buy the property
+                    boolean wantsToBuy;
+                    if (currentPlayer instanceof AIPlayer ai) {
+                        wantsToBuy = ai.wantsToBuyProperty();
+                    }
+                    else {
+                        wantsToBuy = true;
+                    }
+
+                    if (wantsToBuy) {
+                        // Buy property
+                        buyProperty(window, currentPlayer, propertyField, move.End);
+                    }
+                    else {
+                        // TODO if they don't want to buy, put the property in auction
+                    }
                 }
             }
 
@@ -214,6 +230,7 @@ public class App {
                 updatePlayerBalance(window, currentPlayer, 4000);
             }
 
+            // TODO check if they are actually bankrupt (including properties)
             if (currentPlayer.Account.isBankrupt()) {
                 newBankruptcy(window, game, currentPlayer);
 
