@@ -53,12 +53,18 @@ public class AIPlayer extends Player{
                     balances.playerLostMoney(game.getCurrentPlayer().ID,price);
                 }
             }
+            //make decision about building houses and hotels
+            if (landedOnField instanceof StreetField) {
+                StreetField streetField = (StreetField) landedOnField;
+                if(intelligence > rng.nextInt(10) && streetField.ownsAllInSet()) {
+                    if(balances.getPlayerBalance(game.getCurrentPlayer().ID) > streetField.getHousePrice()) {
+                        streetField.buildOneHouse();
+                        balances.playerLostMoney(game.getCurrentPlayer().ID,streetField.getHousePrice());
+                    }
+                }
+
+            }
 
         }
-        //make decision about building houses and hotels
-        //if (instanceof StreetField){}
     }
-
-
-
 }
