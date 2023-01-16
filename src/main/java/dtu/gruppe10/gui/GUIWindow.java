@@ -1,6 +1,8 @@
 package dtu.gruppe10.gui;
 
 import dtu.gruppe10.AIPlayer;
+import dtu.gruppe10.Game;
+import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.gui.prompts.*;
 
@@ -14,6 +16,7 @@ import static dtu.gruppe10.App.game;
 
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
+    public Board board;
     protected GUIBalances balances;
 
     protected GUIState currentState;
@@ -461,7 +464,7 @@ public class GUIWindow extends JFrame implements Runnable {
             sellButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances);
+                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances, game,board);
                     sellProperty.setVisible(true);
                     sellButton.setPreferredSize(new Dimension(10,10));
                 }

@@ -22,12 +22,13 @@ public class GUISellProperty extends JFrame {
     private JTextField priceField;
     private JButton sellButton;
 
-    public GUISellProperty(GUIPlayer[] players, GUIBalances balances) {
+    public GUISellProperty(GUIPlayer[] players, GUIBalances balances, Game game, Board board) {
         super("Sell Property");
 
         this.players = players;
         this.balances = balances;
-
+        this.game = game;
+        this.board = board;
         //makes a new window
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
