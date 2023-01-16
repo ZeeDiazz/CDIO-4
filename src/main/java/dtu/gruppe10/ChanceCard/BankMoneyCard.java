@@ -8,7 +8,7 @@ public class BankMoneyCard extends MoneyCard {
         this.amount = amount;
     }
 
-    int getAmount() {
+    public int getAmount() {
         return amount;
 
     }

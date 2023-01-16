@@ -2,13 +2,16 @@ package dtu.gruppe10.gui;
 
 import dtu.gruppe10.AIPlayer;
 import dtu.gruppe10.Game;
+import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
+import dtu.gruppe10.board.fields.ArrayOfFields;
 import dtu.gruppe10.gui.prompts.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,6 +20,7 @@ import static dtu.gruppe10.App.game;
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
     public Board board;
+    private Game game;
     protected GUIBalances balances;
 
     protected GUIState currentState;
@@ -43,7 +47,6 @@ public class GUIWindow extends JFrame implements Runnable {
         idToPlayer = new HashMap<>();
         idToPosition = new HashMap<>();
         idToJailedStatus = new HashMap<>();
-
         bankruptIds  = new ArrayList<>();
 
         promptKeyListener = new KeyListener() {
@@ -132,6 +135,9 @@ public class GUIWindow extends JFrame implements Runnable {
         // Set default values to various things
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //Choose Player type:
+        //choosePlayerType();
     }
 
     public void setState(GUIState currentState) {
@@ -464,7 +470,7 @@ public class GUIWindow extends JFrame implements Runnable {
             sellButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances, game,game.Board);
+                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances, game,board);
                     sellProperty.setVisible(true);
                     sellButton.setPreferredSize(new Dimension(10,10));
                 }
@@ -472,18 +478,16 @@ public class GUIWindow extends JFrame implements Runnable {
             add(sellButton, BorderLayout.NORTH);
     }
     //Choose AI or other Players
-    /*private void createPlayers() {
+    /*private void choosePlayerType() {
         for (int i = 0; i < game.getPlayersLeft().length; i++) {
             int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i+1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Human", "AI" }, "Human");
             if (playerType == 0) {
                 //Create "Human" players
-                GUIPlayer[] players = new GUIPlayer(i, "Player " + (i+1), startingBalance);
-                //Is this RIGHT???
+                GUIPlayer players = new GUIPlayer(i, "Player " + (i+1), Color.cyan);
             } else if (playerType == 1) {
                 //Create AI players and choose their Intelligence
                 int intelligence = 7;
-
-                players[i] = new AIPlayer(i, "AI Player " + (i+1), startingBalance, Board);
+                AIPlayer players = new AIPlayer(i, "AI Player " + (i+1),30000, intelligence, game.Board);
             }
         }
     }*/
