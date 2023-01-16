@@ -143,7 +143,7 @@ public class App {
                 continue;
             }
 
-            if (currentPlayer instanceof AIPlayer) {
+            if (!(currentPlayer instanceof AIPlayer)) {
                 window.hasToRoll();
                 window.repaint();
 
