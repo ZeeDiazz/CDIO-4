@@ -8,6 +8,7 @@ import dtu.gruppe10.dice.SixSidedDie;
 import dtu.gruppe10.gui.*;
 import dtu.gruppe10.gui.prompts.GUIAnswer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,7 +26,7 @@ public class App {
     protected static boolean moveHackDouble;
 
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
 
         Thread uiThread = new Thread(window, "uiThread");
@@ -44,8 +45,13 @@ public class App {
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
 
         int startBalance = 30000;
+        for (int i = 0; i < playerCount; i++) {
+            choosePlayerType(i, startBalance);
+        }
+
+
         for (int i = 0; i < playerCount; ++i) {
-            GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
+            GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i + 1) + " enter your name", 1, 15);
             window.repaint();
 
             while (!playerNameAnswer.hasAnswer()) {
@@ -53,9 +59,9 @@ public class App {
             }
 
             String playerName = playerNameAnswer.getAnswer();
-            players[i] = new Player(i+1, startBalance);
+            players[i] = new Player(i + 1, startBalance);
 
-            window.addPlayer(new GUIPlayer(i+1, playerName, playerColors[i]));
+            window.addPlayer(new GUIPlayer(i + 1, playerName, playerColors[i]));
         }
 
         window.setState(GUIState.PLAYING);
@@ -73,8 +79,7 @@ public class App {
 
                     if (moveHacks) {
                         System.out.println("Move hacks enabled");
-                    }
-                    else {
+                    } else {
                         System.out.println("Move hacks disabled");
                         moveHackAmount = 0;
                         moveHackDouble = false;
@@ -83,8 +88,7 @@ public class App {
                 if (moveHacks) {
                     if (Character.isDigit(e.getKeyChar())) {
                         moveHackAmount = Character.getNumericValue(e.getKeyChar());
-                    }
-                    else if (e.getKeyChar() == 'd') {
+                    } else if (e.getKeyChar() == 'd') {
                         moveHackDouble = true;
                     }
                 }
@@ -101,17 +105,16 @@ public class App {
             }
         });
         for (int i = 0; i < playerCount; ++i) {
-            window.updatePlayerBalance(i+1, startBalance);
+            window.updatePlayerBalance(i + 1, startBalance);
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
-        Jail jail = new Jail(1000,3);
+        Jail jail = new Jail(1000, 3);
 
         ArrayOfFields fieldReader = new ArrayOfFields();
         try {
             fieldReader.readFieldData();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Frick");
         }
         game = new Game(players, fieldReader.getFields());
@@ -146,8 +149,7 @@ public class App {
                     System.out.println("Player rolled out of prison");
                     System.out.println(roll.getValue(0) + " " + roll.getValue(1));
                     release = true;
-                }
-                else if (jail.playerHasToGetOut(currentPlayer)) {
+                } else if (jail.playerHasToGetOut(currentPlayer)) {
                     System.out.println("Player paid bail");
 
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
@@ -187,7 +189,7 @@ public class App {
                     int propertiesInSetOwned = 1;
                     for (int i = 0; i < game.Board.FieldCount; ++i) {
                         Field field = game.Board.getFieldAt(i);
-                        if (propertyField.inSetWith(field) && propertyField.getOwner().equals(((PropertyField)field).getOwner())) {
+                        if (propertyField.inSetWith(field) && propertyField.getOwner().equals(((PropertyField) field).getOwner())) {
                             propertiesInSetOwned++;
                         }
                     }
@@ -195,14 +197,12 @@ public class App {
                     int toPay;
                     if (propertyField instanceof BreweryField breweryField) {
                         toPay = breweryField.utilityPrice(roll.Sum, propertiesInSetOwned);
-                    }
-                    else {
+                    } else {
                         toPay = propertyField.getCurrentRent(propertiesInSetOwned);
                     }
 
                     payRent(window, currentPlayer, propertyField, toPay);
-                }
-                else {
+                } else {
                     // Buy property
                     buyProperty(window, currentPlayer, propertyField, move.End);
                 }
@@ -230,8 +230,8 @@ public class App {
     private static void trySleep(long millis) {
         try {
             Thread.sleep(millis);
+        } catch (InterruptedException ignored) {
         }
-        catch (InterruptedException ignored) {}
     }
 
     private static void movePlayer(GUIWindow window, Player player, PlayerMovement move) {
@@ -273,8 +273,7 @@ public class App {
 
         if (amount < 0) {
             player.Account.subtract(-amount);
-        }
-        else {
+        } else {
             player.Account.add(amount);
         }
 
@@ -310,4 +309,19 @@ public class App {
 
         window.repaint();
     }
+
+    private static void choosePlayerType(int i, int startingBalance) {
+        int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i + 1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Human", "AI"}, "Human");
+        if (playerType == 0) {
+            //Create "Human" players
+            GUIPlayer players = new GUIPlayer(i, "Player " + (i + 1), Color.cyan); //NEED TO PICK RANDOM COLOR
+            //game.players.add(players);
+        } else if (playerType == 1) {
+            //Create AI players and choose their Intelligence
+            int intelligence = Integer.parseInt(JOptionPane.showInputDialog("Enter AI intelligence level (1-10):"));
+            AIPlayer players = new AIPlayer(i, "AI Player " + (i + 1), startingBalance, intelligence, game.Board);
+        }
+
+    }
+
 }
