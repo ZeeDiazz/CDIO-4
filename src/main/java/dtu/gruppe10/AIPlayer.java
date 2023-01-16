@@ -37,7 +37,7 @@ public class AIPlayer extends Player{
         PlayerMovement nextPos = board.generateForwardMove(game.getCurrentPlayerTurn(),rollSum );
 
         // get the AIPlayer's current position on the board
-        Field landedOnField = board.getFieldAt(2);
+        Field landedOnField = board.getFieldAt(rollSum);
 
         // make decision about whether to buy the property if its for sale
 
