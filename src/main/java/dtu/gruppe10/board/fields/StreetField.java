@@ -38,8 +38,7 @@ public class StreetField extends PropertyField {
 
     // Er ikke sikker på om denne klasse skal trække penge fra spilleren
     public void buildOneHouse() {
-        if (ownsAllInSet() && hasEnoughHousesOnOtherFieldsToBuildOneHouse()) {
-            //this.owner.Account.subtract(this.housePrice);
+        if (eligibleToBuildHouse()) {
             this.houseCount++;
         }
     }
@@ -57,8 +56,7 @@ public class StreetField extends PropertyField {
 
     // Er ikke sikker på om denne klasse skal tilføje penge fra spilleren
     public void sellOneHouse() {
-        if (hasEnoughHousesOnOtherFieldsToSellOneHouse() && this.houseCount > 0) {
-            this.owner.Account.add(this.housePrice / 2);
+        if (eligibleToSellHouse()) {
             this.houseCount = this.houseCount - 1;
         }
     }
