@@ -73,7 +73,6 @@ public class GUIBoard {
         this.playerRadius = (int)(boardRadius * playerPercentSize);
 
         prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
-        this.prisonPoint = prisonCircle.getSinglePoint(prisonIndex * 2 + 1, 80);
     }
 
     public int getRadius() {
@@ -166,11 +165,23 @@ public class GUIBoard {
             playersInPositions.get(position).add(players[i]);
         }
 
+        float[] imprisonedDrawPositions = new float[imprisoned.size()];
         if (imprisoned.size() == 1) {
-            drawPlayerInPrison(g, imprisoned.get(0));
+            imprisonedDrawPositions[0] = prisonIndex;
         }
-        else {
-            // Draw them not on top of each other
+        else if (imprisoned.size() == 2) {
+            imprisonedDrawPositions[0] = prisonIndex - 0.15f;
+            imprisonedDrawPositions[1] = prisonIndex + 0.15f;
+        }
+        else if (imprisoned.size() == 3) {
+            imprisonedDrawPositions[1] = prisonIndex;
+
+            imprisonedDrawPositions[0] = prisonIndex - 0.3f;
+            imprisonedDrawPositions[2] = prisonIndex + 0.3f;
+        }
+
+        for (int i = 0; i < imprisoned.size(); ++i) {
+            drawPlayerInPrison(g, imprisoned.get(i), imprisonedDrawPositions[i]);
         }
 
         for (float position : playersInPositions.keySet()) {
@@ -205,8 +216,13 @@ public class GUIBoard {
         }
     }
 
-    public void drawPlayerInPrison(Graphics g, GUIPlayer player) {
-        drawPlayer(g, player, prisonPoint);
+    public void drawPlayerInPrison(Graphics g, GUIPlayer player, float position) {
+        int maxDiscreteSteps = 1000;
+        int drawIndex = (int)(position * maxDiscreteSteps + maxDiscreteSteps / 2);
+
+        Point playerPoint = prisonCircle.getSinglePoint(drawIndex, fieldCount * maxDiscreteSteps);
+
+        drawPlayer(g, player, playerPoint);
     }
 
     public void drawPlayer(Graphics g, GUIPlayer player, int positionIndex) {
