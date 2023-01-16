@@ -4,15 +4,17 @@ import dtu.gruppe10.Player;
 
 public class PerHouseMoneyCard extends MoneyCard {
     int amount;
-    int houses=0; // this will be changed to where the house
+    Player player;
+
     PerHouseMoneyCard(int ID, int amount) {
         super(ID);
         this.amount = amount;
     }
 
     public int getAmount() {
-        int houseMultiplier;
-        switch (houses) {
+        return amount;
+        /*int houseMultiplier;
+        switch () {
             case 0:
                 houseMultiplier = amount;
                 break;
@@ -33,7 +35,6 @@ public class PerHouseMoneyCard extends MoneyCard {
                 break;
         }
         return houseMultiplier;
-        //housecount = getHouseCount();
-        //switch (housecount)
+    }*/
     }
 }
