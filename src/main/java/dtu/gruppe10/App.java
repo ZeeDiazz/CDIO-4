@@ -1,4 +1,5 @@
 package dtu.gruppe10;
+import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
@@ -7,7 +8,6 @@ import dtu.gruppe10.dice.SixSidedDie;
 import dtu.gruppe10.gui.*;
 import dtu.gruppe10.gui.prompts.GUIAnswer;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -24,8 +24,9 @@ public class App {
     protected static int moveHackAmount;
     protected static boolean moveHackDouble;
 
+    protected static Jail jail;
 
-    public static void main(String[] args) {
+    public static void main( String[] args ) {
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
 
         Thread uiThread = new Thread(window, "uiThread");
@@ -44,26 +45,18 @@ public class App {
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
 
         int startBalance = 30000;
-
         for (int i = 0; i < playerCount; ++i) {
-            players[i] = makePlayer(i, startBalance);
+            GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
+            window.repaint();
 
-            String playerName;
-            if (!(players[i] instanceof AIPlayer)) {
-                GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i + 1) + " enter your name", 1, 15);
-                window.repaint();
-
-                while (!playerNameAnswer.hasAnswer()) {
-                    trySleep(10);
-                }
-
-                playerName = playerNameAnswer.getAnswer();
-            }
-            else {
-                playerName = "CPU #" + (i+1);
+            while (!playerNameAnswer.hasAnswer()) {
+                trySleep(10);
             }
 
-            window.addPlayer(new GUIPlayer(i, playerName, playerColors[i]));
+            String playerName = playerNameAnswer.getAnswer();
+            players[i] = new Player(i+1, startBalance);
+
+            window.addPlayer(new GUIPlayer(i+1, playerName, playerColors[i]));
         }
 
         window.setState(GUIState.PLAYING);
@@ -81,7 +74,8 @@ public class App {
 
                     if (moveHacks) {
                         System.out.println("Move hacks enabled");
-                    } else {
+                    }
+                    else {
                         System.out.println("Move hacks disabled");
                         moveHackAmount = 0;
                         moveHackDouble = false;
@@ -90,7 +84,8 @@ public class App {
                 if (moveHacks) {
                     if (Character.isDigit(e.getKeyChar())) {
                         moveHackAmount = Character.getNumericValue(e.getKeyChar());
-                    } else if (e.getKeyChar() == 'd') {
+                    }
+                    else if (e.getKeyChar() == 'd') {
                         moveHackDouble = true;
                     }
                 }
@@ -107,16 +102,17 @@ public class App {
             }
         });
         for (int i = 0; i < playerCount; ++i) {
-            window.updatePlayerBalance(i, startBalance);
+            window.updatePlayerBalance(i+1, startBalance);
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
-        Jail jail = new Jail(1000, 3);
+        Jail jail = new Jail(1000,3);
 
         ArrayOfFields fieldReader = new ArrayOfFields();
         try {
             fieldReader.readFieldData();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.out.println("Frick");
         }
         game = new Game(players, fieldReader.getFields());
@@ -127,29 +123,22 @@ public class App {
             Player currentPlayer = game.getCurrentPlayer();
             System.out.println("\nPlayer " + currentPlayer.ID + " is starting their turn");
 
-            if (!(currentPlayer instanceof AIPlayer)) {
-                window.hasToRoll();
-                window.repaint();
+            window.hasToRoll();
+            window.repaint();
 
-                while (!window.hasPressedRoll()) {
-                    trySleep(10);
-                    if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
-                        updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+            while (!window.hasPressedRoll()) {
+                trySleep(10);
+                if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
+                    updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
 
-                        freeFromJail(window, jail, currentPlayer);
-                    }
+                    freeFromJail(window, jail, currentPlayer);
                 }
             }
 
             cup.roll();
             DiceRoll roll = cup.getResult();
-
             window.Board.diceThrown(roll.getValue(0), roll.getValue(1));
             window.repaint();
-            trySleep(1000);
-
-            window.Board.diceThrown(-1, -1);
-            trySleep(1000);
 
             if (jail.playerIsJailed(currentPlayer)) {
                 boolean release = false;
@@ -158,8 +147,9 @@ public class App {
                     System.out.println("Player rolled out of prison");
                     System.out.println(roll.getValue(0) + " " + roll.getValue(1));
                     release = true;
-                } else if (jail.playerHasToGetOut(currentPlayer)) {
-                    System.out.println("Player was forced to pay bail");
+                }
+                else if (jail.playerHasToGetOut(currentPlayer)) {
+                    System.out.println("Player paid bail");
 
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
                     release = true;
@@ -198,7 +188,7 @@ public class App {
                     int propertiesInSetOwned = 1;
                     for (int i = 0; i < game.Board.FieldCount; ++i) {
                         Field field = game.Board.getFieldAt(i);
-                        if (propertyField.inSetWith(field) && propertyField.getOwner().equals(((PropertyField) field).getOwner())) {
+                        if (propertyField.inSetWith(field) && propertyField.getOwner().equals(((PropertyField)field).getOwner())) {
                             propertiesInSetOwned++;
                         }
                     }
@@ -206,28 +196,16 @@ public class App {
                     int toPay;
                     if (propertyField instanceof BreweryField breweryField) {
                         toPay = breweryField.utilityPrice(roll.Sum, propertiesInSetOwned);
-                    } else {
+                    }
+                    else {
                         toPay = propertyField.getCurrentRent(propertiesInSetOwned);
                     }
 
                     payRent(window, currentPlayer, propertyField, toPay);
-                } else {
-                    // TODO ask the player if they want to buy the property
-                    boolean wantsToBuy;
-                    if (currentPlayer instanceof AIPlayer ai) {
-                        wantsToBuy = ai.wantsToBuyProperty();
-                    }
-                    else {
-                        wantsToBuy = true;
-                    }
-
-                    if (wantsToBuy) {
-                        // Buy property
-                        buyProperty(window, currentPlayer, propertyField, move.End);
-                    }
-                    else {
-                        // TODO if they don't want to buy, put the property in auction
-                    }
+                }
+                else {
+                    // Buy property
+                    buyProperty(window, currentPlayer, propertyField, move.End);
                 }
             }
 
@@ -235,7 +213,6 @@ public class App {
                 updatePlayerBalance(window, currentPlayer, 4000);
             }
 
-            // TODO check if they are actually bankrupt (including properties)
             if (currentPlayer.Account.isBankrupt()) {
                 newBankruptcy(window, game, currentPlayer);
 
@@ -254,8 +231,8 @@ public class App {
     private static void trySleep(long millis) {
         try {
             Thread.sleep(millis);
-        } catch (InterruptedException ignored) {
         }
+        catch (InterruptedException ignored) {}
     }
 
     private static void movePlayer(GUIWindow window, Player player, PlayerMovement move) {
@@ -269,14 +246,21 @@ public class App {
 
     private static void payRent(GUIWindow window, Player player, PropertyField propertyField, int amount) {
         Player owner = propertyField.getOwner();
-        System.out.println("Player " + player.ID + " paid " + amount + " in rent to " + owner.ID + " (property: " + propertyField.ID + ")");
 
-        Player.payRent(owner, player, amount);
 
-        updatePlayerBalance(window, owner, amount, false);
-        updatePlayerBalance(window, player, -amount, false);
+        if(jail.inmates.containsKey(owner)){
+            System.out.println("Rent was not paid since " + owner.ID + " is in jail." );
+        }
+        else {
+            Player.payRent(owner, player, amount);
 
-        window.repaint();
+            System.out.println("Player " + player.ID + " paid " + amount + " in rent to " + owner.ID + " (property: " + propertyField.ID + ")");
+
+            updatePlayerBalance(window, owner, amount, false);
+            updatePlayerBalance(window, player, -amount, false);
+
+            window.repaint();
+        }
     }
 
     private static void buyProperty(GUIWindow window, Player player, PropertyField propertyField, int index) {
@@ -297,7 +281,8 @@ public class App {
 
         if (amount < 0) {
             player.Account.subtract(-amount);
-        } else {
+        }
+        else {
             player.Account.add(amount);
         }
 
@@ -332,19 +317,5 @@ public class App {
         window.setPlayerFreeFromJail(player.ID);
 
         window.repaint();
-    }
-
-    private static Player makePlayer(int playerId, int startingBalance) {
-        Player player;
-        int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (playerId + 1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Human", "AI"}, "Human");
-        if (playerType == 0) {
-            //Create "Human" players
-            player = new Player(playerId, startingBalance);
-        } else /* if (playerType == 1) */ {
-            //Create AI players and choose their Intelligence
-            int intelligence = Integer.parseInt(JOptionPane.showInputDialog("Enter AI intelligence level (1-10):"));
-            player = new AIPlayer(playerId, startingBalance, intelligence);
-        }
-        return player;
     }
 }
