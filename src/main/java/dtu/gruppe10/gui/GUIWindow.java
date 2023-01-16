@@ -476,8 +476,8 @@ public class GUIWindow extends JFrame implements Runnable {
                 //Create "Human" players
                 players[i] = new GUIPlayer(i, "Player " + (i+1), startingBalance);
             } else if (playerType == 1) {
-                //Create AI players
-                players[i] = new AIPlayer(i, "AI Player " + (i+1), startingBalance);
+                //Create AI players and choose their Intelligence
+                players[i] = new AIPlayer(i, "AI Player " + (i+1), startingBalance, Board);
             }
         }
     }*/
