@@ -8,7 +8,7 @@ public class MoveToCard extends MoveCard {
         this.positionIndex = positionIndex;
 
     }
-    public int getPosition(){
+    public int getPositionIndex(){
         return positionIndex;
     }
 }

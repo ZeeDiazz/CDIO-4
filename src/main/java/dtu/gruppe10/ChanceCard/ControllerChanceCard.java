@@ -16,8 +16,7 @@ public class ControllerChanceCard {
     public Jail jail;
     public Account account;
     public Inventory inventory;
-    // Implement Acccount/balance
-
+    public int Info;
 
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
@@ -76,8 +75,9 @@ public class ControllerChanceCard {
         * cards and returning it. The method takes a player_iD as an argument, it shifts all the
         * elements of the array to the left, and moves the first element to the last, so the element
         * that is at the last position of the array is the one that is drawn.*/
-        public int draw(int playerId) {
+        public CardInfo draw() {
             ChanceCard upper = chanceCards[0];
+            int info = 0;
             for (int i = 0; i < chanceCards.length - 1; i++) {
                 chanceCards[i] = chanceCards[i + 1];
             }
@@ -87,13 +87,12 @@ public class ControllerChanceCard {
 
 
             if (upper instanceof MoveToCard) {
-
                 MoveToCard card = ((MoveToCard) upper);
-                return card.getPosition();
+                info = card.getPositionIndex();
                 }
             else if (upper instanceof MoveCard) {
                 MoveCard card = ((MoveCard) upper);
-                return card.getMoveAmount();
+                info = card.getMoveAmount();
             }
 
 
@@ -205,7 +204,7 @@ public class ControllerChanceCard {
                 inventory.addChanceCard(card);
 
             }
-            return upper;
+            return new CardInfo(upper, info);
         }
     // Fisher-Yates shuffle algorithm
     public void bland(ChanceCard[] chanceCards) {
