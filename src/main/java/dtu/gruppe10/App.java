@@ -143,15 +143,17 @@ public class App {
                 continue;
             }
 
-            window.hasToRoll();
-            window.repaint();
+            if (currentPlayer instanceof AIPlayer) {
+                window.hasToRoll();
+                window.repaint();
 
-            while (!window.hasPressedRoll()) {
-                trySleep(10);
-                if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
-                    updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+                while (!window.hasPressedRoll()) {
+                    trySleep(10);
+                    if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
+                        updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
 
-                    freeFromJail(window, jail, currentPlayer);
+                        freeFromJail(window, jail, currentPlayer);
+                    }
                 }
             }
 
@@ -159,6 +161,10 @@ public class App {
             DiceRoll roll = cup.getResult();
             window.Board.diceThrown(roll.getValue(0), roll.getValue(1));
             window.repaint();
+            trySleep(1000);
+
+            window.Board.diceThrown(-1, -1);
+            trySleep(1000);
 
             if (jail.playerIsJailed(currentPlayer)) {
                 boolean release = false;
