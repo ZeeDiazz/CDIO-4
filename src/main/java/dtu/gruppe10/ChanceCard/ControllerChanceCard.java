@@ -7,30 +7,38 @@ import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 public class ControllerChanceCard {
     private ChanceCard[] chanceCards;
-    private  static ControllerChanceCard instance;
+
+
+    private Queue<ChanceCard> chanceCards1;
+    private static ControllerChanceCard instance;
 
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
     public ControllerChanceCard() {
+        this.chanceCards1 = new LinkedList<>();
+
         chanceCards = new ChanceCard[]{
                 // BetalingsKort:
-                new PerHouseMoneyCard(1, 500), // 500 pr hus 2000kr pr hotel
-                new PerHouseMoneyCard(2, 800), // 800 kr pr hus, 2300 kr pr hotel
+                new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
+                new PerHouseMoneyCard(2, 800, 2300), // 800 kr pr hus, 2300 kr pr hotel
 
-                new BankMoneyCard(3, 1000), // Betal 1000 kroner i bøde
-                new BankMoneyCard(4, 300), // Betal for vognvask og smøring kr 300
-                new BankMoneyCard(5, 200), // Betal kr 200 for levering af 2 kasser øl
-                new BankMoneyCard(6, 3000), // Betal 3000 for reparation af deres vogn
-                new BankMoneyCard(7, 3000), // Betal 3000 for reparation af deres vogn
-                new BankMoneyCard(8, 1000), // De har købt 4 nye dæk til Deres vogn, betal kr 1000
-                new BankMoneyCard(9, 200), // parkeringsbøde 200kr
-                new BankMoneyCard(10, 1000), // bilforskikring 1000
-                new BankMoneyCard(11, 200),// 200kr told
-                new BankMoneyCard(12, 2000), // 2000kr tandlæge
+                new BankMoneyCard(3, -1000), // Betal 1000 kroner i bøde
+                new BankMoneyCard(4, -300), // Betal for vognvask og smøring kr 300
+                new BankMoneyCard(5, -200), // Betal kr 200 for levering af 2 kasser øl
+                new BankMoneyCard(6, -3000), // Betal 3000 for reparation af deres vogn
+                new BankMoneyCard(7, -3000), // Betal 3000 for reparation af deres vogn
+                new BankMoneyCard(8, -1000), // De har købt 4 nye dæk til Deres vogn, betal kr 1000
+                new BankMoneyCard(9, -200), // parkeringsbøde 200kr
+                new BankMoneyCard(10, -1000), // bilforskikring 1000
+                new BankMoneyCard(11, -200),// 200kr told
+                new BankMoneyCard(12, -2000), // 2000kr tandlæge
                 new BankMoneyCard(13, 500), // modtag 500kr
                 new BankMoneyCard(14, 500),// modtag 500kr
                 new BankMoneyCard(15, 1000), // modtag 1000kr
@@ -38,7 +46,7 @@ public class ControllerChanceCard {
                 new BankMoneyCard(17, 1000), // modtag 1000kr
                 new BankMoneyCard(18, 200), // modtag 200
                 new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
-                new BankMoneyCard(20, 200), // 200 fra andre spillere
+                new OtherPlayersMoneyCard(20, 200), // 200 fra andre spillere
 
                 new OtherPlayersMoneyCard(21, 500), // modtag 500 fra hver spiller
                 // BevægelsesKort:
@@ -66,8 +74,43 @@ public class ControllerChanceCard {
 
         };
     }
-    public ChanceCard draw() {
+
+
+    public Queue addToQueue() {
         Random rand = new Random();
+
+        ArrayList list = new ArrayList<ChanceCard>();
+
+        for (ChanceCard card : this.chanceCards) {
+            list.add(card);
+
+        }
+
+
+        while (list.size() > 0) {
+
+            int randomInt = rand.nextInt(chanceCards.length);
+            int helper = randomInt;
+            ;
+            this.chanceCards1.add((ChanceCard) list.get(helper));
+
+
+            list.remove(helper);
+        }
+
+        return this.chanceCards1;
+
+    }
+
+    public ChanceCard draw() {
+
+
+        ChanceCard kort = chanceCards1.remove();
+        chanceCards1.add(kort);
+
+
+        Random rand = new Random();
+
 
         int drawIndex = rand.nextInt(chanceCards.length);
 
@@ -79,6 +122,27 @@ public class ControllerChanceCard {
         chanceCards[chanceCards.length - 1] = null;
         return drawnCard;
     }
+
+    public void activateChanceCard(Player player) {
+        ChanceCard chanceCard = draw();
+
+        if (chanceCard instanceof PerHouseMoneyCard) {
+            ((PerHouseMoneyCard) chanceCard).getAmount(player);
+        } else if (chanceCard instanceof BankMoneyCard) {
+
+        } else if (chanceCard instanceof OtherPlayersMoneyCard) {
+        } else if (chanceCard instanceof MoveToCard) {
+        } else if (chanceCard instanceof MoveCard) {
+        } else if (chanceCard instanceof MoveToNearestCard) {
+        } else if (chanceCard instanceof GetOutOfJailFreeCard) {
+
+        } else if (chanceCard instanceof GoToJailCard) {
+
+        }
+
+
+    }
+
     public ChanceCard drawFirstCard() {
         //get the first card
         ChanceCard drawnCard = chanceCards[0];
@@ -93,14 +157,14 @@ public class ControllerChanceCard {
     // Fisher-Yates shuffle algorithm
     public void bland(ChanceCard[] chanceCards) {
         for (int i = 0; i < chanceCards.length; i++) {
-            int randomIndex = (int)(Math.random() * chanceCards.length);
+            int randomIndex = (int) (Math.random() * chanceCards.length);
             ChanceCard temp = chanceCards[i];
             chanceCards[i] = chanceCards[randomIndex];
             chanceCards[randomIndex] = temp;
         }
     }
-    public static ControllerChanceCard get()
-    {
+
+    public static ControllerChanceCard get() {
         if (instance == null) {
             instance = new ControllerChanceCard();
         }
@@ -108,10 +172,10 @@ public class ControllerChanceCard {
     }
 
 
-        /*The draw method is responsible for drawing a chance card from the array of chance
-        * cards and returning it. The method takes a player_iD as an argument, it shifts all the
-        * elements of the array to the left, and moves the first element to the last, so the element
-        * that is at the last position of the array is the one that is drawn.*/
+    /*The draw method is responsible for drawing a chance card from the array of chance
+     * cards and returning it. The method takes a player_iD as an argument, it shifts all the
+     * elements of the array to the left, and moves the first element to the last, so the element
+     * that is at the last position of the array is the one that is drawn.*/
 
 
        /* public ChanceCard draw() {
@@ -247,5 +311,4 @@ public class ControllerChanceCard {
         }*/
 
 
-
-    }
+}
