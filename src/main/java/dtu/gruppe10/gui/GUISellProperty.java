@@ -112,5 +112,8 @@ public class GUISellProperty extends JFrame {
     private void setOwnerId(int fieldId, int newOwnerId) {
         PropertyField property = (PropertyField) board.getFieldAt(fieldId);
         property.setOwnerId(newOwnerId);
+        if (fieldId < 0 || fieldId >= game.getPlayersLeft().length) {
+            throw new IllegalArgumentException("Invalid field ID: " + fieldId);
+        }
     }
 }
