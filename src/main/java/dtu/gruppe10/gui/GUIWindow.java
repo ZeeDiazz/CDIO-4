@@ -1,5 +1,6 @@
 package dtu.gruppe10.gui;
 
+import dtu.gruppe10.AIPlayer;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.gui.prompts.*;
 
@@ -467,4 +468,17 @@ public class GUIWindow extends JFrame implements Runnable {
             });
             add(sellButton, BorderLayout.NORTH);
     }
+    //Choose AI or other Players
+    /*private void createPlayers() {
+        for (int i = 0; i < numberOfPlayers; i++) {
+            int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i+1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Human", "AI" }, "Human");
+            if (playerType == 0) {
+                //Create "Human" players
+                players[i] = new GUIPlayer(i, "Player " + (i+1), startingBalance);
+            } else if (playerType == 1) {
+                //Create AI players
+                players[i] = new AIPlayer(i, "AI Player " + (i+1), startingBalance);
+            }
+        }
+    }*/
 }
