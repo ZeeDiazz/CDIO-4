@@ -7,6 +7,9 @@ public abstract class ChanceCard implements Comparable<ChanceCard> {
     ChanceCard(int ID){
         this.ID = ID;
     }
+    public int getID(){
+        return ID;
+    }
 
     @Override
     public int compareTo(ChanceCard o) {

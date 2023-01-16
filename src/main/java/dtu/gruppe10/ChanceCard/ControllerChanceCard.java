@@ -71,6 +71,47 @@ public class ControllerChanceCard {
                 new GetOutOfJailFreeCard(1)
         };
     }
+    public ChanceCard draw() {
+        Random rand = new Random();
+
+        int drawIndex = rand.nextInt(chanceCards.length);
+
+        ChanceCard drawnCard = chanceCards[drawIndex];
+        // move the drawn card to the last position in the array
+        for (int i = drawIndex; i < chanceCards.length - 1; i++) {
+            chanceCards[i] = chanceCards[i + 1];
+        }
+        chanceCards[chanceCards.length - 1] = null;
+        return drawnCard;
+    }
+    public ChanceCard drawFirstCard() {
+        //get the first card
+        ChanceCard drawnCard = chanceCards[0];
+        // move all the other cards one position forward
+        for (int i = 0; i < chanceCards.length - 1; i++) {
+            chanceCards[i] = chanceCards[i + 1];
+        }
+        chanceCards[chanceCards.length - 1] = null;
+        return drawnCard;
+    }
+
+    // Fisher-Yates shuffle algorithm
+    public void bland(ChanceCard[] chanceCards) {
+        for (int i = 0; i < chanceCards.length; i++) {
+            int randomIndex = (int)(Math.random() * chanceCards.length);
+            ChanceCard temp = chanceCards[i];
+            chanceCards[i] = chanceCards[randomIndex];
+            chanceCards[randomIndex] = temp;
+        }
+    }
+    public static ControllerChanceCard get()
+    {
+        if (instance == null) {
+            instance = new ControllerChanceCard();
+        }
+        return instance;
+    }
+
 
         /*The draw method is responsible for drawing a chance card from the array of chance
         * cards and returning it. The method takes a player_iD as an argument, it shifts all the
@@ -78,7 +119,7 @@ public class ControllerChanceCard {
         * that is at the last position of the array is the one that is drawn.*/
 
 
-        /*public ChanceCard draw() {
+       /* public ChanceCard draw() {
             ChanceCard upper = chanceCards[0];
             int info = 0;
             for (int i = 0; i < chanceCards.length - 1; i++) {
@@ -91,16 +132,17 @@ public class ControllerChanceCard {
 
             if (upper instanceof MoveToCard) {
                 MoveToCard card = ((MoveToCard) upper);
-                info = card.getPositionIndex();
+
                 }
             else if (upper instanceof MoveCard) {
                 MoveCard card = ((MoveCard) upper);
-                info = card.getMoveAmount();
+                return card.getID();
             }
             else if (upper instanceof GetOutOfJailFreeCard){
-                MoveCard card = ((MoveCard) upper);
+                GetOutOfJailFreeCard card = ((GetOutOfJailFreeCard) upper);
 
-                inventory.addChanceCard(card);
+
+                //inventory.addChanceCard(card);
 
             }
 
@@ -208,24 +250,6 @@ public class ControllerChanceCard {
 
             return upper;
         }*/
-
-
-    // Fisher-Yates shuffle algorithm
-    public void bland(ChanceCard[] chanceCards) {
-        for (int i = 0; i < chanceCards.length; i++) {
-            int randomIndex = (int)(Math.random() * chanceCards.length);
-            ChanceCard temp = chanceCards[i];
-            chanceCards[i] = chanceCards[randomIndex];
-            chanceCards[randomIndex] = temp;
-        }
-    }
-    public static ControllerChanceCard get()
-    {
-        if (instance == null) {
-            instance = new ControllerChanceCard();
-        }
-        return instance;
-    }
 
 
 

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import static java.util.Collections.shuffle;
 import static org.junit.Assert.*;
 
-public class ControllerChanceCardTest extends TestCase {/*
+public class ControllerChanceCardTest extends TestCase {
     @Before
     public void init(){
         controller = new ControllerChanceCard();
@@ -22,18 +22,20 @@ public class ControllerChanceCardTest extends TestCase {/*
         // Creates an instance of ControllerChanceCard
         ControllerChanceCard controller = new ControllerChanceCard();
         // Calls the draw method and store the result in a variable
-        ChanceCard drawnCard = controller.draw(1);
+        ChanceCard drawnCard = controller.drawFirstCard();
         // Assert that the ID of the drawn card is as expected
         assertEquals(29, drawnCard.getID());
+
     }
+
     @Test
     public void testShuffleMethod(){
         controller = new ControllerChanceCard();
             ChanceCard[] originalCards = new ChanceCard[]{
-                    new MoveToCard(1, new int[]{5}),
-                    new MoveToCard(2, new int[]{10}),
-                    new MoveToCard(3, new int[]{15}),
-                    new MoveToCard(4, new int[]{20})
+                    new MoveToCard(1, 2),
+                    new MoveToCard(3, 2),
+                    new MoveToCard(4, 2),
+                    new MoveToCard(5, 2),
             };
             ChanceCard[] shuffledCards = originalCards.clone();
             controller.bland(shuffledCards);
@@ -46,27 +48,5 @@ public class ControllerChanceCardTest extends TestCase {/*
             Arrays.sort(shuffledCards);
             assertArrayEquals(originalCards, shuffledCards);
         }
-
-    @Test
-    public void testshuffleshouldShuffleCards() {
-        ChanceCard[] cards = {
-                new MoveToCard(1, new int[] {1}),
-                new GoToJailCard(2),
-                new MoveCard(3, 5)
-        };
-        ChanceCard[] shuffledCards = Arrays.copyOf(cards, cards.length);
-        controller.bland(shuffledCards);
-        boolean isShuffled = false;
-        for(int i = 0; i < cards.length; i++){
-            if(cards[i] != shuffledCards[i]){
-                isShuffled = true;
-                break;
-            }
-        }
-        assertTrue(isShuffled);
-    }
-
-*/
-
 
 }
