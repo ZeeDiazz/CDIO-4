@@ -61,7 +61,6 @@ public class StreetField extends PropertyField {
 
     public boolean hasEnoughHousesOnOtherFieldsToBuildOneHouse() {
         int counter = 0;
-        int eligible = 0;
         if (counter != this.PropertiesInSet) {
             for (Field street : App.game.Board.getFields()) {
                 if (street == this) {
@@ -73,6 +72,7 @@ public class StreetField extends PropertyField {
                             if (this.houseCount > ((StreetField) street).houseCount) {
                                 return false;
                             }
+                            counter++;
                         }
                     }
                 }
