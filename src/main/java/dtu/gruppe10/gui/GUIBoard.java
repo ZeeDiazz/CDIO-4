@@ -146,6 +146,10 @@ public class GUIBoard {
         }
     }
 
+    public void drawPlayers(Graphics g, GUIPlayer[] players, boolean[] inPrison) {
+
+    }
+
     public void drawPlayerInPrison(Graphics g, GUIPlayer player) {
         drawPlayer(g, player, prisonPoint);
     }
