@@ -3,9 +3,12 @@ package dtu.gruppe10;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.Field;
+import dtu.gruppe10.board.fields.PropertyField;
+import dtu.gruppe10.board.fields.StreetField;
 import dtu.gruppe10.dice.DiceRoll;
 import dtu.gruppe10.dice.DieCup;
 import dtu.gruppe10.dice.SixSidedDie;
+import dtu.gruppe10.gui.GUIBalances;
 
 import java.util.Random;
 
@@ -17,6 +20,7 @@ public class AIPlayer extends Player{
     private final DieCup dieCup;
     private final Board board;
     private PlayerMovement movement;
+    private GUIBalances balances;
 
     public AIPlayer(int id, int startingBalance, int intelligence, Board board) {
         super(id, startingBalance);
@@ -34,16 +38,27 @@ public class AIPlayer extends Player{
         int rollSum = roll.Sum;
 
         // move to new position on the board
-        PlayerMovement nextPos = board.generateForwardMove(game.getCurrentPlayerTurn(),rollSum );
+        PlayerMovement nextPos = board.generateForwardMove(game.getCurrentPlayerTurn(),rollSum);
 
         // get the AIPlayer's current position on the board
-        Field landedOnField = board.getFieldAt(rollSum);
+        Field landedOnField = board.getFieldAt(nextPos.End);
 
         // make decision about whether to buy the property if its for sale
+        if(landedOnField instanceof PropertyField){
+            PropertyField propertyField = (PropertyField) landedOnField;
+            if (!propertyField.isOwned()) {
+                int price = propertyField.Price;
+                if (balances.getPlayerBalance(game.getCurrentPlayer().ID) >= price && rng.nextInt(10)>intelligence){
+                    propertyField.setOwnerId(game.getCurrentPlayer().ID);
+                    balances.playerLostMoney(game.getCurrentPlayer().ID,price);
+                }
+            }
 
+        }
         //make decision about building houses and hotels
-
+        //if (instanceof StreetField){}
     }
+
 
 
 }
