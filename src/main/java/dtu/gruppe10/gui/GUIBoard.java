@@ -30,6 +30,7 @@ public class GUIBoard {
     protected GUICircle ownedCircle;
     protected GUICircle dieDrawCircle;
     protected GUICircle playerPathCircle;
+    protected GUICircle prisonCircle;
     protected int playerRadius;
     protected int fieldCount;
     protected GUIField[] fields;
@@ -71,7 +72,7 @@ public class GUIBoard {
 
         this.playerRadius = (int)(boardRadius * playerPercentSize);
 
-        GUICircle prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
+        prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
         this.prisonPoint = prisonCircle.getSinglePoint(prisonIndex * 2 + 1, 80);
     }
 
@@ -143,6 +144,64 @@ public class GUIBoard {
 
             Point drawPoint = dieDrawCircle.getScaledCircle((float)info.x / 100).getSinglePoint(info.y, 360);
             g.drawImage(currentFace, drawPoint.x, drawPoint.y, null);
+        }
+    }
+
+    public void drawPlayers(Graphics g, GUIPlayer[] players, float[] positions, boolean[] inPrison) {
+        HashMap<Float, ArrayList<GUIPlayer>> playersInPositions = new HashMap<>();
+        ArrayList<GUIPlayer> imprisoned = new ArrayList<>();
+
+        for (int i = 0; i < players.length; ++i) {
+            if (inPrison[i]) {
+                imprisoned.add(players[i]);
+                continue;
+            }
+
+            float position = positions[i];
+
+            if (!playersInPositions.containsKey(position)) {
+                playersInPositions.put(position, new ArrayList<>());
+            }
+
+            playersInPositions.get(position).add(players[i]);
+        }
+
+        if (imprisoned.size() == 1) {
+            drawPlayerInPrison(g, imprisoned.get(0));
+        }
+        else {
+            // Draw them not on top of each other
+        }
+
+        for (float position : playersInPositions.keySet()) {
+            ArrayList<GUIPlayer> toDraw = playersInPositions.get(position);
+
+            float[] drawPositions;
+            if (toDraw.size() == 1) {
+                drawPositions = new float[] {position};
+                drawPlayer(g, toDraw.get(0), position);
+            }
+            else if (toDraw.size() == 2) {
+                drawPositions = new float[2];
+
+                drawPositions[0] = position - 0.15f;
+                drawPositions[1] = position + 0.15f;
+            }
+            else if (toDraw.size() == 3) {
+                drawPositions = new float[3];
+                drawPositions[1] = position;
+
+                drawPositions[0] = position - 0.3f;
+                drawPositions[2] = position + 0.3f;
+            }
+            else {
+                drawPositions = new float[0];
+                // ??
+            }
+
+            for (int i = 0; i < drawPositions.length; ++i) {
+                drawPlayer(g, toDraw.get(i), drawPositions[i]);
+            }
         }
     }
 

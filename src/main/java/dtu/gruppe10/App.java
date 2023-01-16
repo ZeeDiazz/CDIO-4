@@ -134,16 +134,8 @@ public class App {
             Player currentPlayer = game.getCurrentPlayer();
             System.out.println("\nPlayer " + currentPlayer.ID + " is starting their turn");
             turnCount++;
-            if (turnCount == 4) {
-                System.out.println("Player was sent to jail for three consecutive doubles");
-                setInJail(window, jail, currentPlayer);
 
-                turnCount = 0;
-                game.nextTurn();
-                continue;
-            }
-
-            if (currentPlayer instanceof AIPlayer) {
+            if (!(currentPlayer instanceof AIPlayer)) {
                 window.hasToRoll();
                 window.repaint();
 
@@ -156,12 +148,20 @@ public class App {
                     }
                 }
             }
-
             cup.roll();
             DiceRoll roll = cup.getResult();
             window.Board.diceThrown(roll.getValue(0), roll.getValue(1));
             window.repaint();
             trySleep(1000);
+
+            if (turnCount == 3 && (roll.AreSame||moveHackDouble)) {
+                System.out.println("Player was sent to jail for three consecutive doubles");
+                setInJail(window, jail, currentPlayer);
+
+                turnCount = 0;
+                game.nextTurn();
+                continue;
+            }
 
             window.Board.diceThrown(-1, -1);
             trySleep(1000);
