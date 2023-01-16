@@ -176,11 +176,31 @@ public class GUIBoard {
         for (float position : playersInPositions.keySet()) {
             ArrayList<GUIPlayer> toDraw = playersInPositions.get(position);
 
+            float[] drawPositions;
             if (toDraw.size() == 1) {
+                drawPositions = new float[] {position};
                 drawPlayer(g, toDraw.get(0), position);
             }
+            else if (toDraw.size() == 2) {
+                drawPositions = new float[2];
+
+                drawPositions[0] = position - 0.15f;
+                drawPositions[1] = position + 0.15f;
+            }
+            else if (toDraw.size() == 3) {
+                drawPositions = new float[3];
+                drawPositions[1] = position;
+
+                drawPositions[0] = position - 0.3f;
+                drawPositions[2] = position + 0.3f;
+            }
             else {
-                // Draw them not on top of each other
+                drawPositions = new float[0];
+                // ??
+            }
+
+            for (int i = 0; i < drawPositions.length; ++i) {
+                drawPlayer(g, toDraw.get(i), drawPositions[i]);
             }
         }
     }
