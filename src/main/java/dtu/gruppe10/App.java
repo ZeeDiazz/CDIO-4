@@ -107,7 +107,7 @@ public class App {
             }
         });
         for (int i = 0; i < playerCount; ++i) {
-            window.updatePlayerBalance(i + 1, startBalance);
+            window.updatePlayerBalance(i, startBalance);
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
@@ -143,8 +143,13 @@ public class App {
 
             cup.roll();
             DiceRoll roll = cup.getResult();
+
             window.Board.diceThrown(roll.getValue(0), roll.getValue(1));
             window.repaint();
+            trySleep(1000);
+
+            window.Board.diceThrown(-1, -1);
+            trySleep(1000);
 
             if (jail.playerIsJailed(currentPlayer)) {
                 boolean release = false;
@@ -329,17 +334,16 @@ public class App {
         window.repaint();
     }
 
-    private static Player makePlayer(int i, int startingBalance) {
+    private static Player makePlayer(int playerId, int startingBalance) {
         Player player;
-        int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i + 1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Human", "AI"}, "Human");
+        int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (playerId + 1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Human", "AI"}, "Human");
         if (playerType == 0) {
             //Create "Human" players
-            player = new Player(i, startingBalance);
-            GUIPlayer players = new GUIPlayer(i, "Player " + (i + 1), Color.cyan); //NEED TO PICK RANDOM COLOR
+            player = new Player(playerId, startingBalance);
         } else /* if (playerType == 1) */ {
             //Create AI players and choose their Intelligence
             int intelligence = Integer.parseInt(JOptionPane.showInputDialog("Enter AI intelligence level (1-10):"));
-            player = new AIPlayer(i, startingBalance, intelligence);
+            player = new AIPlayer(playerId, startingBalance, intelligence);
         }
         return player;
     }
