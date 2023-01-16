@@ -2,6 +2,7 @@ package dtu.gruppe10.gui;
 
 import dtu.gruppe10.AIPlayer;
 import dtu.gruppe10.Game;
+import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.gui.prompts.*;
@@ -472,19 +473,17 @@ public class GUIWindow extends JFrame implements Runnable {
             add(sellButton, BorderLayout.NORTH);
     }
     //Choose AI or other Players
-    /*private void createPlayers() {
+    private void choosePlayerType() {
         for (int i = 0; i < game.getPlayersLeft().length; i++) {
             int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i+1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Human", "AI" }, "Human");
             if (playerType == 0) {
                 //Create "Human" players
-                GUIPlayer[] players = new GUIPlayer(i, "Player " + (i+1), startingBalance);
-                //Is this RIGHT???
+                GUIPlayer players = new GUIPlayer(i, "Player " + (i+1), Color.cyan);
             } else if (playerType == 1) {
                 //Create AI players and choose their Intelligence
                 int intelligence = 7;
-
-                players[i] = new AIPlayer(i, "AI Player " + (i+1), startingBalance, Board);
+                AIPlayer players = new AIPlayer(i, "AI Player " + (i+1),30000, intelligence, game.Board);
             }
         }
-    }*/
+    }
 }

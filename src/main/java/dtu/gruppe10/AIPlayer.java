@@ -22,7 +22,7 @@ public class AIPlayer extends Player{
     private PlayerMovement movement;
     private GUIBalances balances;
 
-    public AIPlayer(int id, int startingBalance, int intelligence, Board board) {
+    public AIPlayer(int id, String name,int startingBalance, int intelligence, Board board) {
         super(id, startingBalance);
         this.intelligence = intelligence;
         this.rng = new Random();
