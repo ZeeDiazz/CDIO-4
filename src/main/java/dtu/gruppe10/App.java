@@ -134,9 +134,10 @@ public class App {
             Player currentPlayer = game.getCurrentPlayer();
             System.out.println("\nPlayer " + currentPlayer.ID + " is starting their turn");
             turnCount++;
-            if (turnCount == 4) {
+            if (turnCount == 3) {
                 System.out.println("Player was sent to jail for three consecutive doubles");
                 setInJail(window, jail, currentPlayer);
+
 
                 turnCount = 0;
                 game.nextTurn();

@@ -46,5 +46,6 @@ public class Jail {
             turnsServed++;
             inmates.put(player, turnsServed);
         }
+
     }
 }
