@@ -112,7 +112,7 @@ public class App {
             }
         });
         for (int i = 0; i < playerCount; ++i) {
-            window.updatePlayerBalance(i+1, startBalance);
+            window.updatePlayerBalance(i, startBalance);
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
