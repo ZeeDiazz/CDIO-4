@@ -45,9 +45,9 @@ public class GUISellProperty extends JFrame {
         propertySelector = new JComboBox<>();
             GUIPlayer currentPlayer = players[game.getCurrentPlayerTurn()];
             for (PropertyField property : board.getProperty(currentPlayer.ID)) {
-                if (property.getOwner().ID == currentPlayer.ID) {
+                //if (property.getOwner().ID == currentPlayer.ID) {
                     propertySelector.addItem(property);
-                }
+                //}
             }
             sellPanel.add(propertySelector);
 
