@@ -75,7 +75,7 @@ public class ControllerChanceCard {
         * cards and returning it. The method takes a player_iD as an argument, it shifts all the
         * elements of the array to the left, and moves the first element to the last, so the element
         * that is at the last position of the array is the one that is drawn.*/
-        public CardInfo draw() {
+        public int draw() {
             ChanceCard upper = chanceCards[0];
             int info = 0;
             for (int i = 0; i < chanceCards.length - 1; i++) {
@@ -204,7 +204,7 @@ public class ControllerChanceCard {
                 inventory.addChanceCard(card);
 
             }
-            return new CardInfo(upper, info);
+            return info;
         }
     // Fisher-Yates shuffle algorithm
     public void bland(ChanceCard[] chanceCards) {
