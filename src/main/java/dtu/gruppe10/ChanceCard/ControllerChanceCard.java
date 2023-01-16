@@ -16,27 +16,26 @@ public class ControllerChanceCard {
     public Jail jail;
     public Account account;
     public Inventory inventory;
-    // Implement Acccount/balance
-
+    public int Info;
 
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
     public ControllerChanceCard() {
         chanceCards = new ChanceCard[]{
-                /*
-                new MoveToCard(29, new int[]{1}),
-                new MoveToCard(29, new int[]{1}),
-                new MoveToCard(129, new int[]{12}),
-                new MoveToCard(229, new int[]{25}),
-                new MoveToCard(329, new int[]{33}),
-                new MoveToCard(429, new int[]{20}),
-                new MoveToCard(529, new int[]{40}),
 
-                new MoveToCard(629, new int[]{6, 16, 26, 36}),
-                new MoveToCard(729, new int[]{13,29}),
-                new MoveToCard(829, new int[]{16}),
+                new MoveToCard(29, 1), // start
+                new MoveToCard(29, 1), // start
+                new MoveToCard(129, 12), // frederiksberg alle
+                new MoveToCard(229, 25), // grønningen
+                new MoveToCard(329, 33), // hvimmelskaftet
+                new MoveToCard(429, 20), // strandvejen
+                new MoveToCard(529, 40), // rådhudspladsen
+/*
+                new MoveToCard(629, 6, 16, 26, 36), // færge
+                new MoveToCard(729, 13,29),
+                new MoveToCard(829, 16),// mols-linjien*/
 
-                 */
+
                 new GoToJailCard(40),
 
                 new MoveCard(31,3),
@@ -76,8 +75,9 @@ public class ControllerChanceCard {
         * cards and returning it. The method takes a player_iD as an argument, it shifts all the
         * elements of the array to the left, and moves the first element to the last, so the element
         * that is at the last position of the array is the one that is drawn.*/
-        public ChanceCard draw(int playerId) {
+        public int draw() {
             ChanceCard upper = chanceCards[0];
+            int info = 0;
             for (int i = 0; i < chanceCards.length - 1; i++) {
                 chanceCards[i] = chanceCards[i + 1];
             }
@@ -87,54 +87,17 @@ public class ControllerChanceCard {
 
 
             if (upper instanceof MoveToCard) {
-                switch (upper.ID) {
-                    case 29: // start
-                        newPos = 1;
-                        break;
-                    case 129: // frederiksberg alle
-                        newPos = 12;
-                        break;
-                    case 229: // grønningen
-                        newPos = 25;
-                        break;
-                    case 329: // hvimmelskaftet
-                        newPos = 33;
-                        break;
-                    case 429: // strandvejen
-                        newPos = 20;
-                        break;
-                    case 529: //rådhuspladsen
-                        newPos = 40;
-                        break;
-                    case 629: // nærmeste færge
-                        if(board.getPlayerPosition(playerId)==3 || board.getPlayerPosition(playerId)==37) {
-                            newPos = 6;
-                        }else if(board.getPlayerPosition(playerId)==8) {
-                            newPos = 16;
-                        }else if (board.getPlayerPosition(playerId)==18 || board.getPlayerPosition(playerId)== 23) {
-                            newPos = 26;
-                        }else{ /*(board.getPlayerPosition(player_iD)==34)*/
-                            newPos = 36;}
-                        break;
-                    case 829: // mols-linien
-                        newPos = 16;
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid ID value");
-                }
-
                 MoveToCard card = ((MoveToCard) upper);
-                // hvis det virker at tage et tilfældigt moveToCard hver gang der bliver trukket et moveToCard:
-                // int destinationIndex = (int)(Math.random() * card.getDestination().length);
-                // int randomDestination = card.getDestination()[destinationIndex];
-                //randomDestination skal så erstatte newPos i næste linje
-                if (player !=null){
-                PlayerMovement moveAmount = board.generateDirectMove(player.ID, newPos);
-                board.performMove(player.ID,moveAmount);
+                info = card.getPositionIndex();
                 }
+            else if (upper instanceof MoveCard) {
+                MoveCard card = ((MoveCard) upper);
+                info = card.getMoveAmount();
+            }
 
 
-            } else if (upper instanceof BankMoneyCard) { //add to account
+
+            else if (upper instanceof BankMoneyCard) { //add to account
                 BankMoneyCard card = ((BankMoneyCard) upper);
                 switch (upper.ID) {
 
@@ -232,32 +195,16 @@ public class ControllerChanceCard {
                 jail.addPlayer(player);
 
             }
-            else if (upper instanceof MoveCard) {
-                MoveCard card = ((MoveCard) upper);
-                switch (upper.ID) {
-                    case 31:
-                        amount = 3;
-                        break;
-                    case 32:
-                        amount = -3;
-                        break;
-                    default:
-                        throw  new IllegalArgumentException("Invalid ID value");
-                }
-                // tænker her at at card.get_amount burde kunne eleminere switch casen
-                // int moveToFields = card.get_amount();
-                PlayerMovement moveAmount = board.generateForwardMove(player.ID,amount);
 
-                board.performMove(player.ID,moveAmount);
 
-            }
+
             else if (upper instanceof GetOutOfJailFreeCard){
                 MoveCard card = ((MoveCard) upper);
 
                 inventory.addChanceCard(card);
 
             }
-            return upper;
+            return info;
         }
     // Fisher-Yates shuffle algorithm
     public void bland(ChanceCard[] chanceCards) {
