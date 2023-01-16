@@ -1,6 +1,7 @@
 package dtu.gruppe10.gui;
 
 import dtu.gruppe10.AIPlayer;
+import dtu.gruppe10.ChanceCard.ChanceCard;
 import dtu.gruppe10.Game;
 import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
@@ -36,6 +37,7 @@ public class GUIWindow extends JFrame implements Runnable {
     protected PromptErrorHandler promptErrorHandler;
     protected String errorInPrompt;
     protected int currentGUIPromptId = 0;
+    private GUIChanceCard chanceCardPanel;
 
     protected boolean needToRoll;
     protected Rectangle rollButton;
@@ -476,6 +478,10 @@ public class GUIWindow extends JFrame implements Runnable {
                 }
             });
             add(sellButton, BorderLayout.NORTH);
+    }
+    public void displayChanceCard(ChanceCard card) {
+        chanceCardPanel.updateCard(card);
+        chanceCardPanel.setVisible(true);
     }
     //Choose AI or other Players
     /*private void choosePlayerType() {
