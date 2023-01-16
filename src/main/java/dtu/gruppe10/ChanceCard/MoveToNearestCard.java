@@ -11,19 +11,15 @@ public class MoveToNearestCard extends MoveCard {
     }
 
     public int moveToNearestFerry(int currentIndex) {
-
-
-        for (int i = 0; !(i == currentIndex - 1); i++) {
+        for (int i = currentIndex; !(i == currentIndex - 1); i++) {
             if (App.game.Board.getFieldAt(i).Type == FieldType.FERRY) {
                 return i;
             }
 
-            if (i == App.game.Board.FieldCount) {
+            if (i == App.game.Board.FieldCount-1) {
                 i = 0;
             }
         }
-
-        App.game.Board.getFieldAt(currentIndex);
 
         return -1;
 
