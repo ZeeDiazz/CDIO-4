@@ -65,4 +65,8 @@ public class ControllerChanceCardTest extends TestCase {/*
         }
         assertTrue(isShuffled);
     }
-*/}
+
+*/
+
+
+}

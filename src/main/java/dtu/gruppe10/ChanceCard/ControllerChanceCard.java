@@ -7,6 +7,8 @@ import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 
+import java.util.Random;
+
 public class ControllerChanceCard {
     private ChanceCard[] chanceCards;
     private  static ControllerChanceCard instance;
@@ -70,12 +72,13 @@ public class ControllerChanceCard {
         };
     }
 
-
         /*The draw method is responsible for drawing a chance card from the array of chance
         * cards and returning it. The method takes a player_iD as an argument, it shifts all the
         * elements of the array to the left, and moves the first element to the last, so the element
         * that is at the last position of the array is the one that is drawn.*/
-        public int draw() {
+
+
+        /*public ChanceCard draw() {
             ChanceCard upper = chanceCards[0];
             int info = 0;
             for (int i = 0; i < chanceCards.length - 1; i++) {
@@ -93,6 +96,12 @@ public class ControllerChanceCard {
             else if (upper instanceof MoveCard) {
                 MoveCard card = ((MoveCard) upper);
                 info = card.getMoveAmount();
+            }
+            else if (upper instanceof GetOutOfJailFreeCard){
+                MoveCard card = ((MoveCard) upper);
+
+                inventory.addChanceCard(card);
+
             }
 
 
@@ -197,15 +206,10 @@ public class ControllerChanceCard {
             }
 
 
+            return upper;
+        }*/
 
-            else if (upper instanceof GetOutOfJailFreeCard){
-                MoveCard card = ((MoveCard) upper);
 
-                inventory.addChanceCard(card);
-
-            }
-            return info;
-        }
     // Fisher-Yates shuffle algorithm
     public void bland(ChanceCard[] chanceCards) {
         for (int i = 0; i < chanceCards.length; i++) {
