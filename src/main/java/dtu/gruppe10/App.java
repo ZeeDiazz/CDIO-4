@@ -8,6 +8,7 @@ import dtu.gruppe10.dice.SixSidedDie;
 import dtu.gruppe10.gui.*;
 import dtu.gruppe10.gui.prompts.GUIAnswer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -45,18 +46,27 @@ public class App {
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
 
         int startBalance = 30000;
+        int cpuNum = 1;
         for (int i = 0; i < playerCount; ++i) {
-            GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i+1) + " enter your name", 1, 15);
-            window.repaint();
+            players[i] = makePlayer(i, startBalance);
 
-            while (!playerNameAnswer.hasAnswer()) {
-                trySleep(10);
+            String playerName;
+            if (!(players[i] instanceof AIPlayer)) {
+                GUIAnswer<String> playerNameAnswer = window.getUserString("Player " + (i + 1) + " enter your name", 1, 15);
+                window.repaint();
+
+                while (!playerNameAnswer.hasAnswer()) {
+                    trySleep(10);
+                }
+
+                playerName = playerNameAnswer.getAnswer();
+            }
+            else {
+                playerName = "CPU #" + cpuNum;
+                cpuNum++;
             }
 
-            String playerName = playerNameAnswer.getAnswer();
-            players[i] = new Player(i+1, startBalance);
-
-            window.addPlayer(new GUIPlayer(i+1, playerName, playerColors[i]));
+            window.addPlayer(new GUIPlayer(i, playerName, playerColors[i]));
         }
 
         window.setState(GUIState.PLAYING);
@@ -261,7 +271,7 @@ public class App {
         Player owner = propertyField.getOwner();
 
 
-        if(jail.inmates.containsKey(owner)){
+        if(jail.inmates.containsKey(owner)) {
             System.out.println("Rent was not paid since " + owner.ID + " is in jail." );
         }
         else {
@@ -330,5 +340,19 @@ public class App {
         window.setPlayerFreeFromJail(player.ID);
 
         window.repaint();
+    }
+
+    private static Player makePlayer(int playerId, int startingBalance) {
+        Player player;
+        int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (playerId + 1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Human", "AI"}, "Human");
+        if (playerType == 0) {
+            //Create "Human" players
+            player = new Player(playerId, startingBalance);
+        } else /* if (playerType == 1) */ {
+            //Create AI players and choose their Intelligence
+            int intelligence = Integer.parseInt(JOptionPane.showInputDialog("Enter AI intelligence level (1-10):"));
+            player = new AIPlayer(playerId, startingBalance, intelligence);
+        }
+        return player;
     }
 }
