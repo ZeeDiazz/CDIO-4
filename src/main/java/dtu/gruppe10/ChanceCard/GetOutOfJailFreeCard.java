@@ -9,8 +9,12 @@ public class GetOutOfJailFreeCard extends JailCard {
     }
 
 
-    public void applyEffect(){
+    public void applyEffect() throws Exception {
         inventory.addChanceCard(card);
+    }
+    public boolean addToInventory(Inventory inventory) throws Exception {
+        inventory.addChanceCard(this);
+        return true;
     }
 
 }

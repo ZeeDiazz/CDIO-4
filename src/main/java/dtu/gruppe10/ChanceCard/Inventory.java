@@ -8,8 +8,18 @@ public class Inventory {
     public Inventory(){
         this.inventory = new ArrayList<>();
     }
-    public void addChanceCard(ChanceCard card) {
-        this.inventory.add(card);
+    public void addChanceCard(ChanceCard card) throws Exception {
+        int count = 0;
+        for (ChanceCard c : inventory) {
+            if (c.getClass() == card.getClass()) {
+                count++;
+            }
+        }
+        if (count < 2) {
+            this.inventory.add(card);
+        } else {
+            throw new Exception("Cannot add more than 2 cards of the same type to inventory");
+        }
     }
     //For each iteration of the loop, card is assigned the value of next element in the inventory ArrayList
     public boolean hasGetOutOfJailFreeCard(){

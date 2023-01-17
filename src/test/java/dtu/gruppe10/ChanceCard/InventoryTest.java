@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class InventoryTest extends TestCase {
     @Test
-    public void testIfPlayerHasGetOutOfJailFreeCard() {
+    public void testIfPlayerHasGetOutOfJailFreeCard() throws Exception {
         Inventory inventory = new Inventory();
         GetOutOfJailFreeCard card = new GetOutOfJailFreeCard(1);
 
@@ -16,7 +16,7 @@ public class InventoryTest extends TestCase {
 
     }
     @Test
-    public void testIfPlayerHasUsedGetOutOfJail(){
+    public void testIfPlayerHasUsedGetOutOfJail() throws Exception {
         Inventory inventory = new Inventory();
         GetOutOfJailFreeCard card = new GetOutOfJailFreeCard(1);
 
