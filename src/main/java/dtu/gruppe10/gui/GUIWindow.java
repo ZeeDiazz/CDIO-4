@@ -537,24 +537,29 @@ public class GUIWindow extends JFrame implements Runnable {
                 messageBuilder.append("\n");
                 messageBuilder.append(" House Price: ");
                 messageBuilder.append(field.fieldHousePrice);
+
                 messageBuilder.append("\n");
                 messageBuilder.append(" Rent With 0 Houses: ");
                 messageBuilder.append(field.fieldRent01);
 
-                messageBuilder.append(", Rent With 1 House: ");
+                messageBuilder.append("\n");
+                messageBuilder.append(" Rent With 1 House: ");
                 messageBuilder.append(field.fieldRent02);
 
                 messageBuilder.append("\n");
                 messageBuilder.append(" Rent With 2 Houses: ");
                 messageBuilder.append(field.fieldRent03);
 
-                messageBuilder.append(", Rent With 3 Houses: ");
+                messageBuilder.append("\n");
+                messageBuilder.append(" Rent With 3 Houses: ");
                 messageBuilder.append(field.fieldRent04);
 
-                messageBuilder.append(", Rent With 4 Houses: ");
+                messageBuilder.append("\n");
+                messageBuilder.append(" Rent With 4 Houses: ");
                 messageBuilder.append(field.fieldRent05);
 
-                messageBuilder.append(", Rent With A Hotel: ");
+                messageBuilder.append("\n");
+                messageBuilder.append(" Rent With A Hotel: ");
                 messageBuilder.append(field.fieldRent06);
             }
         }
