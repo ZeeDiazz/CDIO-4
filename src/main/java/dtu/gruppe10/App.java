@@ -233,14 +233,9 @@ public class App {
                 else {
                     // Buy property
                     System.out.println("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
-                    GUIAnswer<Integer> buyPropertyAnswer = window.getUserInt("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)", 0, 1);
+                    int buyPropertyAnswer = JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?","Buy property",0);
 
-                    JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?","Buy property",0);
-                    while (!buyPropertyAnswer.hasAnswer()) {
-                        trySleep(10);
-                    }
-
-                    boolean wantsToBuy = (buyPropertyAnswer.getAnswer() == 1);
+                    boolean wantsToBuy = buyPropertyAnswer == 0;
 
                     if (wantsToBuy) {
                         buyProperty(window, currentPlayer, propertyField, move.End);
