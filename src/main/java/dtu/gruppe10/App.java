@@ -229,16 +229,22 @@ public class App {
                     }
                 } else if (chanceCard instanceof MoveToCard) {
 
+                    PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToCard) chanceCard).getPositionIndex());
+                    movePlayer(window, currentPlayer, endPlayerMovement);
 
-                    //movePlayer(window,currentPlayer,);
-
-
-                    // game.Board.generateDirectMove(currentPlayer.ID,);
                 } else if (chanceCard instanceof MoveToNearestCard) {
+                    PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToNearestCard) chanceCard).moveToNearestFerry(game.Board.getPlayerPosition(currentPlayer.ID)));
+                    movePlayer(window, currentPlayer, endPlayerMovement);
 
                 } else if (chanceCard instanceof MoveCard) {
+                    PlayerMovement endPlayerMovement = game.Board.generateForwardMove(currentPlayer.ID, ((MoveCard) chanceCard).getMoveAmount());
+                    movePlayer(window, currentPlayer, endPlayerMovement);
 
                 } else if (chanceCard instanceof GoToJailCard) {
+
+                    setInJail(window, jail, currentPlayer);
+                    move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
+                    movePlayer(window, currentPlayer, move);
 
                 } else if (chanceCard instanceof GetOutOfJailFreeCard) {
                     ((GetOutOfJailFreeCard) chanceCard).addToInventory(currentPlayer.jailCards);
