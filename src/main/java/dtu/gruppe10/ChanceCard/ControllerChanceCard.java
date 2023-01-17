@@ -63,6 +63,7 @@ public class ControllerChanceCard {
                 new GoToJailCard(44) // fængsel
         };
         this.chanceCards = new LinkedList<>();
+        chanceCards.add(new MoveByCard(31, -3));
 
         Random rand = new Random();
         ArrayList<ChanceCard> list = new ArrayList<>(Arrays.asList(this.arrayOfCards));

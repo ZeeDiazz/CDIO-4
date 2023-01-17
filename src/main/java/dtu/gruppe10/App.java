@@ -246,7 +246,7 @@ public class App {
                 } else if (card instanceof MoveCard) {
                     if (card instanceof MoveByCard moveByCard) {
                         if (moveByCard.getAmount() < 0) {
-                            move = game.Board.generateBackwardMove(currentPlayer.ID, moveByCard.getAmount());
+                            move = game.Board.generateBackwardMove(currentPlayer.ID, -1*moveByCard.getAmount());
                         }
                         else {
                             move = game.Board.generateForwardMove(currentPlayer.ID, moveByCard.getAmount());
