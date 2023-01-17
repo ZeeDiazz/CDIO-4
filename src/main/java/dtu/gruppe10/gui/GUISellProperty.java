@@ -13,22 +13,22 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUISellProperty extends JFrame {
-    private GUIPlayer[] players;
+    private Player[] players;
     private GUIBalances balances;
     private Game game;
-    private Board board;
+
     private JComboBox<Field> propertySelector;
-    private JComboBox<GUIPlayer> buyerSelector;
+    private JComboBox<Player> buyerSelector;
     private JTextField priceField;
     private JButton sellButton;
 
-    public GUISellProperty(GUIPlayer[] players, GUIBalances balances, Game game, Board board) {
+    public GUISellProperty(Player[] players, GUIBalances balances, Game game) {
         super("Sell Property");
 
         this.players = players;
         this.balances = balances;
+        //this.game = new game(players, fields.);
         this.game = game;
-        this.board = board;
         //makes a new window
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -43,11 +43,11 @@ public class GUISellProperty extends JFrame {
 
         //Creates a box for properties that seller owns
         propertySelector = new JComboBox<>();
-            GUIPlayer currentPlayer = players[game.getCurrentPlayerTurn()];
-            for (PropertyField property : board.getProperty(currentPlayer.ID)) {
-                //if (property.getOwner().ID == currentPlayer.ID) {
+        Player currentPlayer = game.getCurrentPlayer();
+            for (PropertyField property : game.Board.getProperty(currentPlayer.ID)) {
+                if (property.getOwner().ID == currentPlayer.ID) {
                     propertySelector.addItem(property);
-                //}
+                }
             }
             sellPanel.add(propertySelector);
 
@@ -58,7 +58,7 @@ public class GUISellProperty extends JFrame {
 
             //Creates a box for buyers
             buyerSelector = new JComboBox<>();
-            for (GUIPlayer player : players) {
+            for (Player player : players) {
                 if (player.ID != currentPlayer.ID) {
                     buyerSelector.addItem(player);
                 }
@@ -110,7 +110,7 @@ public class GUISellProperty extends JFrame {
 
     }
     private void setOwnerId(int fieldId, int newOwnerId) {
-        PropertyField property = (PropertyField) board.getFieldAt(fieldId);
+        PropertyField property = (PropertyField) game.Board.getFieldAt(fieldId);
         property.setOwnerId(newOwnerId);
         if (fieldId < 0 || fieldId >= game.getPlayersLeft().length) {
             throw new IllegalArgumentException("Invalid field ID: " + fieldId);

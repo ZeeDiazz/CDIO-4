@@ -489,7 +489,7 @@ public class GUIWindow extends JFrame implements Runnable {
             sellButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GUISellProperty sellProperty = new GUISellProperty(idToPlayer.values().toArray(new GUIPlayer[1]), balances, game,board);
+                    GUISellProperty sellProperty = new GUISellProperty(new Player[1], balances,game);
                     sellProperty.setVisible(true);
                     sellButton.setPreferredSize(new Dimension(10,10));
                 }
