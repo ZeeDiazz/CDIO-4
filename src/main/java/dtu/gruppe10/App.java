@@ -227,12 +227,15 @@ public class App {
                     else {
                         toPay = propertyField.getCurrentRent(propertiesInSetOwned);
                     }
-
-                    payRent(window, currentPlayer, propertyField, toPay);
+                    int rentPay = JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + "you have landed on " + (propertyField.getOwner().ID+1) +" property "+ propertyField.Type.name() + " and have to pay " + propertyField.getCurrentRent(toPay),"Pay rent",0);
+                    boolean rentPayAnswer = rentPay == 0;
+                    if(rentPayAnswer || !rentPayAnswer) {
+                        payRent(window, currentPlayer, propertyField, toPay);
+                    }
                 }
                 else {
                     // Buy property
-                    System.out.println("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
+                    System.out.println("Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
                     int buyPropertyAnswer = JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?","Buy property",0);
 
                     boolean wantsToBuy = buyPropertyAnswer == 0;
