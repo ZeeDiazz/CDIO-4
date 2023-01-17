@@ -226,10 +226,10 @@ public class App {
                         }
                     }
                 } else if (chanceCard instanceof MoveToCard) {
-
+                    // Opdaterer ikke balancen
                     PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToCard) chanceCard).getPositionIndex());
                     movePlayer(window, currentPlayer, endPlayerMovement);
-                    continue;
+
 
                 } else if (chanceCard instanceof MoveToNearestCard) {
                     PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToNearestCard) chanceCard).moveToNearestFerry(game.Board.getPlayerPosition(currentPlayer.ID)));

@@ -45,8 +45,8 @@ public class ControllerChanceCard {
 
 
                 // BevægelsesKort:
-                new MoveToCard(29, 1), // start
-                new MoveToCard(30, 1), // start
+                new MoveToCard(29, 0), // start
+                new MoveToCard(30, 0), // start
 /*
                 new MoveCard(31, 3),// tre felter frem
                 new MoveCard(32, -3),// tre felter tilbage
