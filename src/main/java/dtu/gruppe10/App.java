@@ -1,6 +1,7 @@
 package dtu.gruppe10;
 
 import dtu.gruppe10.ChanceCard.*;
+import dtu.gruppe10.board.MovementType;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
@@ -153,17 +154,18 @@ public class App {
             window.repaint();
             trySleep(1000);
 
+            window.Board.diceThrown(-1, -1);
+            trySleep(1000);
+
             if (turnCount == 3 && (roll.AreSame || moveHackDouble)) {
                 System.out.println("Player was sent to jail for three consecutive doubles");
+                JOptionPane.showMessageDialog(window, "You were sent to jail for three consecutive doubles", "Unfortunate", JOptionPane.INFORMATION_MESSAGE);
                 setInJail(window, jail, currentPlayer);
 
                 turnCount = 0;
                 game.nextTurn();
                 continue;
             }
-
-            window.Board.diceThrown(-1, -1);
-            trySleep(1000);
 
             if (jail.playerIsJailed(currentPlayer)) {
                 boolean release = false;
@@ -260,7 +262,7 @@ public class App {
                     }
                     movePlayer(window, currentPlayer, move);
 
-                    if (move.PassedStart) {
+                    if (move.PassedStart && move.Type != MovementType.BACKWARD) {
                         updatePlayerBalance(window, currentPlayer, 4000);
                     }
                     endField = game.Board.getFieldAt(move.End);
