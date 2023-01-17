@@ -232,7 +232,16 @@ public class App {
                 }
                 else {
                     // Buy property
-                    buyProperty(window, currentPlayer, propertyField, move.End);
+                    System.out.println("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
+                    GUIAnswer<Integer> buyPropertyAnswer = window.getUserInt("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)", 0, 1);
+                    while (!buyPropertyAnswer.hasAnswer()) {
+                        trySleep(10);
+                    }
+                    boolean wantsToBuy = (buyPropertyAnswer.getAnswer() == 1);
+
+                    if (wantsToBuy) {
+                        buyProperty(window, currentPlayer, propertyField, move.End);
+                    }
                 }
             }
 
