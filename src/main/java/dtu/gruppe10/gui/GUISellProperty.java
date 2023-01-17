@@ -22,7 +22,7 @@ public class GUISellProperty extends JFrame {
             if (propertyField.isOwned() && propertyField.getOwner().ID == playerID) {
                 int sellPrice = propertyField.Price;
                 propertyField.newOwner(null);
-                window.createSellButton(propertyIndexNum);
+                //window.createSellButton(propertyIndexNum);
                 window.updatePlayerBalance(playerID, sellPrice);
                 //window.repaint();
             }
