@@ -55,6 +55,13 @@ public class Board {
         return PlayerMovement.ForwardMove(startPos, (startPos + amount) % FieldCount);
     }
 
+    public PlayerMovement generateForwardMoveToField(int playerId, int endPosition){
+        int startPos = getPlayerPosition(playerId);
+        return PlayerMovement.ForwardMove(startPos,endPosition);
+    }
+
+
+
     public PlayerMovement generateBackwardMove(int playerId, int amount) {
         int startPos = getPlayerPosition(playerId);
         return PlayerMovement.BackwardMove(startPos, (startPos - amount + FieldCount) % FieldCount);
