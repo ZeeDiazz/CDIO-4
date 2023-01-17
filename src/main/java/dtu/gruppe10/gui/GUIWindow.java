@@ -57,6 +57,9 @@ public class GUIWindow extends JFrame implements Runnable {
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
+                if (currentState != GUIState.PLAYING) {
+                    return;
+                }
                 switch (e.getKeyChar()) {
                     case 'b' -> {
                         if (demolishMode) {

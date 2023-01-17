@@ -241,6 +241,7 @@ public class App {
                         int payAmount = perHouseMoneyCard.getPayAmount(currentPlayer, game.Board);
                         updatePlayerBalance(window, currentPlayer, -payAmount);
                     }
+                    break;
                 } else if (card instanceof JailCard) {
                     if (card instanceof GoToJailCard) {
                         setInJail(window, jail, currentPlayer);
@@ -253,6 +254,7 @@ public class App {
                     else if (card instanceof GetOutOfJailFreeCard) {
                         // TODO
                     }
+                    break;
                 } else if (card instanceof MoveCard) {
                     if (card instanceof MoveByCard moveByCard) {
                         if (moveByCard.getAmount() < 0) {
@@ -445,7 +447,13 @@ public class App {
             player = new Player(playerId, startingBalance);
         } else /* if (playerType == 1) */ {
             //Create AI players and choose their Intelligence
-            int intelligence = Integer.parseInt(JOptionPane.showInputDialog("Enter AI intelligence level (1-10):"));
+            int intelligence = -1;
+            while (intelligence < 1 || intelligence > 10) {
+                try {
+                    intelligence = Integer.parseInt(JOptionPane.showInputDialog("Enter AI intelligence level (1-10):"));
+                }
+                catch (NumberFormatException ignored) { }
+            }
             player = new AIPlayer(playerId, startingBalance, intelligence);
         }
         return player;
