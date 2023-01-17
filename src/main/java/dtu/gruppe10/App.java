@@ -212,15 +212,6 @@ public class App {
             }
 
             Field endField = game.Board.getFieldAt(move.End);
-            if (endField instanceof GoToJailField) {
-                System.out.println("Player landed on 'Go To Jail'");
-                JOptionPane.showMessageDialog(null, "You were caught speeding, and sent straight to jail", "Alert", JOptionPane.INFORMATION_MESSAGE);
-
-                move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
-                endField = game.Board.getFieldAt(move.End);
-
-                setInJail(window, jail, currentPlayer);
-            }
 
             movePlayer(window, currentPlayer, move);
 
@@ -286,6 +277,16 @@ public class App {
                 } else {
                     // ???
                 }
+            }
+
+            if (endField instanceof GoToJailField) {
+                System.out.println("Player landed on 'Go To Jail'");
+                JOptionPane.showMessageDialog(null, "You were caught speeding, and sent straight to jail", "Alert", JOptionPane.INFORMATION_MESSAGE);
+
+                move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
+                endField = game.Board.getFieldAt(move.End);
+
+                setInJail(window, jail, currentPlayer);
             }
 
             if (endField instanceof PropertyField propertyField) {
