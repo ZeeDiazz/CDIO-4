@@ -1,22 +1,19 @@
 package dtu.gruppe10.gui;
 
-import dtu.gruppe10.AIPlayer;
 import dtu.gruppe10.ChanceCard.ChanceCard;
 import dtu.gruppe10.Game;
 import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
-import dtu.gruppe10.board.fields.ArrayOfFields;
+import dtu.gruppe10.board.fields.Field;
+import dtu.gruppe10.board.fields.PropertyField;
 import dtu.gruppe10.gui.prompts.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static dtu.gruppe10.App.game;
 
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
@@ -36,11 +33,18 @@ public class GUIWindow extends JFrame implements Runnable {
     protected KeyListener promptKeyListener;
     protected PromptErrorHandler promptErrorHandler;
     protected String errorInPrompt;
+    private ArrayList<Field> fields;
     protected int currentGUIPromptId = 0;
     private GUIChanceCard chanceCardPanel;
 
     protected boolean needToRoll;
     protected Rectangle rollButton;
+
+    // TRY
+    private JPanel sellPropertyPanel;
+    private JComboBox<String> propertySelection;
+    private JTextField priceField;
+    private JButton sellButton;
 
     public GUIWindow(Rectangle bounds, GUIField[] guiFields) {
         super("Matador");
@@ -50,6 +54,7 @@ public class GUIWindow extends JFrame implements Runnable {
         idToPosition = new HashMap<>();
         idToJailedStatus = new HashMap<>();
         bankruptIds  = new ArrayList<>();
+        fields = new ArrayList<>();
 
         promptKeyListener = new KeyListener() {
             @Override
@@ -98,11 +103,13 @@ public class GUIWindow extends JFrame implements Runnable {
                             // Display Field information
                             displayFieldInfo(Board.fields[i]);
                         }
+                        /*if (isVisible() && currentState == GUIState.PLAYING){
+                            createSellButton(Board.fields[i].ID);
+                            //repaint();
+                        }*/
                     }
                 }
-                if (isVisible() && currentState == GUIState.PLAYING){
-                    createSellButton();
-                }
+
             }
 
             @Override
@@ -134,6 +141,30 @@ public class GUIWindow extends JFrame implements Runnable {
 
         //Choose Player type:
         //choosePlayerType();
+
+        //Try Selling
+        sellPropertyPanel = new JPanel();
+        sellPropertyPanel.setVisible(false);
+        sellPropertyPanel.setLayout(new FlowLayout());
+
+        propertySelection = new JComboBox<>();
+        sellPropertyPanel.add(propertySelection);
+
+        priceField = new JTextField(10);
+        sellPropertyPanel.add(priceField);
+
+        sellButton = new JButton("Sell Property");
+        sellButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedProperty = propertySelection.getSelectedIndex();
+                int price = Integer.parseInt(priceField.getText());
+                //sellProperty(currentPlayerId, selectedProperty, price);
+            }
+        });
+        sellPropertyPanel.add(sellButton);
+
+        add(sellPropertyPanel);
     }
 
     public void setState(GUIState currentState) {
@@ -499,24 +530,43 @@ public class GUIWindow extends JFrame implements Runnable {
 
         JOptionPane.showMessageDialog(this, messageBuilder.toString(), field.fieldName, JOptionPane.INFORMATION_MESSAGE);
     }
-    private void createSellButton() {
-            setVisible(true);
-            JButton sellButton = new JButton("Sell");
-            sellButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    GUISellProperty sellProperty = new GUISellProperty(new Player[1], balances,game);
-                    sellProperty.setVisible(true);
-                    sellButton.setPreferredSize(new Dimension(10,10));
-                }
-            });
-            add(sellButton, BorderLayout.NORTH);
-    }
-    public void displayChanceCard(ChanceCard card) {
-        chanceCardPanel.updateCard(card);
-        chanceCardPanel.setVisible(true);
-    }
-    //Choose AI or other Players
+    /*private void sellProperty(int playerId, int propertyIndex, int price) {
+        PropertyField propertyField = (PropertyField) fields.get(propertyIndex);
+        Player seller = getPlayer(playerId);
+        sellPanel.setLayout(new GridLayout(3, 2));
+        if (propertyField.isOwned() && propertyField.getOwner().ID == playerId) {
+            // Open a new panel for the user to select a buyer and set a price
+            sellPanel = new JPanel();
+            sellPanel.setLayout(new GridLayout(3, 2));
+        }
+        // Add labels and dropdown for the buyer selection
+        JLabel buyerLabel = new JLabel("Select a buyer:");
+        sellPanel.add(buyerLabel);
+        DefaultComboBoxModel<Player> buyersModel = new DefaultComboBoxModel<>();
+        JComboBox<Player> buyersList = new JComboBox<>(buyersModel);
+        for (Player player : window.players) {
+            if (player.ID != seller.ID) {
+                buyersModel.addElement(player);
+            }
+        }*/
+    /*public void createSellButton(int propertyIndex) {
+        Button sellButton = new Button("Sell");
+        sellButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                isVisible();
+                GUISellProperty sellPropertyLogic = new GUISellProperty(GUIWindow.this, fields);
+                sellPropertyLogic.setVisible(true);
+                sellPropertyLogic.sellProperty(currentGUIPromptId, propertyIndex);
+
+            }
+        });
+        add(sellButton,BorderLayout.NORTH);
+    }*/
+        public void displayChanceCard (ChanceCard card){
+            chanceCardPanel.updateCard(card);
+            chanceCardPanel.setVisible(true);
+        }
+        //Choose AI or other Players
     /*private void choosePlayerType() {
         for (int i = 0; i < game.getPlayersLeft().length; i++) {
             int playerType = JOptionPane.showOptionDialog(null, "Please select player type for Player " + (i+1), "Player Type", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Human", "AI" }, "Human");
@@ -530,4 +580,4 @@ public class GUIWindow extends JFrame implements Runnable {
             }
         }
     }*/
-}
+    }

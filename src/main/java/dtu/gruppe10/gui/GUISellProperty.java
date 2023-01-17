@@ -1,19 +1,38 @@
 package dtu.gruppe10.gui;
 
-import dtu.gruppe10.Game;
-import dtu.gruppe10.Player;
-import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.fields.Field;
 import dtu.gruppe10.board.fields.PropertyField;
-import dtu.gruppe10.board.fields.StreetField;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUISellProperty extends JFrame {
-    private Player[] players;
+    private GUIWindow window;
+    private ArrayList<Field> fields;
+
+    public GUISellProperty(GUIWindow window, ArrayList<Field> fields) {
+        this.window = window;
+        this.fields = fields;
+    }
+
+    public void sellProperty(int playerID, int propertyIndexNum) {
+        if (propertyIndexNum >= 0 && propertyIndexNum < fields.size()) {
+            PropertyField propertyField = (PropertyField) fields.get(propertyIndexNum);
+            GUIPlayer player = window.idToPlayer.get(playerID);
+            if (propertyField.isOwned() && propertyField.getOwner().ID == playerID) {
+                int sellPrice = propertyField.Price;
+                propertyField.newOwner(null);
+                window.createSellButton(propertyIndexNum);
+                window.updatePlayerBalance(playerID, sellPrice);
+                //window.repaint();
+            }
+        } else {
+            System.out.println("Invalid property index: " + propertyIndexNum);
+        }
+
+    }
+}
+    /*private Player[] players;
     private GUIBalances balances;
     private Game game;
 
@@ -116,4 +135,4 @@ public class GUISellProperty extends JFrame {
             throw new IllegalArgumentException("Invalid field ID: " + fieldId);
         }
     }
-}
+}*/
