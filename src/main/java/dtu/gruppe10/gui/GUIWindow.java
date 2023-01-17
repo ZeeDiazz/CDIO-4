@@ -12,6 +12,10 @@ import dtu.gruppe10.gui.prompts.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -564,9 +568,24 @@ public class GUIWindow extends JFrame implements Runnable {
         });
         add(sellButton,BorderLayout.NORTH);
     }*/
-        public void displayChanceCard (ChanceCard card){
-            chanceCardPanel.updateCard(card);
-            chanceCardPanel.setVisible(true);
+        public void displayChanceCard (ChanceCard card) {
+            String chanceMessage;
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/chancecards.txt"));
+                ArrayList<String> descriptions = new ArrayList<>();
+
+                String textLine;
+                while ((textLine = reader.readLine()) != null) {
+                    descriptions.add(textLine);
+                }
+
+                chanceMessage = descriptions.get(card.ID - 1);
+            }
+            catch (IOException ignored) {
+                chanceMessage = "You got a chance card";
+            }
+
+            JOptionPane.showMessageDialog(this, chanceMessage, "Chance Card", JOptionPane.INFORMATION_MESSAGE);
         }
         //Choose AI or other Players
     /*private void choosePlayerType() {
