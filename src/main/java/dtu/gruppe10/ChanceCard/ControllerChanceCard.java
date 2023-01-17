@@ -96,57 +96,11 @@ public class ControllerChanceCard {
     }
 
     public ChanceCard draw() {
-
-
-        ChanceCard kort = chanceCards.remove();
-        chanceCards.add(kort);
-
-
-        Random rand = new Random();
-
-
-        int drawIndex = rand.nextInt(arrayOfCards.length);
-
-        ChanceCard drawnCard = arrayOfCards[drawIndex];
-        // move the drawn card to the last position in the array
-        for (int i = drawIndex; i < arrayOfCards.length - 1; i++) {
-            arrayOfCards[i] = arrayOfCards[i + 1];
-        }
-        arrayOfCards[arrayOfCards.length - 1] = null;
-        return drawnCard;
+        ChanceCard card = chanceCards.remove();
+        chanceCards.add(card);
+        return card;
     }
 
-    public void activateChanceCard(Player player) {
-        ChanceCard chanceCard = draw();
-
-        if (chanceCard instanceof PerHouseMoneyCard) {
-            ((PerHouseMoneyCard) chanceCard).getAmount(player);
-
-        } else if (chanceCard instanceof BankMoneyCard) {
-            ((BankMoneyCard) chanceCard).getAmount();
-
-        } else if (chanceCard instanceof OtherPlayersMoneyCard) {
-            ((OtherPlayersMoneyCard) chanceCard).calculateReceivingAmount();
-            ((OtherPlayersMoneyCard) chanceCard).calculatePayingAmount();
-
-        } else if (chanceCard instanceof MoveToCard) {
-            ((MoveToCard) chanceCard).getPositionIndex();
-
-        } else if (chanceCard instanceof MoveCard) {
-            ((MoveCard) chanceCard).getMoveAmount();
-
-        } else if (chanceCard instanceof MoveToNearestCard) {
-            ((MoveToNearestCard) chanceCard).getMoveAmount();
-
-        } else if (chanceCard instanceof GetOutOfJailFreeCard) {
-
-
-        } else if (chanceCard instanceof GoToJailCard) {
-            ((GoToJailCard) chanceCard).playerGetsJailed();
-
-        }
-
-    }
 
     public ChanceCard drawFirstCard() {
         //get the first card

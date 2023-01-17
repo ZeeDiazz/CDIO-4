@@ -51,7 +51,7 @@ public class PerHouseMoneyCard extends MoneyCard {
         int houses = amountOfHouses(player) * amountPerHouse;
         int hotels = amountOfHotels(player) * amountPerHotel;
 
-        return houses * hotels;
+        return houses + hotels;
     }
 }
 

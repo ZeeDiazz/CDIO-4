@@ -1,4 +1,7 @@
 package dtu.gruppe10;
+
+import dtu.gruppe10.ChanceCard.*;
+import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
@@ -15,7 +18,6 @@ import java.io.IOException;
 
 /**
  * Hello world!
- *
  */
 public class App {
     public static Game game;
@@ -24,10 +26,12 @@ public class App {
     protected static int moveHackAmount;
     protected static boolean moveHackDouble;
 
+    public static Player[] players;
+
     protected static Jail jail;
     private static GUIWindow window;
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) throws Exception {
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
 
         Thread uiThread = new Thread(window, "uiThread");
@@ -41,7 +45,7 @@ public class App {
         }
 
         int playerCount = playerCountAnswer.getAnswer();
-        Player[] players = new Player[playerCount];
+        players = new Player[playerCount];
 
         Color[] playerColors = {Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.CYAN, Color.MAGENTA};
 
@@ -60,8 +64,7 @@ public class App {
                 }
 
                 playerName = playerNameAnswer.getAnswer();
-            }
-            else {
+            } else {
                 playerName = "CPU " + cpuNum;
                 cpuNum++;
             }
@@ -84,8 +87,7 @@ public class App {
 
                     if (moveHacks) {
                         System.out.println("Move hacks enabled");
-                    }
-                    else {
+                    } else {
                         System.out.println("Move hacks disabled");
                         moveHackAmount = 0;
                         moveHackDouble = false;
@@ -94,8 +96,7 @@ public class App {
                 if (moveHacks) {
                     if (Character.isDigit(e.getKeyChar())) {
                         moveHackAmount = Character.getNumericValue(e.getKeyChar());
-                    }
-                    else if (e.getKeyChar() == 'd') {
+                    } else if (e.getKeyChar() == 'd') {
                         moveHackDouble = true;
                     }
                 }
@@ -116,13 +117,12 @@ public class App {
         }
 
         DieCup cup = new DieCup(new SixSidedDie(), new SixSidedDie());
-        jail = new Jail(1000,3);
+        jail = new Jail(1000, 3);
 
         ArrayOfFields fieldReader = new ArrayOfFields();
         try {
             fieldReader.readFieldData();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Frick");
         }
         game = new Game(players, fieldReader.getFields());
@@ -154,7 +154,7 @@ public class App {
             window.repaint();
             trySleep(1000);
 
-            if (turnCount == 3 && (roll.AreSame||moveHackDouble)) {
+            if (turnCount == 3 && (roll.AreSame || moveHackDouble)) {
                 System.out.println("Player was sent to jail for three consecutive doubles");
                 setInJail(window, jail, currentPlayer);
 
@@ -173,8 +173,7 @@ public class App {
                     System.out.println("Player rolled out of prison");
                     System.out.println(roll.getValue(0) + " " + roll.getValue(1));
                     release = true;
-                }
-                else if (jail.playerHasToGetOut(currentPlayer)) {
+                } else if (jail.playerHasToGetOut(currentPlayer)) {
                     System.out.println("Player paid bail");
 
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
@@ -209,13 +208,51 @@ public class App {
 
             movePlayer(window, currentPlayer, move);
 
+            if (endField instanceof ChanceField chanceField) {
+                ChanceCard chanceCard = chanceField.draw();
+
+                if (chanceCard instanceof BankMoneyCard) {
+                    if (((BankMoneyCard) chanceCard).getAmount() >= 0) {
+                        currentPlayer.Account.add(((BankMoneyCard) chanceCard).getAmount());
+                    } else {
+                        currentPlayer.Account.subtract(((BankMoneyCard) chanceCard).getAmount());
+                    }
+                } else if (chanceCard instanceof PerHouseMoneyCard) {
+                    currentPlayer.Account.subtract(((PerHouseMoneyCard) chanceCard).getAmount(currentPlayer));
+                } else if (chanceCard instanceof OtherPlayersMoneyCard) {
+                    currentPlayer.Account.add(((OtherPlayersMoneyCard) chanceCard).calculateReceivingAmount());
+
+                    for (Player player : players) {
+                        if (!(player == currentPlayer)) {
+                            player.Account.subtract(((OtherPlayersMoneyCard) chanceCard).calculatePayingAmount());
+                        }
+                    }
+                } else if (chanceCard instanceof MoveToCard) {
+
+
+                    //movePlayer(window,currentPlayer,);
+
+
+                    // game.Board.generateDirectMove(currentPlayer.ID,);
+                } else if (chanceCard instanceof MoveToNearestCard) {
+
+                } else if (chanceCard instanceof MoveCard) {
+
+                } else if (chanceCard instanceof GoToJailCard) {
+
+                } else if (chanceCard instanceof GetOutOfJailFreeCard) {
+                    ((GetOutOfJailFreeCard) chanceCard).addToInventory(currentPlayer.jailCards);
+                }
+
+            }
+
             if (endField instanceof PropertyField propertyField) {
                 if (propertyField.isOwned()) {
                     // Pay rent
                     int propertiesInSetOwned = 1;
                     for (int i = 0; i < game.Board.FieldCount; ++i) {
                         Field field = game.Board.getFieldAt(i);
-                        if (propertyField.inSetWith(field) && propertyField.getOwner().equals(((PropertyField)field).getOwner())) {
+                        if (propertyField.inSetWith(field) && propertyField.getOwner().equals(((PropertyField) field).getOwner())) {
                             propertiesInSetOwned++;
                         }
                     }
@@ -223,24 +260,22 @@ public class App {
                     int toPay;
                     if (propertyField instanceof BreweryField breweryField) {
                         toPay = breweryField.utilityPrice(roll.Sum, propertiesInSetOwned);
-                    }
-                    else {
+                    } else {
                         toPay = propertyField.getCurrentRent(propertiesInSetOwned);
                     }
-                    int rentPay = JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + "you have landed on " + (propertyField.getOwner().ID+1) +" property "+ propertyField.Type.name() + " and have to pay " + propertyField.getCurrentRent(toPay),"Pay rent",0);
+                    int rentPay = JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + "you have landed on " + (propertyField.getOwner().ID + 1) + " property " + propertyField.Type.name() + " and have to pay " + propertyField.getCurrentRent(toPay), "Pay rent", 0);
                     boolean rentPayAnswer = rentPay == 0;
-                    if(rentPayAnswer || !rentPayAnswer) {
+                    if (rentPayAnswer || !rentPayAnswer) {
                         payRent(window, currentPlayer, propertyField, toPay);
                     }
-                }
-                else {
-                    if(currentPlayer instanceof AIPlayer){
+                } else {
+                    if (currentPlayer instanceof AIPlayer) {
                         // Buy property AI
                         buyProperty(window, currentPlayer, propertyField, move.End);
                     } else {
                         // Buy property
-                        System.out.println("Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
-                        int buyPropertyAnswer = JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?", "Buy property", JOptionPane.OK_OPTION);
+                        System.out.println("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
+                        int buyPropertyAnswer = JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?", "Buy property", 0);
 
                         boolean wantsToBuy = buyPropertyAnswer == 0;
 
@@ -275,8 +310,8 @@ public class App {
     private static void trySleep(long millis) {
         try {
             Thread.sleep(millis);
+        } catch (InterruptedException ignored) {
         }
-        catch (InterruptedException ignored) {}
     }
 
     private static void movePlayer(GUIWindow window, Player player, PlayerMovement move) {
@@ -292,10 +327,9 @@ public class App {
         Player owner = propertyField.getOwner();
 
 
-        if(jail.inmates.containsKey(owner)) {
-            System.out.println("Rent was not paid since " + owner.ID + " is in jail." );
-        }
-        else {
+        if (jail.inmates.containsKey(owner)) {
+            System.out.println("Rent was not paid since " + owner.ID + " is in jail.");
+        } else {
             Player.payRent(owner, player, amount);
 
             System.out.println("Player " + player.ID + " paid " + amount + " in rent to " + owner.ID + " (property: " + propertyField.ID + ")");
@@ -325,8 +359,7 @@ public class App {
 
         if (amount < 0) {
             player.Account.subtract(-amount);
-        }
-        else {
+        } else {
             player.Account.add(amount);
         }
 
@@ -376,4 +409,6 @@ public class App {
         }
         return player;
     }
+
+
 }
