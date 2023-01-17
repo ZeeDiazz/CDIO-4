@@ -275,6 +275,13 @@ public class GUIWindow extends JFrame implements Runnable {
 
                     g.setColor(Color.BLACK);
                     g.drawString(rollPrompt, drawPoint.x, drawPoint.y);
+                    drawPoint.translate(-leftShift, 0);
+
+                    drawPoint.translate(0, (int)(boardCircle.Radius * 0.1f));
+                    leftShift = -(metrics.stringWidth(rollPrompt) / 2);
+                    drawPoint.translate(leftShift, (metrics.getHeight() / 2));
+                    g.drawString(infoPrompt, drawPoint.x, drawPoint.y);
+
                     g.setFont(prevFont);
                 }
             }
@@ -479,7 +486,7 @@ public class GUIWindow extends JFrame implements Runnable {
     }
 
     protected int getMaxBoardSize() {
-        int buffer = 100;
+        int buffer = 200;
 
         Rectangle window = getBounds();
         int maxRadius = Math.min(window.width, window.height) - buffer;
