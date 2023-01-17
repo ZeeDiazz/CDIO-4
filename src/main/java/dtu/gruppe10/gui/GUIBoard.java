@@ -334,6 +334,37 @@ public class GUIBoard {
                 field.setFieldName(name);
 
                 int price = 0;
+                int house = 0;
+                int rent01 = 0;
+                int rent02 = 0;
+                int rent03 = 0;
+                int rent04 = 0;
+                int rent05 = 0;
+                //Works maybe
+                for (int i = 3; i < texts.length; i++) {
+                    switch (i) {
+                        case 3:
+                            price = Integer.valueOf(texts[i]);
+                            break;
+                        case 4:
+                            house = Integer.valueOf(texts[i]);
+                            break;
+                        case 5:
+                            rent01 = Integer.valueOf(texts[i]);
+                            break;
+                        case 6:
+                            rent02 = Integer.valueOf(texts[i]);
+                            break;
+                        case 7:
+                            rent03 = Integer.valueOf(texts[i]);
+                            break;
+                        case 8:
+                            rent04 = Integer.valueOf(texts[i]);
+                            break;
+                    }
+                }
+
+                /*int price = 0;
                 if (texts.length > 3) {
                     price = Integer.valueOf(texts[3]);
                 }
@@ -364,7 +395,7 @@ public class GUIBoard {
                     rent03 = 0;
                     rent04 = 0;
                     house = 0;
-                }
+                }*/
                 field.setFieldPrice(price);
                 field.setFieldRent02(house);
                 field.setFieldRent01(rent01);
