@@ -5,7 +5,7 @@ public class MoveByCard extends MoveCard {
         super(ID, amount);
     }
 
-    public int getAmount (){
-        return amount;
+    public int getAmount () {
+        return this.moveNum;
     }
 }
