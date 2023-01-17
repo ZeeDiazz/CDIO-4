@@ -329,6 +329,7 @@ public class GUIBoard {
                 field.setFieldRent02(rent02);
                 field.setFieldRent03(rent03);
                 field.setFieldRent04(rent04);
+                field.setFieldHousePrice(house);
             }
             reader.close();
         } catch (IOException e){
