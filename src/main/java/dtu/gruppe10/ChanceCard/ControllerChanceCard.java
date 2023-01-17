@@ -46,9 +46,10 @@ public class ControllerChanceCard {
                 new BankMoneyCard(17, 1000), // modtag 1000kr
                 new BankMoneyCard(18, 200), // modtag 200
                 new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
-                new OtherPlayersMoneyCard(20, 200), // 200 fra andre spillere
 
-                new OtherPlayersMoneyCard(21, 500), // modtag 500 fra hver spiller
+                new OtherPlayersMoneyCard(20, 200,200), // 200 fra andre spillere
+                new OtherPlayersMoneyCard(21, 500, 500), // modtag 500 fra hver spiller
+
                 // BevægelsesKort:
                 new MoveToCard(29, 1), // start
                 new MoveToCard(30, 1), // start
@@ -128,15 +129,28 @@ public class ControllerChanceCard {
 
         if (chanceCard instanceof PerHouseMoneyCard) {
             ((PerHouseMoneyCard) chanceCard).getAmount(player);
+
         } else if (chanceCard instanceof BankMoneyCard) {
+            ((BankMoneyCard) chanceCard).getAmount();
 
         } else if (chanceCard instanceof OtherPlayersMoneyCard) {
+            ((OtherPlayersMoneyCard) chanceCard).calculateReceivingAmount();
+            ((OtherPlayersMoneyCard) chanceCard).calculatePayingAmount();
+
         } else if (chanceCard instanceof MoveToCard) {
+            ((MoveToCard) chanceCard).getPositionIndex();
+
         } else if (chanceCard instanceof MoveCard) {
+            ((MoveCard) chanceCard).getMoveAmount();
+
         } else if (chanceCard instanceof MoveToNearestCard) {
+            ((MoveToNearestCard) chanceCard).getMoveAmount();
+
         } else if (chanceCard instanceof GetOutOfJailFreeCard) {
 
+
         } else if (chanceCard instanceof GoToJailCard) {
+            ((GoToJailCard) chanceCard).playerGetsJailed();
 
         }
 

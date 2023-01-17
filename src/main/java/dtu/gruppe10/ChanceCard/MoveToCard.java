@@ -14,10 +14,6 @@ public class MoveToCard extends MoveCard {
         this.positionIndex = positionIndex;
 
     }
-    public void applyAffect(){
-        PlayerMovement moveTo = board.generateDirectMove(player.ID, getPositionIndex());
-        board.performMove(player.ID, moveTo);
-    }
     public int getPositionIndex(){
         return positionIndex;
     }
