@@ -1,5 +1,4 @@
 package dtu.gruppe10;
-import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
@@ -26,6 +25,7 @@ public class App {
     protected static boolean moveHackDouble;
 
     protected static Jail jail;
+    private static GUIWindow window;
 
     public static void main( String[] args ) {
         GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
@@ -233,10 +233,13 @@ public class App {
                 else {
                     // Buy property
                     System.out.println("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
-                    GUIAnswer<Integer> buyPropertyAnswer = window.getUserInt("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)", 0, 1);
+                    GUIAnswer<Integer> buyPropertyAnswer = window.getUserInt("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)", 0, 1);
+
+                    JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?","Buy property",0);
                     while (!buyPropertyAnswer.hasAnswer()) {
                         trySleep(10);
                     }
+
                     boolean wantsToBuy = (buyPropertyAnswer.getAnswer() == 1);
 
                     if (wantsToBuy) {
