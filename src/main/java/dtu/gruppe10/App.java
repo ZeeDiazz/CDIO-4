@@ -32,7 +32,7 @@ public class App {
     private static GUIWindow window;
 
     public static void main(String[] args) throws Exception {
-        GUIWindow window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
+        window = new GUIWindow(new Rectangle(100, 100, 1000, 500), GUITest.generateFields());
 
         Thread uiThread = new Thread(window, "uiThread");
 
@@ -78,21 +78,24 @@ public class App {
         window.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == 'j') {
-                    System.out.println("Player chose to pay bail");
-                    wantsToPayBail = true;
-                }
-                if (e.getKeyChar() == 'm') {
-                    moveHacks = !moveHacks;
+                switch (e.getKeyChar()) {
+                    case 'j' -> {
+                        System.out.println("Player chose to pay bail");
+                        wantsToPayBail = true;
+                    }
+                    case 'm' -> {
+                        moveHacks = !moveHacks;
 
-                    if (moveHacks) {
-                        System.out.println("Move hacks enabled");
-                    } else {
-                        System.out.println("Move hacks disabled");
-                        moveHackAmount = 0;
-                        moveHackDouble = false;
+                        if (moveHacks) {
+                            System.out.println("Move hacks enabled");
+                        } else {
+                            System.out.println("Move hacks disabled");
+                            moveHackAmount = 0;
+                            moveHackDouble = false;
+                        }
                     }
                 }
+
                 if (moveHacks) {
                     if (Character.isDigit(e.getKeyChar())) {
                         moveHackAmount = Character.getNumericValue(e.getKeyChar());
@@ -435,5 +438,58 @@ public class App {
         return player;
     }
 
+    public static void changeInHouses(int fieldIndex, int amount) {
+        Field field = game.Board.getFieldAt(fieldIndex);
+        if (!(field instanceof StreetField street)) {
+            return;
+        }
+        if (!game.getCurrentPlayer().equals(street.getOwner())) {
+            JOptionPane.showMessageDialog(null, "You cannot build on properties you don't own", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
+        if (amount == 1) {
+            if (street.eligibleToBuildHouse()) {
+                int ans = JOptionPane.showConfirmDialog(null, "Do you want to build a house on this property?", "Check", JOptionPane.YES_NO_OPTION);
+                if (ans == JOptionPane.NO_OPTION) {
+                    return;
+                }
+
+                street.buildOneHouse();
+                window.Board.addHouse(fieldIndex);
+                updatePlayerBalance(window, street.getOwner(), -street.getHousePrice());
+            }
+            else {
+                if (street.getHouseCount() == 5) {
+                    JOptionPane.showMessageDialog(null, "Cannot build more than a hotel", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if (street.getOwner().Account.balance < street.getHousePrice()) {
+                    JOptionPane.showMessageDialog(null, "Too poor", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "You have to build houses evenly across the properties in this set", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+        else {
+            if (street.eligibleToSellHouse()) {
+                int ans = JOptionPane.showConfirmDialog(null, "Do you want to demolish a house on this property?", "Check", JOptionPane.YES_NO_OPTION);
+                if (ans == JOptionPane.NO_OPTION) {
+                    return;
+                }
+
+                street.sellOneHouse();
+                window.Board.removeHouse(fieldIndex);
+                updatePlayerBalance(window, street.getOwner(), street.getHousePrice() / 2);
+            }
+            else {
+                if (street.getHouseCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Cannot demolish, because there are no more houses", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "The houses evenly across the properties in this set", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        }
+    }
 }

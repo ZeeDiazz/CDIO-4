@@ -48,11 +48,11 @@ public class StreetField extends PropertyField {
         // Hvis ejerens pengebeholdning skal tages i betragtning
         if (this.houseCount < 5 && this.owner.Account.getBalance() >= housePrice) {
             return hasEnoughHousesOnOtherFieldsToBuildOneHouse() && ownsAllInSet();
-        } else {
+        } /* else {
             if (this.owner.Account.getBalance() >= housePrice * 5) {
                 return hasEnoughHousesOnOtherFieldsToBuildOneHouse() && ownsAllInSet();
             }
-        }
+        } */
         return false;
 
     }

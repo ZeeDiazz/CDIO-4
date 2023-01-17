@@ -1,5 +1,6 @@
 package dtu.gruppe10.gui;
 
+import dtu.gruppe10.App;
 import dtu.gruppe10.ChanceCard.ChanceCard;
 import dtu.gruppe10.Game;
 import dtu.gruppe10.Player;
@@ -45,7 +46,8 @@ public class GUIWindow extends JFrame implements Runnable {
     private GUIChanceCard chanceCardPanel;
 
     protected boolean needToRoll;
-    protected Rectangle rollButton;
+    protected static boolean buildMode;
+    protected static boolean demolishMode;
 
     // TRY
     private JPanel sellPropertyPanel;
@@ -63,6 +65,42 @@ public class GUIWindow extends JFrame implements Runnable {
         bankruptIds  = new ArrayList<>();
         fields = new ArrayList<>();
 
+
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                switch (e.getKeyChar()) {
+                    case 'b' -> {
+                        if (demolishMode) {
+                            JOptionPane.showMessageDialog(null, "Cannot enter Build Mode while in Demolish Mode", "Error", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                        buildMode = !buildMode;
+                        String message = buildMode ? "Entering Build Mode" : "Leaving Build Mode";
+                        JOptionPane.showMessageDialog(null, message, "Build Mode", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    case 'd' -> {
+                        if (buildMode) {
+                            JOptionPane.showMessageDialog(null, "Cannot enter Demolish Mode while in Build Mode", "Error", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                        demolishMode = !demolishMode;
+                        String message = demolishMode ? "Entering Demolish Mode" : "Leaving Demolish Mode";
+                        JOptionPane.showMessageDialog(null, message, "Demolish Mode", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
         promptKeyListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -72,8 +110,9 @@ public class GUIWindow extends JFrame implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 repaint();
-                if (e.getKeyChar() == '\n') {
-                    enterPressedInPromptMode();
+
+                switch (e.getKeyChar()) {
+                    case '\n' -> enterPressedInPromptMode();
                 }
             }
 
@@ -107,8 +146,17 @@ public class GUIWindow extends JFrame implements Runnable {
                     for (int i = 0; i < Board.fields.length; i++) {
                         //if the field is clicked
                         if (Board.fields[i].getFullPolygon(Board.outerCircle, Board.innerCircle, i, Board.fields.length).contains(e.getPoint())) {
-                            // Display Field information
-                            displayFieldInfo(Board.fields[i]);
+                            if (buildMode) {
+                                App.changeInHouses(i, 1);
+                            }
+                            else if (demolishMode) {
+                                App.changeInHouses(i, -1);
+                            }
+                            else {
+                                // Display Field information
+                                displayFieldInfo(Board.fields[i]);
+                            }
+                            repaint();
                         }
                         /*if (isVisible() && currentState == GUIState.PLAYING){
                             createSellButton(Board.fields[i].ID);
