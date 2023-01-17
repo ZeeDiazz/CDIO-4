@@ -296,8 +296,15 @@ public class GUIBoard {
                 else {
                     price = 0;
                 }
-
                 field.setFieldPrice(price);
+                int rent;
+                if (texts.length > 5) {
+                    rent = Integer.valueOf(texts[5]);
+                }
+                else {
+                    rent = 0;
+                }
+                field.setFieldRent(rent);
             }
             reader.close();
         } catch (IOException e){

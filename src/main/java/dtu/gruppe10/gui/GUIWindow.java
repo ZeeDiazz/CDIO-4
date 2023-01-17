@@ -478,6 +478,8 @@ public class GUIWindow extends JFrame implements Runnable {
             default -> {
                 messageBuilder.append("Price: ");
                 messageBuilder.append(field.fieldPrice);
+                messageBuilder.append("Rent: ");
+                //messageBuilder.append(field.);
             }
         }
 
