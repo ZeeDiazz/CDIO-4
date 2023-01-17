@@ -174,6 +174,9 @@ public class App {
                 System.out.println("Player was sent to jail for three consecutive doubles");
                 JOptionPane.showMessageDialog(window, "You were sent to jail for three consecutive doubles", "Unfortunate", JOptionPane.INFORMATION_MESSAGE);
                 setInJail(window, jail, currentPlayer);
+                PlayerMovement move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
+                game.Board.performMove(currentPlayer.ID, move);
+
 
                 turnCount = 0;
                 game.nextTurn();
@@ -246,7 +249,7 @@ public class App {
                     if (card instanceof GoToJailCard) {
                         setInJail(window, jail, currentPlayer);
                         move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
-                        movePlayer(window, currentPlayer, move);
+                        game.Board.performMove(currentPlayer.ID, move);
 
                         game.nextTurn();
                         continue;
@@ -288,6 +291,7 @@ public class App {
                 move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
                 endField = game.Board.getFieldAt(move.End);
 
+                game.Board.performMove(currentPlayer.ID, move);
                 setInJail(window, jail, currentPlayer);
             }
 
@@ -310,7 +314,7 @@ public class App {
                     }
 
                     if (!(currentPlayer instanceof AIPlayer)) {
-                        JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + "you have landed on " + (propertyField.getOwner().ID + 1) + " property " + propertyField.Type.name() + " and have to pay " + propertyField.getCurrentRent(toPay), "Pay rent", 0);
+                        JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + "you have landed on " + (propertyField.getOwner().ID + 1) + " property " + propertyField.Type.name() + " and have to pay " + toPay, "Pay rent", 0);
                     }
                     payRent(window, currentPlayer, propertyField, toPay);
                 } else {
