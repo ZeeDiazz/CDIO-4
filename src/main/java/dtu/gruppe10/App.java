@@ -138,19 +138,29 @@ public class App {
             System.out.println("\nPlayer " + currentPlayer.ID + " is starting their turn");
             turnCount++;
 
+            if (jail.playerIsJailed(currentPlayer)) {
+                if (currentPlayer instanceof AIPlayer ai) {
+                    wantsToPayBail = ai.wantsToBuyProperty();
+                }
+                else {
+                    wantsToPayBail = JOptionPane.showConfirmDialog(null, "Do you want to pay bail? (" + jail.BailPrice + ")", "Question", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                }
+            }
+
+            if (wantsToPayBail) {
+                updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+                freeFromJail(window, jail, currentPlayer);
+            }
+
             if (!(currentPlayer instanceof AIPlayer)) {
                 window.hasToRoll();
                 window.repaint();
 
                 while (!window.hasPressedRoll()) {
                     trySleep(10);
-                    if (wantsToPayBail && jail.playerIsJailed(currentPlayer)) {
-                        updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
-
-                        freeFromJail(window, jail, currentPlayer);
-                    }
                 }
             }
+
             cup.roll();
             DiceRoll roll = cup.getResult();
             window.Board.diceThrown(roll.getValue(0), roll.getValue(1));
@@ -175,11 +185,12 @@ public class App {
 
                 if (roll.AreSame || moveHacks && moveHackDouble) {
                     System.out.println("Player rolled out of prison");
-                    System.out.println(roll.getValue(0) + " " + roll.getValue(1));
+                    JOptionPane.showMessageDialog(null, "You rolled doubles, and was let out of prison", "Alert", JOptionPane.INFORMATION_MESSAGE);
                     release = true;
                 } else if (jail.playerHasToGetOut(currentPlayer)) {
                     System.out.println("Player paid bail");
 
+                    JOptionPane.showMessageDialog(null, "You had to pay bail", "Alert", JOptionPane.INFORMATION_MESSAGE);
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
                     release = true;
                 }
@@ -203,6 +214,7 @@ public class App {
             Field endField = game.Board.getFieldAt(move.End);
             if (endField instanceof GoToJailField) {
                 System.out.println("Player landed on 'Go To Jail'");
+                JOptionPane.showMessageDialog(null, "You were caught speeding, and sent straight to jail", "Alert", JOptionPane.INFORMATION_MESSAGE);
 
                 move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
                 endField = game.Board.getFieldAt(move.End);
@@ -212,8 +224,10 @@ public class App {
 
             movePlayer(window, currentPlayer, move);
 
-            if (endField instanceof ChanceField chanceField) {
+
+            while (endField instanceof ChanceField chanceField) {
                 ChanceCard card = chanceField.draw();
+
                 window.displayChanceCard(card);
                 System.out.println("Drew card: " + card.ID);
 
@@ -291,25 +305,23 @@ public class App {
                     } else {
                         toPay = propertyField.getCurrentRent(propertiesInSetOwned);
                     }
-                    int rentPay = JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + "you have landed on " + (propertyField.getOwner().ID + 1) + " property " + propertyField.Type.name() + " and have to pay " + propertyField.getCurrentRent(toPay), "Pay rent", 0);
-                    boolean rentPayAnswer = rentPay == 0;
-                    if (rentPayAnswer || !rentPayAnswer) {
-                        payRent(window, currentPlayer, propertyField, toPay);
+
+                    if (!(currentPlayer instanceof AIPlayer)) {
+                        JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + "you have landed on " + (propertyField.getOwner().ID + 1) + " property " + propertyField.Type.name() + " and have to pay " + propertyField.getCurrentRent(toPay), "Pay rent", 0);
                     }
+                    payRent(window, currentPlayer, propertyField, toPay);
                 } else {
-                    if (currentPlayer instanceof AIPlayer) {
+                    boolean wantsToBuy;
+                    if (currentPlayer instanceof AIPlayer ai) {
                         // Buy property AI
-                        buyProperty(window, currentPlayer, propertyField, move.End);
+                        wantsToBuy = ai.wantsToBuyProperty();
                     } else {
                         // Buy property
                         System.out.println("Player " + currentPlayer.ID + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
-                        int buyPropertyAnswer = JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?", "Buy property", 0);
-
-                        boolean wantsToBuy = buyPropertyAnswer == 0;
-
-                        if (wantsToBuy) {
-                            buyProperty(window, currentPlayer, propertyField, move.End);
-                        }
+                        wantsToBuy = JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?", "Buy property", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                    }
+                    if (wantsToBuy) {
+                        buyProperty(window, currentPlayer, propertyField, move.End);
                     }
                 }
             }
