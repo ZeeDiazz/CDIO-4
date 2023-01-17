@@ -3,6 +3,8 @@ package dtu.gruppe10.board;
 import junit.framework.TestCase;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
+
 public class PlayerMovementTest extends TestCase {
     @Test
     public void testGetMoveAmount() {
@@ -32,14 +34,9 @@ public class PlayerMovementTest extends TestCase {
     }
     @Test
     public void testGetFieldIndexes() {
-    }
-    @Test
-    public void testForwardMove() {
-    }
-    @Test
-    public void testBackwardMove() {
-    }
-    @Test
-    public void testDirectMove() {
+        PlayerMovement move = PlayerMovement.ForwardMove(3, 10);
+        int totalFieldCount = 40;
+        int[] fieldsTraveled = {3, 4, 5, 6, 7, 8, 9, 10};
+        assertArrayEquals(fieldsTraveled,move.getFieldIndexes(totalFieldCount,true,true));
     }
 }
