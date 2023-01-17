@@ -327,8 +327,8 @@ public class GUIBoard {
                 field.setFieldRent02(house);
                 field.setFieldRent01(rent01);
                 field.setFieldRent02(rent02);
-                field.setFieldRent02(rent03);
-                field.setFieldRent02(rent04);
+                field.setFieldRent03(rent03);
+                field.setFieldRent04(rent04);
             }
             reader.close();
         } catch (IOException e){
