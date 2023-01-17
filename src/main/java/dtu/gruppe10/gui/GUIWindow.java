@@ -536,9 +536,11 @@ public class GUIWindow extends JFrame implements Runnable {
 
         JOptionPane.showMessageDialog(this, messageBuilder.toString(), field.fieldName, JOptionPane.INFORMATION_MESSAGE);
     }
-    /*private void sellProperty(int playerId, int propertyIndex, int price) {
-        PropertyField propertyField = (PropertyField) fields.get(propertyIndex);
-        Player seller = getPlayer(playerId);
+    //MAKE THIS WORK DANIEL
+    private void sellProperty(int playerId, PropertyField propertyField, int price) {
+        //PropertyField propertyField = (PropertyField) fields.get(propertyIndex);
+        //Player seller = getPlayer(playerId);
+        JPanel sellPanel = new JPanel();
         sellPanel.setLayout(new GridLayout(3, 2));
         if (propertyField.isOwned() && propertyField.getOwner().ID == playerId) {
             // Open a new panel for the user to select a buyer and set a price
@@ -551,10 +553,63 @@ public class GUIWindow extends JFrame implements Runnable {
         DefaultComboBoxModel<Player> buyersModel = new DefaultComboBoxModel<>();
         JComboBox<Player> buyersList = new JComboBox<>(buyersModel);
         for (Player player : players) {
-            if (player.ID != seller.ID) {
-                buyersModel.addElement(player);
+            //if (player.ID != seller.ID) {
+            buyersModel.addElement(player);
+            //}
+        }
+    }
+        public void showSellPropertyPanel(Player player){
+            // Create the panel to display the properties that the player can sell
+            JPanel sellPanel = new JPanel();
+            sellPanel.setLayout(new BoxLayout(sellPanel, BoxLayout.Y_AXIS));
+
+            // Get the properties that the player owns
+            ArrayList<PropertyField> ownedProperties = new ArrayList<>();
+            for (Field field : fields) {
+                //if (field instanceof PropertyField && ((PropertyField) field).getOwner().ID == player.Id) {
+                ownedProperties.add((PropertyField) field);
+                //}
             }
-        }*/
+
+            // Add a checkbox for each property that the player owns
+            for (PropertyField property : ownedProperties) {
+                JCheckBox propertyCheckbox = new JCheckBox(property.toString()); //SHOULD call GUIField name
+                sellPanel.add(propertyCheckbox);
+            }
+
+            // Create a label and text field for the player to input the sale price
+            JLabel priceLabel = new JLabel("Enter price:");
+            JTextField priceField = new JTextField();
+            sellPanel.add(priceLabel);
+            sellPanel.add(priceField);
+
+            // Create a button for the player to confirm the sale
+            JButton confirmSaleButton = new JButton("Confirm Sale");
+            confirmSaleButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Get the selected properties and sale price
+                    ArrayList<PropertyField> selectedProperties = new ArrayList<>();
+                    for (Component component : sellPanel.getComponents()) {
+                        if (component instanceof JCheckBox && ((JCheckBox) component).isSelected()) {
+                            for (PropertyField property : ownedProperties) {
+                                if (property.toString().equals(((JCheckBox) component).getText())) { //If FIELD NAME
+                                    selectedProperties.add(property);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    int salePrice = Integer.parseInt(priceField.getText());
+
+                    // Sell the selected properties
+                    for (PropertyField property : selectedProperties) {
+                        sellProperty(player.ID, property, salePrice);
+                    }
+                }
+            });
+            sellPanel.add(confirmSaleButton);
+        }
     /*public void createSellButton(int propertyIndex) {
         Button sellButton = new Button("Sell");
         sellButton.addActionListener(new ActionListener() {
