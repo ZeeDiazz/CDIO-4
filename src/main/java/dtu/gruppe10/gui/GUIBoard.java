@@ -284,22 +284,20 @@ public class GUIBoard {
             while ((textLine = reader.readLine()) != null){
                 String[] texts = textLine.split(",");
                 String name = texts[0]; //Because it is the first one in fields.CSV
-                int price;
-                /*if(texts.length < 3) {
-                    price = Integer.valueOf(texts[3]); // it is number four in fields.CSV
-                }*/
 
-                for (GUIField field : fields) {
-                    if (field.ID == Integer.valueOf(texts[1])) {
-                        field.setFieldName(name);
-                        if(texts.length > 3) {
-                            price = Integer.valueOf(texts[3]);
-                            field.setFieldPrice(price);
-                        }
-                        break;
-                    }
+                int fieldIndex = Integer.valueOf(texts[1]);
+                GUIField field = fields[fieldIndex];
+                field.setFieldName(name);
+
+                int price;
+                if (texts.length > 3) {
+                    price = Integer.valueOf(texts[3]);
                 }
-                //counter++;
+                else {
+                    price = 0;
+                }
+
+                field.setFieldPrice(price);
             }
             reader.close();
         } catch (IOException e){

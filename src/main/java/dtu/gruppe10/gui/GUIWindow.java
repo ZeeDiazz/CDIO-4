@@ -96,18 +96,12 @@ public class GUIWindow extends JFrame implements Runnable {
                         //if the field is clicked
                         if (Board.fields[i].getFullPolygon(Board.outerCircle, Board.innerCircle, i, Board.fields.length).contains(e.getPoint())) {
                             // Display Field information
-                            //Show the panel in the middle of the board
-                            Point center = getCenterOfWindow();
-                            //If it is not null
-                            if(displayFieldInfo(Board.fields[i])!=null) {
-                                getGraphics().drawString(displayFieldInfo(Board.fields[i]), center.x, center.y);
-                            }
+                            displayFieldInfo(Board.fields[i]);
                         }
                     }
                 }
                 if (isVisible() && currentState == GUIState.PLAYING){
                     createSellButton();
-
                 }
             }
 
@@ -467,9 +461,27 @@ public class GUIWindow extends JFrame implements Runnable {
         setVisible(true);
         paint(getGraphics());
     }
-    private String displayFieldInfo(GUIField field) {
-        JOptionPane.showMessageDialog(this, "Field Name: " + field.fieldName + "\nPrice: " + field.fieldPrice, "Field Information", JOptionPane.INFORMATION_MESSAGE);
-        return null;
+    private void displayFieldInfo(GUIField field) {
+        StringBuilder messageBuilder = new StringBuilder();
+
+        switch (field.ID) {
+            case 0 -> messageBuilder.append("Pass to get $4000");
+            case 1 -> messageBuilder.append("For when you break the law");
+            case 2 -> messageBuilder.append("Go straight to jail");
+            case 5 -> messageBuilder.append("When landed on, draw a chance card");
+            case 6, 7 -> {
+                messageBuilder.append("Pay $");
+                messageBuilder.append(field.fieldPrice);
+                messageBuilder.append(" in taxes");
+            }
+            case 9 -> messageBuilder.append("Have a rest");
+            default -> {
+                messageBuilder.append("Price: ");
+                messageBuilder.append(field.fieldPrice);
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, messageBuilder.toString(), field.fieldName, JOptionPane.INFORMATION_MESSAGE);
     }
     private void createSellButton() {
             setVisible(true);
