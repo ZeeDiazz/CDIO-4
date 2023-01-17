@@ -10,16 +10,12 @@ import java.util.Random;
 
 public class ControllerChanceCard {
     private ChanceCard[] arrayOfCards;
-
-
-    private Queue<ChanceCard> chanceCards;
+    public Queue<ChanceCard> chanceCards;
     private static ControllerChanceCard instance;
 
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
     public ControllerChanceCard() {
-        this.chanceCards = new LinkedList<>();
-
         arrayOfCards = new ChanceCard[]{
                 // BetalingsKort:
                 new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
@@ -70,10 +66,11 @@ public class ControllerChanceCard {
 
 
         };
+        this.chanceCards = new LinkedList<>();
+        this.chanceCards = this.addToQueue();
     }
 
-
-    public Queue addToQueue() {
+    private Queue addToQueue() {
         Random rand = new Random();
 
         ArrayList list = new ArrayList<ChanceCard>();
