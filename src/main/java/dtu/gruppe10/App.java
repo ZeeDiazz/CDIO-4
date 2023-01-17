@@ -1,7 +1,6 @@
 package dtu.gruppe10;
 
 import dtu.gruppe10.ChanceCard.*;
-import dtu.gruppe10.board.Board;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.*;
 import dtu.gruppe10.dice.DiceRoll;
@@ -249,7 +248,7 @@ public class App {
 
 
                 } else if (card instanceof MoveToNearestCard) {
-                    PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToNearestCard) card).moveToNearestFerry(game.Board.getPlayerPosition(currentPlayer.ID)));
+                    PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToNearestCard) card).nearestIndex(game.Board.getPlayerPosition(currentPlayer.ID)));
                     movePlayer(window, currentPlayer, endPlayerMovement);
                     continue;
 

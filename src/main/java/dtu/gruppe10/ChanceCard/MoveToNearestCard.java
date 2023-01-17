@@ -3,27 +3,25 @@ package dtu.gruppe10.ChanceCard;
 import dtu.gruppe10.App;
 import dtu.gruppe10.board.fields.FieldType;
 
-public class MoveToNearestCard extends MoveCard {
-    int posistionIndex;
+import java.util.Arrays;
 
-    public MoveToNearestCard(int ID, int positionIndex) {
-        super(ID, positionIndex);
+public class MoveToNearestCard extends MoveCard {
+    protected int[] positions;
+
+    public MoveToNearestCard(int ID, int[] positionIndexes) {
+        super(ID, 0);
+
+        positions = Arrays.stream(positionIndexes).sorted().toArray();
     }
 
-    public int moveToNearestFerry(int currentIndex) {
-        for (int i = currentIndex; !(i == currentIndex - 1); i++) {
-            if (App.game.Board.getFieldAt(i).Type == FieldType.FERRY) {
-                return i;
-            }
+    public int nearestIndex(int currentIndex) {
+        int nearest = positions[positions.length - 1];
 
-            if (i == App.game.Board.FieldCount-1) {
-                i = 0;
+        for (int i = positions.length - 1; i >= 0; --i) {
+            if (positions[i] >= currentIndex) {
+                nearest = positions[i];
             }
         }
-
-        return -1;
-
+        return nearest;
     }
-
-
 }
