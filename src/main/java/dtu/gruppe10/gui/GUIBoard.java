@@ -296,15 +296,39 @@ public class GUIBoard {
                 else {
                     price = 0;
                 }
-                field.setFieldPrice(price);
-                int rent;
+                int house = 0;
+                if (texts.length > 4) {
+                    house = Integer.valueOf(texts[4]);
+                }
+                int rent01 = 0;
                 if (texts.length > 5) {
-                    rent = Integer.valueOf(texts[5]);
+                    rent01 = Integer.valueOf(texts[5]);
+                }
+                int rent02 = 0;
+                if (texts.length > 6) {
+                    rent02 = Integer.valueOf(texts[6]);
+                }
+                int rent03 = 0;
+                if (texts.length > 7) {
+                    rent03 = Integer.valueOf(texts[7]);
+                }
+                int rent04 = 0;
+                if (texts.length > 8) {
+                    rent04 = Integer.valueOf(texts[8]);
                 }
                 else {
-                    rent = 0;
+                    rent01 = 0;
+                    rent02 = 0;
+                    rent03 = 0;
+                    rent04 = 0;
+                    house = 0;
                 }
-                field.setFieldRent(rent);
+                field.setFieldPrice(price);
+                field.setFieldRent02(house);
+                field.setFieldRent01(rent01);
+                field.setFieldRent02(rent02);
+                field.setFieldRent02(rent03);
+                field.setFieldRent02(rent04);
             }
             reader.close();
         } catch (IOException e){
