@@ -7,7 +7,6 @@ Oprettelse af Maven projekt i IntelliJ
 For at oprette et nyt Maven projekt i IntelliJ skal man første lave et nyt projekt. Dette kan gøres fra topmenuen, og File -> New -> Project. Herefter kan man vælge Maven Archetype under “Generators”, og give sit projekt et navn.
 
 
-JUnit
 JUnit er blevet brugt til at teste vores applikation.
 Måden gruppen har hentet JUnit har blot været ved at tilføje JUnit i IntelliJ’s bibliotek:
 Inde i IntelliJ trykkes der blot på File -> Project Structure-> Libraries.
