@@ -333,7 +333,7 @@ public class GUIBoard {
                 GUIField field = fields[fieldIndex];
                 field.setFieldName(name);
 
-                int price = 0;
+                /*int price = 0;
                 int house = 0;
                 int rent01 = 0;
                 int rent02 = 0;
@@ -362,9 +362,9 @@ public class GUIBoard {
                             rent04 = Integer.valueOf(texts[i]);
                             break;
                     }
-                }
+                }*/
 
-                /*int price = 0;
+                int price = 0;
                 if (texts.length > 3) {
                     price = Integer.valueOf(texts[3]);
                 }
@@ -395,7 +395,7 @@ public class GUIBoard {
                     rent03 = 0;
                     rent04 = 0;
                     house = 0;
-                }*/
+                }
                 field.setFieldPrice(price);
                 field.setFieldRent02(house);
                 field.setFieldRent01(rent01);
