@@ -4,6 +4,7 @@ import dtu.gruppe10.ChanceCard.ChanceCard;
 import dtu.gruppe10.Game;
 import dtu.gruppe10.Player;
 import dtu.gruppe10.board.Board;
+import dtu.gruppe10.board.MovementType;
 import dtu.gruppe10.board.PlayerMovement;
 import dtu.gruppe10.board.fields.Field;
 import dtu.gruppe10.board.fields.PropertyField;
@@ -425,7 +426,7 @@ public class GUIWindow extends JFrame implements Runnable {
 
     public void movePlayer(int playerId, PlayerMovement move, int stepsPerField, int fieldMilliTime) {
         int[] fieldIndexes = move.getFieldIndexes(40, true, false);
-        float moveAmount = 1f / stepsPerField;
+        float moveAmount = 1f / stepsPerField * (move.Type == MovementType.BACKWARD ? -1 : 1);
         int waitTime = fieldMilliTime / stepsPerField;
 
         for (int fieldIndex : fieldIndexes) {
