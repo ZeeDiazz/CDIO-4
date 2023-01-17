@@ -2,7 +2,6 @@ package dtu.gruppe10.gui;
 
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.Random;
 public class GUIBoard {
     private static final float playerPathPercentSize = 0.95f;
     private static final float splitCirclePercentSize = 0.9f;
-    private static final float prisonCirclePercentSize = 0.8f;
+    private static final float specialCirclePercentSize = 0.8f;
     private static final float innerCirclePercentSize = 0.7f;
     private static final float ownedCirclePercentSize = 0.65f;
     private static final float diceCirclePercentSize = 0.4f;
@@ -20,6 +19,9 @@ public class GUIBoard {
 
     protected static Color boardColor = new Color(114, 24, 24);
     protected static Color fieldBaseColor = new Color(108, 159, 159);
+    protected static Color houseColor = new Color(154, 246, 102);
+    protected static Color hotelColor = new Color(246, 61, 61);
+    private final int maxDiscreteSteps = 1000;
 
     protected Random rng;
 
@@ -30,7 +32,7 @@ public class GUIBoard {
     protected GUICircle ownedCircle;
     protected GUICircle dieDrawCircle;
     protected GUICircle playerPathCircle;
-    protected GUICircle prisonCircle;
+    protected GUICircle specialCircle;
     protected int playerRadius;
     protected int fieldCount;
     protected GUIField[] fields;
@@ -72,7 +74,7 @@ public class GUIBoard {
 
         this.playerRadius = (int)(boardRadius * playerPercentSize);
 
-        prisonCircle = outerCircle.getScaledCircle(prisonCirclePercentSize);
+        specialCircle = outerCircle.getScaledCircle(specialCirclePercentSize);
     }
 
     public int getRadius() {
@@ -117,6 +119,10 @@ public class GUIBoard {
             paintPolygon(g, coloredPolygon, fieldColor);
 
             g.setColor(Color.BLACK);
+
+            if (houseCount[i] > 0) {
+                drawHouses(g, i, houseCount[i]);
+            }
 
 
             // Draw the lines separating the fields
@@ -177,11 +183,45 @@ public class GUIBoard {
         }
     }
 
-    protected float[] getDrawOffsets(float position, int playerCount) {
-        float[] drawPositions = new float[playerCount];
-        float offset = 0.2f * (playerCount / 2);
+    protected void drawHouses(Graphics g, int fieldIndex, int houseCount) {
+        if (houseCount == 5) {
+            // Draw hotel
+            Point hotelPoint = specialCircle.getSinglePoint(fieldIndex * 2 + 1, 80);
 
-        if (playerCount % 2 == 0) {
+            int hotelRadius = playerRadius * 2;
+            int hotelOutlineRadius = hotelRadius + (hotelRadius / 10) + 1;
+
+            GUICircle hotelOutline = new GUICircle(hotelPoint, hotelOutlineRadius);
+            hotelOutline.draw(g, Color.BLACK, true);
+
+            GUICircle hotelCircle = new GUICircle(hotelPoint, hotelRadius);
+            hotelCircle.draw(g, hotelColor, true);
+        }
+        else {
+            float[] drawOffsets = getDrawOffsets((float)fieldIndex, houseCount);
+
+            int houseRadius = (int)(playerRadius * 1.2f);
+            int houseOutlineRadius = houseRadius + (houseRadius / 10) + 1;
+
+            for (float position : drawOffsets) {
+                int drawIndex = (int)(position * maxDiscreteSteps + maxDiscreteSteps / 2);
+
+                Point housePoint = specialCircle.getSinglePoint(drawIndex, fieldCount * maxDiscreteSteps);
+
+                GUICircle houseOutline = new GUICircle(housePoint, houseOutlineRadius);
+                houseOutline.draw(g, Color.BLACK, true);
+
+                GUICircle hotelCircle = new GUICircle(housePoint, houseRadius);
+                hotelCircle.draw(g, houseColor, true);
+            }
+        }
+    }
+
+    protected float[] getDrawOffsets(float position, int count) {
+        float[] drawPositions = new float[count];
+        float offset = 0.2f * (count / 2);
+
+        if (count % 2 == 0) {
             offset -= 0.1f;
         }
 
@@ -196,7 +236,7 @@ public class GUIBoard {
         int maxDiscreteSteps = 1000;
         int drawIndex = (int)(position * maxDiscreteSteps + maxDiscreteSteps / 2);
 
-        Point playerPoint = prisonCircle.getSinglePoint(drawIndex, fieldCount * maxDiscreteSteps);
+        Point playerPoint = specialCircle.getSinglePoint(drawIndex, fieldCount * maxDiscreteSteps);
 
         drawPlayer(g, player, playerPoint);
     }
@@ -274,6 +314,10 @@ public class GUIBoard {
 
     public void addHouse(int fieldIndex) {
         houseCount[fieldIndex]++;
+    }
+
+    public void removeHouse(int fieldIndex) {
+        houseCount[fieldIndex]--;
     }
 
     private void displayFieldData(){
