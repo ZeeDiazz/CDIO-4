@@ -236,7 +236,7 @@ public class App {
                 else {
                     // Buy property
                     System.out.println("Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
-                    int buyPropertyAnswer = JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?","Buy property",0);
+                    int buyPropertyAnswer = JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?","Buy property",JOptionPane.OK_OPTION);
 
                     boolean wantsToBuy = buyPropertyAnswer == 0;
 
