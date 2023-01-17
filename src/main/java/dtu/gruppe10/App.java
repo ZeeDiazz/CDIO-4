@@ -210,21 +210,22 @@ public class App {
 
             if (endField instanceof ChanceField chanceField) {
                 ChanceCard chanceCard = chanceField.draw();
-
                 if (chanceCard instanceof BankMoneyCard) {
                     if (((BankMoneyCard) chanceCard).getAmount() >= 0) {
                         currentPlayer.Account.add(((BankMoneyCard) chanceCard).getAmount());
                     } else {
-                        currentPlayer.Account.subtract(((BankMoneyCard) chanceCard).getAmount());
+
+
+                        currentPlayer.Account.subtract(((BankMoneyCard) chanceCard).getAmount() * -1);
                     }
                 } else if (chanceCard instanceof PerHouseMoneyCard) {
-                    currentPlayer.Account.subtract(((PerHouseMoneyCard) chanceCard).getAmount(currentPlayer));
+                    updatePlayerBalance(window, currentPlayer, ((PerHouseMoneyCard) chanceCard).getAmount(currentPlayer));
                 } else if (chanceCard instanceof OtherPlayersMoneyCard) {
-                    currentPlayer.Account.add(((OtherPlayersMoneyCard) chanceCard).calculateReceivingAmount());
+                    updatePlayerBalance(window, currentPlayer, ((OtherPlayersMoneyCard) chanceCard).calculateReceivingAmount());
 
                     for (Player player : players) {
                         if (!(player == currentPlayer)) {
-                            player.Account.subtract(((OtherPlayersMoneyCard) chanceCard).calculatePayingAmount());
+                            updatePlayerBalance(window, player, ((OtherPlayersMoneyCard) chanceCard).calculatePayingAmount());
                         }
                     }
                 } else if (chanceCard instanceof MoveToCard) {
@@ -249,7 +250,7 @@ public class App {
                 } else if (chanceCard instanceof GetOutOfJailFreeCard) {
                     ((GetOutOfJailFreeCard) chanceCard).addToInventory(currentPlayer.jailCards);
                 }
-
+                continue;
             }
 
             if (endField instanceof PropertyField propertyField) {
