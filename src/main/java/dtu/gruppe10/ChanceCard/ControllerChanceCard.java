@@ -1,12 +1,7 @@
 package dtu.gruppe10.ChanceCard;
 
 
-import dtu.gruppe10.Player;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 public class ControllerChanceCard {
     private ChanceCard[] arrayOfCards;
@@ -18,83 +13,66 @@ public class ControllerChanceCard {
     public ControllerChanceCard() {
         arrayOfCards = new ChanceCard[]{
                 // BetalingsKort:
-                new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
-                new PerHouseMoneyCard(2, 800, 2300), // 800 kr pr hus, 2300 kr pr hotel
+                new PerHouseMoneyCard(0, 500, 2000), // 500 pr hus 2000kr pr hotel
+                new PerHouseMoneyCard(1, 800, 2300), // 800 kr pr hus, 2300 kr pr hotel
 
-                new BankMoneyCard(3, -1000), // Betal 1000 kroner i bøde
-                new BankMoneyCard(4, -300), // Betal for vognvask og smøring kr 300
-                new BankMoneyCard(5, -200), // Betal kr 200 for levering af 2 kasser øl
+                new BankMoneyCard(2, -1000), // Betal 1000 kroner i bøde
+                new BankMoneyCard(3, -300), // Betal for vognvask og smøring kr 300
+                new BankMoneyCard(4, -200), // Betal kr 200 for levering af 2 kasser øl
+                new BankMoneyCard(5, -3000), // Betal 3000 for reparation af deres vogn
                 new BankMoneyCard(6, -3000), // Betal 3000 for reparation af deres vogn
-                new BankMoneyCard(7, -3000), // Betal 3000 for reparation af deres vogn
-                new BankMoneyCard(8, -1000), // De har købt 4 nye dæk til Deres vogn, betal kr 1000
-                new BankMoneyCard(9, -200), // parkeringsbøde 200kr
-                new BankMoneyCard(10, -1000), // bilforskikring 1000
-                new BankMoneyCard(11, -200),// 200kr told
-                new BankMoneyCard(12, -2000), // 2000kr tandlæge
-                new BankMoneyCard(13, 500), // modtag 500kr
-                new BankMoneyCard(14, 500),// modtag 500kr
+                new BankMoneyCard(7, -1000), // De har købt 4 nye dæk til Deres vogn, betal kr 1000
+                new BankMoneyCard(8, -200), // parkeringsbøde 200kr
+                new BankMoneyCard(9, -1000), // bilforskikring 1000
+                new BankMoneyCard(10, -200),// 200kr told
+                new BankMoneyCard(11, -2000), // 2000kr tandlæge
+                new BankMoneyCard(12, 500), // modtag 500kr
+                new BankMoneyCard(13, 500),// modtag 500kr
+                new BankMoneyCard(14, 1000), // modtag 1000kr
                 new BankMoneyCard(15, 1000), // modtag 1000kr
                 new BankMoneyCard(16, 1000), // modtag 1000kr
-                new BankMoneyCard(17, 1000), // modtag 1000kr
-                new BankMoneyCard(18, 200), // modtag 200
-                new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
+                new BankMoneyCard(17, 200), // modtag 200
+                // new BankMoneyCard(24, 40000), // modtag 40.000 hvis netWorth<15.000kr
 
-                new OtherPlayersMoneyCard(20, 200), // 200 fra andre spillere
-                new OtherPlayersMoneyCard(21, 500), // modtag 500 fra hver spiller
+                new OtherPlayersMoneyCard(25, 200), // 200 fra andre spillere
+                new OtherPlayersMoneyCard(27, 500), // modtag 500 fra hver spiller
 
                 // BevægelsesKort:
-                new MoveToCard(29, 0), // start
-                new MoveToCard(30, 0), // start
-                new MoveToCard(41, 20), // strandvejen
-                new MoveToCard(42, 40), // rådhudspladsen
-                new MoveToCard(34, 12), // frederiksberg alle
-                new MoveToCard(37, 16),// mols-linjien
-                new MoveToCard(38, 33),// hvimmeskaftet
-                new MoveToCard(39, 25), // grønningen
+                new MoveToCard(28, 0), // start
+                new MoveToCard(39, 0), // start
+                new MoveToCard(40, 19), // strandvejen
+                new MoveToCard(41, 39), // rådhudspladsen
+                new MoveToCard(33, 11), // frederiksberg alle
+                new MoveToCard(36, 15),// mols-linjien
+                new MoveToCard(38, 32),// hvimmeskaftet
+                new MoveToCard(37, 24), // grønningen
 
 
-                new MoveByCard(31, 3),// tre felter frem
+                new MoveByCard(30, 3),// tre felter frem
+                new MoveByCard(31, -3),// tre felter tilbage
                 new MoveByCard(32, -3),// tre felter tilbage
-                new MoveByCard(33, -3),// tre felter tilbage
 
 
+                new MoveToNearestCard(34, new int[] {5, 15, 25, 35}), // færge
                 new MoveToNearestCard(35, new int[] {5, 15, 25, 35}), // færge
-                new MoveToNearestCard(36, new int[] {5, 15, 25, 35}), // færge
-                new MoveToNearestCard(40, new int[] {5, 15, 25, 35}), // færge
+                new MoveToNearestCard(39, new int[] {5, 15, 25, 35}), // færge
 
-                new GetOutOfJailFreeCard(43), // ud af fængsel
+                // new GetOutOfJailFreeCard(42), // ud af fængsel
 
-                new GoToJailCard(44), // fængsel
-                new GoToJailCard(45) // fængsel
-
+                new GoToJailCard(43), // fængsel
+                new GoToJailCard(44) // fængsel
         };
         this.chanceCards = new LinkedList<>();
-        this.chanceCards = this.addToQueue();
-    }
 
-    private Queue addToQueue() {
         Random rand = new Random();
+        ArrayList<ChanceCard> list = new ArrayList<>(Arrays.asList(this.arrayOfCards));
 
-        ArrayList list = new ArrayList<ChanceCard>();
-
-        for (ChanceCard card : this.arrayOfCards) {
-            list.add(card);
-        }
-
-        int i = 0;
         while (list.size() > 0) {
+            int randomIndex = rand.nextInt(list.size());
 
-
-            int randomInt = rand.nextInt(arrayOfCards.length - i);
-            int helper = randomInt;
-
-            this.chanceCards.add((ChanceCard) list.get(helper));
-            list.remove(helper);
-            i = i + 1;
+            this.chanceCards.add(list.get(randomIndex));
+            list.remove(randomIndex);
         }
-
-        return this.chanceCards;
-
     }
 
     public ChanceCard draw() {

@@ -579,7 +579,7 @@ public class GUIWindow extends JFrame implements Runnable {
                     descriptions.add(textLine);
                 }
 
-                chanceMessage = descriptions.get(card.ID - 1);
+                chanceMessage = descriptions.get(card.ID);
             }
             catch (IOException ignored) {
                 chanceMessage = "You got a chance card";

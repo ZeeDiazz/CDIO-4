@@ -210,6 +210,7 @@ public class App {
             if (endField instanceof ChanceField chanceField) {
                 ChanceCard card = chanceField.draw();
                 window.displayChanceCard(card);
+                System.out.println("Drew card: " + card.ID);
 
                 if (card instanceof MoneyCard moneyCard) {
                     int amount = moneyCard.getAmount();
@@ -217,7 +218,7 @@ public class App {
                         updatePlayerBalance(window, currentPlayer, amount);
                     }
                     else if (card instanceof OtherPlayersMoneyCard otherPlayersMoneyCard) {
-                        int receiveAmount = otherPlayersMoneyCard.calculateReceivingAmount(game.players.size());
+                        int receiveAmount = otherPlayersMoneyCard.calculateReceivingAmount(game.players.size() - 1);
                         for (Player p : game.players) {
                             if (p.equals(currentPlayer)) {
                                 continue;
@@ -235,21 +236,34 @@ public class App {
                         setInJail(window, jail, currentPlayer);
                         move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
                         movePlayer(window, currentPlayer, move);
+
+                        game.nextTurn();
+                        continue;
                     }
                     else if (card instanceof GetOutOfJailFreeCard) {
                         // TODO
                     }
                 } else if (card instanceof MoveCard) {
                     if (card instanceof MoveByCard moveByCard) {
-                        move = game.Board.generateForwardMove(currentPlayer.ID, moveByCard.getAmount());
+                        if (moveByCard.getAmount() < 0) {
+                            move = game.Board.generateBackwardMove(currentPlayer.ID, moveByCard.getAmount());
+                        }
+                        else {
+                            move = game.Board.generateForwardMove(currentPlayer.ID, moveByCard.getAmount());
+                        }
                     }
                     else if (card instanceof MoveToCard moveToCard) {
-                        move = game.Board.generateDirectMove(currentPlayer.ID, moveToCard.getPositionIndex());
+                        move = game.Board.generateForwardMoveToField(currentPlayer.ID, moveToCard.getPositionIndex());
                     }
                     else if (card instanceof MoveToNearestCard moveToNearestCard) {
                         move = game.Board.generateDirectMove(currentPlayer.ID, moveToNearestCard.nearestIndex(game.Board.getPlayerPosition(currentPlayer.ID)));
                     }
                     movePlayer(window, currentPlayer, move);
+
+                    if (move.PassedStart) {
+                        updatePlayerBalance(window, currentPlayer, 4000);
+                    }
+                    endField = game.Board.getFieldAt(move.End);
                 } else {
                     // ???
                 }

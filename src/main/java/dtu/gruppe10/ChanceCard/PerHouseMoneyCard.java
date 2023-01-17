@@ -23,7 +23,7 @@ public class PerHouseMoneyCard extends MoneyCard {
             if (!(field instanceof StreetField street)) {
                 continue;
             }
-            if (!street.getOwner().equals(player)) {
+            if (street.isOwned() && !street.getOwner().equals(player)) {
                 continue;
             }
 
