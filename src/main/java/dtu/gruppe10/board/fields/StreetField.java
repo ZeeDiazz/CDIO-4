@@ -46,13 +46,16 @@ public class StreetField extends PropertyField {
     // Ellers er denne metode til tjekke om man kan bygge et hus på et felt
     public boolean eligibleToBuildHouse() {
         // Hvis ejerens pengebeholdning skal tages i betragtning
-        if (this.owner.Account.getBalance() > housePrice) {
+        if (this.houseCount < 5 && this.owner.Account.getBalance() >= housePrice) {
             return hasEnoughHousesOnOtherFieldsToBuildOneHouse() && ownsAllInSet();
+        } else {
+            if (this.owner.Account.getBalance() >= housePrice * 5) {
+                return hasEnoughHousesOnOtherFieldsToBuildOneHouse() && ownsAllInSet();
+            }
         }
-
         return false;
-    }
 
+    }
 
     // Er ikke sikker på om denne klasse skal tilføje penge fra spilleren
     public void sellOneHouse() {
