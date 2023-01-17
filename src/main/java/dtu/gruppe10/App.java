@@ -62,7 +62,7 @@ public class App {
                 playerName = playerNameAnswer.getAnswer();
             }
             else {
-                playerName = "CPU #" + cpuNum;
+                playerName = "CPU " + cpuNum;
                 cpuNum++;
             }
 

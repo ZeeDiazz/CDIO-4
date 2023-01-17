@@ -117,10 +117,6 @@ public class GUIBoard {
             paintPolygon(g, coloredPolygon, fieldColor);
 
             g.setColor(Color.BLACK);
-            //display field info
-            g.drawString(field.fieldName, outerPoints[i].x, outerPoints[i].y);
-            // Draw the price of the field
-            g.drawString(Integer.toString(field.fieldPrice), outerPoints[i].x, outerPoints[i].y + 10);
 
 
             // Draw the lines separating the fields
