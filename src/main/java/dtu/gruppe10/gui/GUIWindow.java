@@ -15,6 +15,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static dtu.gruppe10.App.players;
+
 public class GUIWindow extends JFrame implements Runnable {
     public final GUIBoard Board;
     public Board board;
@@ -544,7 +546,7 @@ public class GUIWindow extends JFrame implements Runnable {
         sellPanel.add(buyerLabel);
         DefaultComboBoxModel<Player> buyersModel = new DefaultComboBoxModel<>();
         JComboBox<Player> buyersList = new JComboBox<>(buyersModel);
-        for (Player player : window.players) {
+        for (Player player : players) {
             if (player.ID != seller.ID) {
                 buyersModel.addElement(player);
             }
