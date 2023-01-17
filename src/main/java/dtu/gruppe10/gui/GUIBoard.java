@@ -289,15 +289,12 @@ public class GUIBoard {
                 GUIField field = fields[fieldIndex];
                 field.setFieldName(name);
 
-                int price;
+                int price = 0;
                 if (texts.length > 3) {
                     price = Integer.valueOf(texts[3]);
                 }
-                else {
-                    price = 0;
-                }
                 int house = 0;
-                if (texts.length > 4) {
+                if (texts.length > 4 && !texts[4].equals("")) {
                     house = Integer.valueOf(texts[4]);
                 }
                 int rent01 = 0;
@@ -317,6 +314,7 @@ public class GUIBoard {
                     rent04 = Integer.valueOf(texts[8]);
                 }
                 else {
+                    price = 0;
                     rent01 = 0;
                     rent02 = 0;
                     rent03 = 0;

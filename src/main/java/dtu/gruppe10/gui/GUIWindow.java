@@ -476,10 +476,24 @@ public class GUIWindow extends JFrame implements Runnable {
             }
             case 9 -> messageBuilder.append("Have a rest");
             default -> {
-                messageBuilder.append("Price: ");
+                messageBuilder.append(" Price: ");
                 messageBuilder.append(field.fieldPrice);
-                messageBuilder.append("Rent: ");
-                //messageBuilder.append(field.);
+                messageBuilder.append("\n");
+                messageBuilder.append(" House Price: ");
+                messageBuilder.append(field.fieldHousePrice);
+                messageBuilder.append("\n");
+                messageBuilder.append(" Rent 0: ");
+                messageBuilder.append(field.fieldRent01);
+
+                messageBuilder.append(", Rent 1: ");
+                messageBuilder.append(field.fieldRent02);
+
+                messageBuilder.append("\n");
+                messageBuilder.append(" Rent 2: ");
+                messageBuilder.append(field.fieldRent03);
+
+                messageBuilder.append(", Rent 3: ");
+                messageBuilder.append(field.fieldRent04);
             }
         }
 
