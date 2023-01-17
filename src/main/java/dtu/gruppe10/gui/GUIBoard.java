@@ -165,21 +165,7 @@ public class GUIBoard {
             playersInPositions.get(position).add(players[i]);
         }
 
-        float[] imprisonedDrawPositions = new float[imprisoned.size()];
-        if (imprisoned.size() == 1) {
-            imprisonedDrawPositions[0] = prisonIndex;
-        }
-        else if (imprisoned.size() == 2) {
-            imprisonedDrawPositions[0] = prisonIndex - 0.15f;
-            imprisonedDrawPositions[1] = prisonIndex + 0.15f;
-        }
-        else if (imprisoned.size() == 3) {
-            imprisonedDrawPositions[1] = prisonIndex;
-
-            imprisonedDrawPositions[0] = prisonIndex - 0.3f;
-            imprisonedDrawPositions[2] = prisonIndex + 0.3f;
-        }
-
+        float[] imprisonedDrawPositions = getDrawOffsets(prisonIndex, imprisoned.size());
         for (int i = 0; i < imprisoned.size(); ++i) {
             drawPlayerInPrison(g, imprisoned.get(i), imprisonedDrawPositions[i]);
         }
@@ -187,33 +173,27 @@ public class GUIBoard {
         for (float position : playersInPositions.keySet()) {
             ArrayList<GUIPlayer> toDraw = playersInPositions.get(position);
 
-            float[] drawPositions;
-            if (toDraw.size() == 1) {
-                drawPositions = new float[] {position};
-                drawPlayer(g, toDraw.get(0), position);
-            }
-            else if (toDraw.size() == 2) {
-                drawPositions = new float[2];
-
-                drawPositions[0] = position - 0.15f;
-                drawPositions[1] = position + 0.15f;
-            }
-            else if (toDraw.size() == 3) {
-                drawPositions = new float[3];
-                drawPositions[1] = position;
-
-                drawPositions[0] = position - 0.3f;
-                drawPositions[2] = position + 0.3f;
-            }
-            else {
-                drawPositions = new float[0];
-                // ??
-            }
+            float[] drawPositions = getDrawOffsets(position, toDraw.size());
 
             for (int i = 0; i < drawPositions.length; ++i) {
                 drawPlayer(g, toDraw.get(i), drawPositions[i]);
             }
         }
+    }
+
+    protected float[] getDrawOffsets(float position, int playerCount) {
+        float[] drawPositions = new float[playerCount];
+        float offset = 0.2f * (playerCount / 2);
+
+        if (playerCount % 2 == 0) {
+            offset -= 0.1f;
+        }
+
+        for (int i = 0; i < drawPositions.length; ++i) {
+            drawPositions[i] = position + offset;
+            offset -= 0.2f;
+        }
+        return drawPositions;
     }
 
     public void drawPlayerInPrison(Graphics g, GUIPlayer player, float position) {
