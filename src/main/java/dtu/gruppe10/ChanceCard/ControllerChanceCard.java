@@ -1,11 +1,7 @@
 package dtu.gruppe10.ChanceCard;
 
 
-import dtu.gruppe10.Account;
-import dtu.gruppe10.Jail;
 import dtu.gruppe10.Player;
-import dtu.gruppe10.board.Board;
-import dtu.gruppe10.board.PlayerMovement;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,18 +9,18 @@ import java.util.Queue;
 import java.util.Random;
 
 public class ControllerChanceCard {
-    private ChanceCard[] chanceCards;
+    private ChanceCard[] arrayOfCards;
 
 
-    private Queue<ChanceCard> chanceCards1;
+    private Queue<ChanceCard> chanceCards;
     private static ControllerChanceCard instance;
 
     // TODO: -1 på alle positioner
     // TODO: Chancekort med Balance
     public ControllerChanceCard() {
-        this.chanceCards1 = new LinkedList<>();
+        this.chanceCards = new LinkedList<>();
 
-        chanceCards = new ChanceCard[]{
+        arrayOfCards = new ChanceCard[]{
                 // BetalingsKort:
                 new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
                 new PerHouseMoneyCard(2, 800, 2300), // 800 kr pr hus, 2300 kr pr hotel
@@ -47,7 +43,7 @@ public class ControllerChanceCard {
                 new BankMoneyCard(18, 200), // modtag 200
                 new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
 
-                new OtherPlayersMoneyCard(20, 200,200), // 200 fra andre spillere
+                new OtherPlayersMoneyCard(20, 200, 200), // 200 fra andre spillere
                 new OtherPlayersMoneyCard(21, 500, 500), // modtag 500 fra hver spiller
 
                 // BevægelsesKort:
@@ -82,45 +78,44 @@ public class ControllerChanceCard {
 
         ArrayList list = new ArrayList<ChanceCard>();
 
-        for (ChanceCard card : this.chanceCards) {
+        for (ChanceCard card : this.arrayOfCards) {
             list.add(card);
-
         }
 
-
+        int i = 0;
         while (list.size() > 0) {
 
-            int randomInt = rand.nextInt(chanceCards.length);
+
+            int randomInt = rand.nextInt(arrayOfCards.length - i);
             int helper = randomInt;
-            ;
-            this.chanceCards1.add((ChanceCard) list.get(helper));
 
-
+            this.chanceCards.add((ChanceCard) list.get(helper));
             list.remove(helper);
+            i = i + 1;
         }
 
-        return this.chanceCards1;
+        return this.chanceCards;
 
     }
 
     public ChanceCard draw() {
 
 
-        ChanceCard kort = chanceCards1.remove();
-        chanceCards1.add(kort);
+        ChanceCard kort = chanceCards.remove();
+        chanceCards.add(kort);
 
 
         Random rand = new Random();
 
 
-        int drawIndex = rand.nextInt(chanceCards.length);
+        int drawIndex = rand.nextInt(arrayOfCards.length);
 
-        ChanceCard drawnCard = chanceCards[drawIndex];
+        ChanceCard drawnCard = arrayOfCards[drawIndex];
         // move the drawn card to the last position in the array
-        for (int i = drawIndex; i < chanceCards.length - 1; i++) {
-            chanceCards[i] = chanceCards[i + 1];
+        for (int i = drawIndex; i < arrayOfCards.length - 1; i++) {
+            arrayOfCards[i] = arrayOfCards[i + 1];
         }
-        chanceCards[chanceCards.length - 1] = null;
+        arrayOfCards[arrayOfCards.length - 1] = null;
         return drawnCard;
     }
 
@@ -154,17 +149,16 @@ public class ControllerChanceCard {
 
         }
 
-
     }
 
     public ChanceCard drawFirstCard() {
         //get the first card
-        ChanceCard drawnCard = chanceCards[0];
+        ChanceCard drawnCard = arrayOfCards[0];
         // move all the other cards one position forward
-        for (int i = 0; i < chanceCards.length - 1; i++) {
-            chanceCards[i] = chanceCards[i + 1];
+        for (int i = 0; i < arrayOfCards.length - 1; i++) {
+            arrayOfCards[i] = arrayOfCards[i + 1];
         }
-        chanceCards[chanceCards.length - 1] = null;
+        arrayOfCards[arrayOfCards.length - 1] = null;
         return drawnCard;
     }
 
@@ -184,6 +178,7 @@ public class ControllerChanceCard {
         }
         return instance;
     }
+
 
 
     /*The draw method is responsible for drawing a chance card from the array of chance
