@@ -234,14 +234,19 @@ public class App {
                     }
                 }
                 else {
-                    // Buy property
-                    System.out.println("Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
-                    int buyPropertyAnswer = JOptionPane.showConfirmDialog(null,"Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?","Buy property",JOptionPane.OK_OPTION);
-
-                    boolean wantsToBuy = buyPropertyAnswer == 0;
-
-                    if (wantsToBuy) {
+                    if(currentPlayer instanceof AIPlayer){
+                        // Buy property AI
                         buyProperty(window, currentPlayer, propertyField, move.End);
+                    } else {
+                        // Buy property
+                        System.out.println("Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.ID + " for " + propertyField.Price + "? (Enter 1 for Yes, 0 for No)");
+                        int buyPropertyAnswer = JOptionPane.showConfirmDialog(null, "Player " + (currentPlayer.ID + 1) + ", do you want to buy " + propertyField.Type.name() + " for " + propertyField.Price + "?", "Buy property", JOptionPane.OK_OPTION);
+
+                        boolean wantsToBuy = buyPropertyAnswer == 0;
+
+                        if (wantsToBuy) {
+                            buyProperty(window, currentPlayer, propertyField, move.End);
+                        }
                     }
                 }
             }
