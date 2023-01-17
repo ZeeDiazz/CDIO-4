@@ -7,12 +7,11 @@ import dtu.gruppe10.Player;
 import java.util.Queue;
 
 public class ChanceField extends Field {
-    private ControllerChanceCard controller;
+    private static ControllerChanceCard controller;
 
     public ChanceField(int id) {
         super(id, FieldType.CHANCE);
         this.controller = new ControllerChanceCard();
-
     }
 
     public ChanceCard draw() {

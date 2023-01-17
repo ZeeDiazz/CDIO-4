@@ -211,35 +211,35 @@ public class App {
             if (endField instanceof ChanceField chanceField) {
                 ChanceCard chanceCard = chanceField.draw();
                 if (chanceCard instanceof BankMoneyCard) {
-                    if (((BankMoneyCard) chanceCard).getAmount() >= 0) {
-                        currentPlayer.Account.add(((BankMoneyCard) chanceCard).getAmount());
-                    } else {
+                    updatePlayerBalance(window, currentPlayer, ((BankMoneyCard) chanceCard).getAmount());
+                    System.out.println("Player " + currentPlayer.ID + " has recieved " + ((BankMoneyCard) chanceCard).getAmount() + " money.");
 
 
-                        currentPlayer.Account.subtract(((BankMoneyCard) chanceCard).getAmount() * -1);
-                    }
                 } else if (chanceCard instanceof PerHouseMoneyCard) {
                     updatePlayerBalance(window, currentPlayer, ((PerHouseMoneyCard) chanceCard).getAmount(currentPlayer));
                 } else if (chanceCard instanceof OtherPlayersMoneyCard) {
-                    updatePlayerBalance(window, currentPlayer, ((OtherPlayersMoneyCard) chanceCard).calculateReceivingAmount());
+                    updatePlayerBalance(window, currentPlayer, ((OtherPlayersMoneyCard) chanceCard).calculateReceivingAmount(game));
 
                     for (Player player : players) {
                         if (!(player == currentPlayer)) {
-                            updatePlayerBalance(window, player, ((OtherPlayersMoneyCard) chanceCard).calculatePayingAmount());
+                            updatePlayerBalance(window, player, -((OtherPlayersMoneyCard) chanceCard).calculatePayingAmount());
                         }
                     }
                 } else if (chanceCard instanceof MoveToCard) {
 
                     PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToCard) chanceCard).getPositionIndex());
                     movePlayer(window, currentPlayer, endPlayerMovement);
+                    continue;
 
                 } else if (chanceCard instanceof MoveToNearestCard) {
                     PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToNearestCard) chanceCard).moveToNearestFerry(game.Board.getPlayerPosition(currentPlayer.ID)));
                     movePlayer(window, currentPlayer, endPlayerMovement);
+                    continue;
 
                 } else if (chanceCard instanceof MoveCard) {
                     PlayerMovement endPlayerMovement = game.Board.generateForwardMove(currentPlayer.ID, ((MoveCard) chanceCard).getMoveAmount());
                     movePlayer(window, currentPlayer, endPlayerMovement);
+                    continue;
 
                 } else if (chanceCard instanceof GoToJailCard) {
 
@@ -250,7 +250,6 @@ public class App {
                 } else if (chanceCard instanceof GetOutOfJailFreeCard) {
                     ((GetOutOfJailFreeCard) chanceCard).addToInventory(currentPlayer.jailCards);
                 }
-                continue;
             }
 
             if (endField instanceof PropertyField propertyField) {

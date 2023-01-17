@@ -18,7 +18,7 @@ public class ControllerChanceCard {
     public ControllerChanceCard() {
         arrayOfCards = new ChanceCard[]{
                 // BetalingsKort:
-                new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
+              /*  new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
                 new PerHouseMoneyCard(2, 800, 2300), // 800 kr pr hus, 2300 kr pr hotel
 
                 new BankMoneyCard(3, -1000), // Betal 1000 kroner i bøde
@@ -41,11 +41,13 @@ public class ControllerChanceCard {
 
                 new OtherPlayersMoneyCard(20, 200, 200), // 200 fra andre spillere
                 new OtherPlayersMoneyCard(21, 500, 500), // modtag 500 fra hver spiller
+*/
+
 
                 // BevægelsesKort:
                 new MoveToCard(29, 1), // start
                 new MoveToCard(30, 1), // start
-
+/*
                 new MoveCard(31, 3),// tre felter frem
                 new MoveCard(32, -3),// tre felter tilbage
                 new MoveCard(33, -3),// tre felter tilbage
@@ -63,6 +65,8 @@ public class ControllerChanceCard {
                 new GetOutOfJailFreeCard(43), // ud af fængsel
                 new GoToJailCard(44), // fængsel
                 new GoToJailCard(45) // fængsel
+
+*/
 
 
         };
