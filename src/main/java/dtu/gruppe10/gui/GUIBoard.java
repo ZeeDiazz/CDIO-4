@@ -333,37 +333,6 @@ public class GUIBoard {
                 GUIField field = fields[fieldIndex];
                 field.setFieldName(name);
 
-                /*int price = 0;
-                int house = 0;
-                int rent01 = 0;
-                int rent02 = 0;
-                int rent03 = 0;
-                int rent04 = 0;
-                int rent05 = 0;
-                //Works maybe
-                for (int i = 3; i < texts.length; i++) {
-                    switch (i) {
-                        case 3:
-                            price = Integer.valueOf(texts[i]);
-                            break;
-                        case 4:
-                            house = Integer.valueOf(texts[i]);
-                            break;
-                        case 5:
-                            rent01 = Integer.valueOf(texts[i]);
-                            break;
-                        case 6:
-                            rent02 = Integer.valueOf(texts[i]);
-                            break;
-                        case 7:
-                            rent03 = Integer.valueOf(texts[i]);
-                            break;
-                        case 8:
-                            rent04 = Integer.valueOf(texts[i]);
-                            break;
-                    }
-                }*/
-
                 int price = 0;
                 if (texts.length > 3) {
                     price = Integer.valueOf(texts[3]);
@@ -388,6 +357,10 @@ public class GUIBoard {
                 if (texts.length > 8) {
                     rent04 = Integer.valueOf(texts[8]);
                 }
+                int rent05 = 0;
+                if (texts.length > 9) {
+                    rent05 = Integer.valueOf(texts[9]);
+                }
                 else {
                     price = 0;
                     rent01 = 0;
@@ -395,14 +368,16 @@ public class GUIBoard {
                     rent03 = 0;
                     rent04 = 0;
                     house = 0;
+                    rent05 = rent05;
                 }
                 field.setFieldPrice(price);
-                field.setFieldRent02(house);
+                field.setFieldHousePrice(house);
                 field.setFieldRent01(rent01);
                 field.setFieldRent02(rent02);
                 field.setFieldRent03(rent03);
                 field.setFieldRent04(rent04);
-                field.setFieldHousePrice(house);
+                field.setFieldRent05(rent05);
+
             }
             reader.close();
         } catch (IOException e){
