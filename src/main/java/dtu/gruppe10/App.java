@@ -212,61 +212,46 @@ public class App {
                 window.displayChanceCard(card);
 
                 if (card instanceof MoneyCard moneyCard) {
+                    int amount = moneyCard.getAmount();
                     if (card instanceof BankMoneyCard) {
-
+                        updatePlayerBalance(window, currentPlayer, amount);
+                    }
+                    else if (card instanceof OtherPlayersMoneyCard otherPlayersMoneyCard) {
+                        int receiveAmount = otherPlayersMoneyCard.calculateReceivingAmount(game.players.size());
+                        for (Player p : game.players) {
+                            if (p.equals(currentPlayer)) {
+                                continue;
+                            }
+                            updatePlayerBalance(window, p, -amount, false);
+                        }
+                        updatePlayerBalance(window, currentPlayer, receiveAmount);
+                    }
+                    else if (card instanceof PerHouseMoneyCard perHouseMoneyCard) {
+                        int payAmount = perHouseMoneyCard.getPayAmount(currentPlayer, game.Board);
+                        updatePlayerBalance(window, currentPlayer, -payAmount);
                     }
                 } else if (card instanceof JailCard) {
-
+                    if (card instanceof GoToJailCard) {
+                        setInJail(window, jail, currentPlayer);
+                        move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
+                        movePlayer(window, currentPlayer, move);
+                    }
+                    else if (card instanceof GetOutOfJailFreeCard) {
+                        // TODO
+                    }
                 } else if (card instanceof MoveCard) {
-
+                    if (card instanceof MoveByCard moveByCard) {
+                        move = game.Board.generateForwardMove(currentPlayer.ID, moveByCard.getAmount());
+                    }
+                    else if (card instanceof MoveToCard moveToCard) {
+                        move = game.Board.generateDirectMove(currentPlayer.ID, moveToCard.getPositionIndex());
+                    }
+                    else if (card instanceof MoveToNearestCard moveToNearestCard) {
+                        move = game.Board.generateDirectMove(currentPlayer.ID, moveToNearestCard.nearestIndex(game.Board.getPlayerPosition(currentPlayer.ID)));
+                    }
+                    movePlayer(window, currentPlayer, move);
                 } else {
                     // ???
-                }
-
-                if (card instanceof BankMoneyCard) {
-                    updatePlayerBalance(window, currentPlayer, ((BankMoneyCard) card).getAmount());
-                    System.out.println("Player " + currentPlayer.ID + " has recieved " + ((BankMoneyCard) card).getAmount() + " money.");
-
-
-                } else if (card instanceof PerHouseMoneyCard) {
-                    updatePlayerBalance(window, currentPlayer, ((PerHouseMoneyCard) card).getAmount());
-                } else if (card instanceof OtherPlayersMoneyCard) {
-                    updatePlayerBalance(window, currentPlayer, ((OtherPlayersMoneyCard) card).calculateReceivingAmount(game));
-
-                    for (Player player : players) {
-                        if (!(player == currentPlayer)) {
-                            updatePlayerBalance(window, player, -((OtherPlayersMoneyCard) card).calculatePayingAmount());
-                        }
-                    }
-                } else if (card instanceof MoveToCard) {
-                    // Opdaterer ikke balancen
-                    PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToCard) card).getPositionIndex());
-                    movePlayer(window, currentPlayer, endPlayerMovement);
-
-
-                } else if (card instanceof MoveToNearestCard) {
-                    PlayerMovement endPlayerMovement = game.Board.generateForwardMoveToField(currentPlayer.ID, ((MoveToNearestCard) card).nearestIndex(game.Board.getPlayerPosition(currentPlayer.ID)));
-                    movePlayer(window, currentPlayer, endPlayerMovement);
-                    continue;
-
-                } else if (card instanceof MoveCard) {
-                    PlayerMovement endPlayerMovement;
-                    if (((MoveCard) card).getMoveAmount() > 0) {
-                        endPlayerMovement = game.Board.generateForwardMove(currentPlayer.ID, ((MoveCard) card).getMoveAmount());
-                    } else {
-                        endPlayerMovement = game.Board.generateBackwardMove(currentPlayer.ID, ((MoveCard) card).getMoveAmount());
-                    }
-                    movePlayer(window, currentPlayer, endPlayerMovement);
-                    continue;
-
-                } else if (card instanceof GoToJailCard) {
-
-                    setInJail(window, jail, currentPlayer);
-                    move = game.Board.generateDirectMove(currentPlayer.ID, game.Board.getPrisonIndex());
-                    movePlayer(window, currentPlayer, move);
-
-                } else if (card instanceof GetOutOfJailFreeCard) {
-                    ((GetOutOfJailFreeCard) card).addToInventory(currentPlayer.jailCards);
                 }
             }
 

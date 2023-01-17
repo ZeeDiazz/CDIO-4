@@ -39,8 +39,8 @@ public class ControllerChanceCard {
                 new BankMoneyCard(18, 200), // modtag 200
                 new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
 
-                new OtherPlayersMoneyCard(20, 200, 200), // 200 fra andre spillere
-                new OtherPlayersMoneyCard(21, 500, 500), // modtag 500 fra hver spiller
+                new OtherPlayersMoneyCard(20, 200), // 200 fra andre spillere
+                new OtherPlayersMoneyCard(21, 500), // modtag 500 fra hver spiller
 
                 // BevægelsesKort:
                 new MoveToCard(29, 0), // start
@@ -53,14 +53,14 @@ public class ControllerChanceCard {
                 new MoveToCard(39, 25), // grønningen
 
 
-                new MoveCard(31, 3),// tre felter frem
-                new MoveCard(32, -3),// tre felter tilbage
-                new MoveCard(33, -3),// tre felter tilbage
+                new MoveByCard(31, 3),// tre felter frem
+                new MoveByCard(32, -3),// tre felter tilbage
+                new MoveByCard(33, -3),// tre felter tilbage
 
 
-                new MoveToNearestCard(35, 1), // færge
-                new MoveToNearestCard(36, 1), // færge
-                new MoveToNearestCard(40, 1), // færge
+                new MoveToNearestCard(35, new int[] {5, 15, 25, 35}), // færge
+                new MoveToNearestCard(36, new int[] {5, 15, 25, 35}), // færge
+                new MoveToNearestCard(40, new int[] {5, 15, 25, 35}), // færge
 
                 new GetOutOfJailFreeCard(43), // ud af fængsel
 

@@ -31,14 +31,14 @@ public class GUIChanceCard extends JPanel {
 
         public void updateCard(ChanceCard card) {
             this.card = card;
-            if(card instanceof MoveCard) {
-                cardLabel.setText("Move " + ((MoveCard) card).getMoveAmount() + " Fields");
+            if(card instanceof MoveByCard moveByCard) {
+                cardLabel.setText("Move " + moveByCard.getAmount() + " Fields");
             }
-            else if(card instanceof MoveToCard) {
-                cardLabel.setText("Move to Field " + ((MoveToCard) card).getPositionIndex());
+            else if(card instanceof MoveToCard moveToCard) {
+                cardLabel.setText("Move to Field " + moveToCard.getPositionIndex());
             }
-            else if(card instanceof BankMoneyCard) {
-                cardLabel.setText("Collect $" + ((BankMoneyCard) card).getAmount() + " from the bank");
+            else if(card instanceof BankMoneyCard bankMoneyCard) {
+                cardLabel.setText("Collect $" + bankMoneyCard.getAmount() + " from the bank");
             }
             else if(card instanceof GoToJailCard) {
                 cardLabel.setText("Go to jail");
