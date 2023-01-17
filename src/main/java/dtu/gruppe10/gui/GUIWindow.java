@@ -262,6 +262,9 @@ public class GUIWindow extends JFrame implements Runnable {
 
                     drawPoint.translate(0, (int)(boardCircle.Radius * 1.1f));
                     String rollPrompt = "Press middle of board to roll";
+                    String infoPrompt = "Click on a field to see the info";
+                    String buildPrompt = "";
+                    String removePrompt = "";
                     Font prevFont = g.getFont();
                     Font rollFont = getFontByWindowHeight(30);
                     g.setFont(rollFont);
@@ -272,7 +275,6 @@ public class GUIWindow extends JFrame implements Runnable {
 
                     g.setColor(Color.BLACK);
                     g.drawString(rollPrompt, drawPoint.x, drawPoint.y);
-
                     g.setFont(prevFont);
                 }
             }
