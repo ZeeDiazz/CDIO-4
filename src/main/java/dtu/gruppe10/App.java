@@ -216,14 +216,11 @@ public class App {
                     if (card instanceof BankMoneyCard) {
 
                     }
-                }
-                else if (card instanceof JailCard) {
+                } else if (card instanceof JailCard) {
 
-                }
-                else if (card instanceof MoveCard) {
+                } else if (card instanceof MoveCard) {
 
-                }
-                else {
+                } else {
                     // ???
                 }
 
@@ -233,7 +230,7 @@ public class App {
 
 
                 } else if (card instanceof PerHouseMoneyCard) {
-                    updatePlayerBalance(window, currentPlayer, ((PerHouseMoneyCard) card).getAmount(currentPlayer));
+                    updatePlayerBalance(window, currentPlayer, ((PerHouseMoneyCard) card).getAmount());
                 } else if (card instanceof OtherPlayersMoneyCard) {
                     updatePlayerBalance(window, currentPlayer, ((OtherPlayersMoneyCard) card).calculateReceivingAmount(game));
 
@@ -254,7 +251,12 @@ public class App {
                     continue;
 
                 } else if (card instanceof MoveCard) {
-                    PlayerMovement endPlayerMovement = game.Board.generateForwardMove(currentPlayer.ID, ((MoveCard) card).getMoveAmount());
+                    PlayerMovement endPlayerMovement;
+                    if (((MoveCard) card).getMoveAmount() > 0) {
+                        endPlayerMovement = game.Board.generateForwardMove(currentPlayer.ID, ((MoveCard) card).getMoveAmount());
+                    } else {
+                        endPlayerMovement = game.Board.generateBackwardMove(currentPlayer.ID, ((MoveCard) card).getMoveAmount());
+                    }
                     movePlayer(window, currentPlayer, endPlayerMovement);
                     continue;
 

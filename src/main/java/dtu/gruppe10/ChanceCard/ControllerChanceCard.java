@@ -18,60 +18,54 @@ public class ControllerChanceCard {
     public ControllerChanceCard() {
         arrayOfCards = new ChanceCard[]{
                 // BetalingsKort:
-                /* new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
-                  new PerHouseMoneyCard(2, 800, 2300), // 800 kr pr hus, 2300 kr pr hotel
+                new PerHouseMoneyCard(1, 500, 2000), // 500 pr hus 2000kr pr hotel
+                new PerHouseMoneyCard(2, 800, 2300), // 800 kr pr hus, 2300 kr pr hotel
 
-                  new BankMoneyCard(3, -1000), // Betal 1000 kroner i bøde
-                  new BankMoneyCard(4, -300), // Betal for vognvask og smøring kr 300
-                  new BankMoneyCard(5, -200), // Betal kr 200 for levering af 2 kasser øl
-                  new BankMoneyCard(6, -3000), // Betal 3000 for reparation af deres vogn
-                  new BankMoneyCard(7, -3000), // Betal 3000 for reparation af deres vogn
-                  new BankMoneyCard(8, -1000), // De har købt 4 nye dæk til Deres vogn, betal kr 1000
-                  new BankMoneyCard(9, -200), // parkeringsbøde 200kr
-                  new BankMoneyCard(10, -1000), // bilforskikring 1000
-                  new BankMoneyCard(11, -200),// 200kr told
-                  new BankMoneyCard(12, -2000), // 2000kr tandlæge
-                  new BankMoneyCard(13, 500), // modtag 500kr
-                  new BankMoneyCard(14, 500),// modtag 500kr
-                  new BankMoneyCard(15, 1000), // modtag 1000kr
-                  new BankMoneyCard(16, 1000), // modtag 1000kr
-                  new BankMoneyCard(17, 1000), // modtag 1000kr
-                  new BankMoneyCard(18, 200), // modtag 200
-                  new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
+                new BankMoneyCard(3, -1000), // Betal 1000 kroner i bøde
+                new BankMoneyCard(4, -300), // Betal for vognvask og smøring kr 300
+                new BankMoneyCard(5, -200), // Betal kr 200 for levering af 2 kasser øl
+                new BankMoneyCard(6, -3000), // Betal 3000 for reparation af deres vogn
+                new BankMoneyCard(7, -3000), // Betal 3000 for reparation af deres vogn
+                new BankMoneyCard(8, -1000), // De har købt 4 nye dæk til Deres vogn, betal kr 1000
+                new BankMoneyCard(9, -200), // parkeringsbøde 200kr
+                new BankMoneyCard(10, -1000), // bilforskikring 1000
+                new BankMoneyCard(11, -200),// 200kr told
+                new BankMoneyCard(12, -2000), // 2000kr tandlæge
+                new BankMoneyCard(13, 500), // modtag 500kr
+                new BankMoneyCard(14, 500),// modtag 500kr
+                new BankMoneyCard(15, 1000), // modtag 1000kr
+                new BankMoneyCard(16, 1000), // modtag 1000kr
+                new BankMoneyCard(17, 1000), // modtag 1000kr
+                new BankMoneyCard(18, 200), // modtag 200
+                new BankMoneyCard(19, 40000), // modtag 40.000 hvis netWorth<15.000kr
 
-                  new OtherPlayersMoneyCard(20, 200, 200), // 200 fra andre spillere
-                  new OtherPlayersMoneyCard(21, 500, 500), // modtag 500 fra hver spiller
+                new OtherPlayersMoneyCard(20, 200, 200), // 200 fra andre spillere
+                new OtherPlayersMoneyCard(21, 500, 500), // modtag 500 fra hver spiller
 
-
-  */
                 // BevægelsesKort:
                 new MoveToCard(29, 0), // start
                 new MoveToCard(30, 0), // start
                 new MoveToCard(41, 20), // strandvejen
                 new MoveToCard(42, 40), // rådhudspladsen
-
-/*
+                new MoveToCard(34, 12), // frederiksberg alle
+                new MoveToCard(37, 16),// mols-linjien
+                new MoveToCard(38, 33),// hvimmeskaftet
+                new MoveToCard(39, 25), // grønningen
 
 
                 new MoveCard(31, 3),// tre felter frem
                 new MoveCard(32, -3),// tre felter tilbage
                 new MoveCard(33, -3),// tre felter tilbage
-                new MoveToCard(34, 12), // frederiksberg alle
+
 
                 new MoveToNearestCard(35, 1), // færge
                 new MoveToNearestCard(36, 1), // færge
-
-                new MoveToCard(37, 16),// mols-linjien
-                new MoveToCard(38, 33),// hvimmeskaftet
-                new MoveToCard(39, 25), // grønningen
                 new MoveToNearestCard(40, 1), // færge
 
                 new GetOutOfJailFreeCard(43), // ud af fængsel
+
                 new GoToJailCard(44), // fængsel
                 new GoToJailCard(45) // fængsel
-
-*/
-
 
         };
         this.chanceCards = new LinkedList<>();
