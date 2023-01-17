@@ -1,16 +1,7 @@
 package dtu.gruppe10.ChanceCard;
 
 public class BankMoneyCard extends MoneyCard {
-    private int amount;
-
-    BankMoneyCard(int ID, int amount) {
-        super(ID);
-        this.amount = amount;
+    public BankMoneyCard(int ID, int amount) {
+        super(ID, amount);
     }
-
-    public int getAmount() {
-        return amount;
-
-    }
-
 }
