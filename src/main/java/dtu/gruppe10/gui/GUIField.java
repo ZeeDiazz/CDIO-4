@@ -17,6 +17,7 @@ public class GUIField {
     public int fieldRent03;
     public int fieldRent04;
     public int fieldRent05;
+    public int fieldRent06;
     public int fieldHousePrice;
 
     public GUIField(int id, Color primaryColor, boolean isSplit, Image image) {
@@ -67,5 +68,6 @@ public class GUIField {
     public void setFieldRent03(int fieldRent03) {this.fieldRent03 = fieldRent03;}
     public void setFieldRent04(int fieldRent04) {this.fieldRent04 = fieldRent04;}
     public void setFieldRent05(int fieldRent05) {this.fieldRent05 = fieldRent05;}
+    public void setFieldRent06(int fieldRent06) {this.fieldRent06 = fieldRent06;}
 
 }

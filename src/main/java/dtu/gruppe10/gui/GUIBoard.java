@@ -361,6 +361,10 @@ public class GUIBoard {
                 if (texts.length > 9) {
                     rent05 = Integer.valueOf(texts[9]);
                 }
+                int rent06 = 0;
+                if (texts.length > 10) {
+                    rent06 = Integer.valueOf(texts[10]);
+                }
                 else {
                     price = 0;
                     rent01 = 0;
@@ -369,6 +373,7 @@ public class GUIBoard {
                     rent04 = 0;
                     house = 0;
                     rent05 = rent05;
+                    rent06 = rent06;
                 }
                 field.setFieldPrice(price);
                 field.setFieldHousePrice(house);
@@ -377,6 +382,7 @@ public class GUIBoard {
                 field.setFieldRent03(rent03);
                 field.setFieldRent04(rent04);
                 field.setFieldRent05(rent05);
+                field.setFieldRent06(rent06);
 
             }
             reader.close();
