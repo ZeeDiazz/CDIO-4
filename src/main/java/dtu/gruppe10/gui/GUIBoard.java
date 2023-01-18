@@ -309,7 +309,12 @@ public class GUIBoard {
     }
 
     public void newOwner(int fieldIndex, GUIPlayer player) {
-        ownerColor[fieldIndex] = player.TokenColor;
+        if (player == null) {
+            ownerColor[fieldIndex] = null;
+        }
+        else {
+            ownerColor[fieldIndex] = player.TokenColor;
+        }
     }
 
     public void addHouse(int fieldIndex) {

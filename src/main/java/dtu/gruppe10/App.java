@@ -149,6 +149,20 @@ public class App {
 
             if (wantsToPayBail) {
                 updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+
+                if (currentPlayer.Account.isBankrupt()) {
+                    for (int i = 0; i < game.Board.FieldCount; ++i) {
+                        Field field = game.Board.getFieldAt(i);
+                        if (!(field instanceof PropertyField property)) {
+                            continue;
+                        }
+
+                        setPropertyOwner(window, i, property, null);
+                    }
+                    newBankruptcy(window, game, currentPlayer);
+                    continue;
+                }
+
                 freeFromJail(window, jail, currentPlayer);
             }
 
@@ -195,6 +209,19 @@ public class App {
 
                     JOptionPane.showMessageDialog(null, "You had to pay bail", "Alert", JOptionPane.INFORMATION_MESSAGE);
                     updatePlayerBalance(window, currentPlayer, -jail.BailPrice);
+
+                    if (currentPlayer.Account.isBankrupt()) {
+                        for (int i = 0; i < game.Board.FieldCount; ++i) {
+                            Field field = game.Board.getFieldAt(i);
+                            if (!(field instanceof PropertyField property)) {
+                                continue;
+                            }
+
+                            setPropertyOwner(window, i, property, null);
+                        }
+                        newBankruptcy(window, game, currentPlayer);
+                        continue;
+                    }
                     release = true;
                 }
 
@@ -237,12 +264,37 @@ public class App {
                                 continue;
                             }
                             updatePlayerBalance(window, p, -amount, false);
+
+                            if (p.Account.isBankrupt()) {
+                                for (int i = 0; i < game.Board.FieldCount; ++i) {
+                                    Field field = game.Board.getFieldAt(i);
+                                    if (!(field instanceof PropertyField property)) {
+                                        continue;
+                                    }
+
+                                    setPropertyOwner(window, i, property, currentPlayer);
+                                }
+                                newBankruptcy(window, game, p);
+                            }
                         }
                         updatePlayerBalance(window, currentPlayer, receiveAmount);
                     }
                     else if (card instanceof PerHouseMoneyCard perHouseMoneyCard) {
                         int payAmount = perHouseMoneyCard.getPayAmount(currentPlayer, game.Board);
                         updatePlayerBalance(window, currentPlayer, -payAmount);
+
+                        if (currentPlayer.Account.isBankrupt()) {
+                            for (int i = 0; i < game.Board.FieldCount; ++i) {
+                                Field field = game.Board.getFieldAt(i);
+                                if (!(field instanceof PropertyField property)) {
+                                    continue;
+                                }
+
+                                setPropertyOwner(window, i, property, null);
+                            }
+                            newBankruptcy(window, game, currentPlayer);
+                            continue;
+                        }
                     }
                     break;
                 } else if (card instanceof JailCard) {
@@ -329,6 +381,18 @@ public class App {
                     }
                     if (wantsToBuy) {
                         buyProperty(window, currentPlayer, propertyField, move.End);
+
+                        if (currentPlayer.Account.isBankrupt()) {
+                            for (int i = 0; i < game.Board.FieldCount; ++i) {
+                                Field field = game.Board.getFieldAt(i);
+                                if (!(field instanceof PropertyField property)) {
+                                    continue;
+                                }
+
+                                setPropertyOwner(window, i, property, null);
+                            }
+                            newBankruptcy(window, game, currentPlayer);
+                        }
                     }
                 }
             }
@@ -352,6 +416,17 @@ public class App {
         }
 
         window.setState(GUIState.GAME_OVER);
+    }
+
+    private static void setPropertyOwner(GUIWindow window, int index, PropertyField propertyField, Player player) {
+        propertyField.newOwner(player);
+
+        if (player == null) {
+            window.propertyBought(-1, index);
+        }
+        else {
+            window.propertyBought(player.ID, index);
+        }
     }
 
     private static void trySleep(long millis) {
@@ -391,8 +466,7 @@ public class App {
     private static void buyProperty(GUIWindow window, Player player, PropertyField propertyField, int index) {
         System.out.println(player.ID + " has bought a property");
 
-        propertyField.newOwner(player);
-        window.propertyBought(player.ID, index);
+        setPropertyOwner(window, index, propertyField, player);
 
         updatePlayerBalance(window, player, -propertyField.Price);
     }

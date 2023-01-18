@@ -333,7 +333,12 @@ public class GUIWindow extends JFrame implements Runnable {
     }
 
     public void propertyBought(int playerId, int fieldIndex) {
-        Board.newOwner(fieldIndex, idToPlayer.get(playerId));
+        if (playerId == -1) {
+            Board.newOwner(fieldIndex, null);
+        }
+        else {
+            Board.newOwner(fieldIndex, idToPlayer.get(playerId));
+        }
     }
 
     public boolean hasPromptCurrently() {
